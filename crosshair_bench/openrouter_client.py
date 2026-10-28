@@ -180,7 +180,12 @@ def _build_reasoning_config(
             return {"effort": "low"}, 3072
         return {"effort": "none"}, 2048
 
-    if m_low.startswith(("deepseek/", "qwen/", "meta/muse-")):
+    if m_low.startswith("deepseek/"):
+        if reasoning_effort in ("none", "low", "minimal") or reasoning_effort is None:
+            return {"effort": "none"}, 2048
+        return {"effort": "high"}, 8192
+
+    if m_low.startswith(("qwen/", "meta/muse-")):
         budget = DEEPSEEK_REASONING_BUDGETS.get(reasoning_effort, 1280)
         return {"max_tokens": budget}, budget + 1536
 
