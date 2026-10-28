@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-Syncs completed matches and leaderboard data between `crosshair-bench` and
-`/home/nick/projects/private-blog/notes/llm-arena/`, then regenerates
-`src/data/llmArenaGames.json` for the interactive blog post visuals.
+Syncs completed matches and leaderboard data between `crosshair-bench` and a sibling
+`private-blog` checkout (`PRIVATE_BLOG_ROOT` or `../private-blog`), then regenerates
+`src/data/llmArenaGames.json` for the interactive blog visuals.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -20,7 +21,11 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 BENCH_MATCHES_DIR = REPO_ROOT / "results" / "matches"
 LEADERBOARD_PATH = REPO_ROOT / "results" / "leaderboard.json"
 
-BLOG_ROOT = Path("/home/nick/projects/private-blog")
+BLOG_ROOT = (
+    Path(os.environ.get("PRIVATE_BLOG_ROOT", str(REPO_ROOT.parent / "private-blog")))
+    .expanduser()
+    .resolve()
+)
 BLOG_GAMES_DIR = BLOG_ROOT / "notes" / "llm-arena" / "games"
 BLOG_LEADERBOARD_PATH = BLOG_ROOT / "notes" / "llm-arena" / "leaderboard.json"
 BLOG_EXPORT_SCRIPT = BLOG_ROOT / "notes" / "llm-arena" / "export_blog_data.py"

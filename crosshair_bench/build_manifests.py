@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
-Deterministic batch manifest generator for the Crosshair-Bench 7-Company Tournament.
+Deterministic batch manifest generator for the Crosshair-Bench 5-Company Tournament.
 
 Generates JSON manifests in `manifests/`:
 - `batch_00_engine_anchors.json`: 6 engine pairs x 16 games = 96 games ($0.00 local CPU)
-- `batch_01a_vs_uct50.json`: 28 LLM entrants vs `random-uct-50` x 4 games = 112 games
-- `batch_01b_vs_az400.json`: 28 LLM entrants vs `az-puct-400` x 4 games = 112 games
-- `batch_01c_vs_az4000.json`: 28 LLM entrants vs `az-puct-4000` x 4 games = 112 games
-- `batch_01_vs_engines.json`: Combined 336 LLM-vs-Engine games (01a + 01b + 01c)
-- `batch_02_thinking_delta.json`: 14 intra-model (@high vs @low/@none) + 7 intra-company
-  (Flagship@low vs Flash@high) pairs x 4 games = 84 games
-- `batch_03_flagship_rr.json`: 21 pairs of 7 Company Flagships (@high) x 4 games = 84 games
-- `batch_04_flash_rr.json`: 21 pairs of 7 Company Flash models (@high) x 4 games = 84 games
+- `batch_01a_vs_uct50.json`: 20 LLM entrants vs `random-uct-50` x 4 games = 80 games
+- `batch_01b_vs_az400.json`: 20 LLM entrants vs `az-puct-400` x 4 games = 80 games
+- `batch_01c_vs_az4000.json`: 20 LLM entrants vs `az-puct-4000` x 4 games = 80 games
+- `batch_01_vs_engines.json`: Combined 240 LLM-vs-Engine games (01a + 01b + 01c)
+- `batch_02_thinking_delta.json`: 10 intra-model (@high vs @low/@none) + 5 intra-company
+  (Flagship@low/@none vs Flash@high) pairs x 4 games = 60 games
+- `batch_03_flagship_rr.json`: 10 pairs of 5 Company Flagships (@high) x 4 games = 40 games
+- `batch_04_flash_rr.json`: 10 pairs of 5 Company Flash models (@high) x 4 games = 40 games
 """
 
 from __future__ import annotations
@@ -149,7 +149,7 @@ def build_all_manifests() -> None:
     )
 
     # -------------------------------------------------------------------------
-    # Batch 1: All 28 LLM Entrants vs 3 Tournament Engines (336 games total)
+    # Batch 1: All 20 LLM Entrants vs 3 Tournament Engines (240 games total)
     # -------------------------------------------------------------------------
     b01_by_engine: dict[str, list[dict[str, Any]]] = {e: [] for e in TOURNAMENT_ENGINES}
     for eng_idx, eng_spec in enumerate(TOURNAMENT_ENGINES, start=1):
@@ -170,22 +170,22 @@ def build_all_manifests() -> None:
     _write_manifest(
         "batch_01a_vs_uct50.json",
         "batch_01a_vs_uct50",
-        "Batch 1A: 28 LLM Entrants vs engine:random-uct-50",
-        "All 28 LLM entrants (7 companies x 2 models x 2 thinking levels) vs engine:random-uct-50 (4 balanced games each = 112 games).",
+        "Batch 1A: 20 LLM Entrants vs engine:random-uct-50",
+        "All 20 LLM entrants (5 companies x 2 models x 2 thinking levels) vs engine:random-uct-50 (4 balanced games each = 80 games).",
         b01_by_engine["engine:random-uct-50"],
     )
     _write_manifest(
         "batch_01b_vs_az400.json",
         "batch_01b_vs_az400",
-        "Batch 1B: 28 LLM Entrants vs engine:az-puct-400",
-        "All 28 LLM entrants (7 companies x 2 models x 2 thinking levels) vs engine:az-puct-400 (4 balanced games each = 112 games).",
+        "Batch 1B: 20 LLM Entrants vs engine:az-puct-400",
+        "All 20 LLM entrants (5 companies x 2 models x 2 thinking levels) vs engine:az-puct-400 (4 balanced games each = 80 games).",
         b01_by_engine["engine:az-puct-400"],
     )
     _write_manifest(
         "batch_01c_vs_az4000.json",
         "batch_01c_vs_az4000",
-        "Batch 1C: 28 LLM Entrants vs engine:az-puct-4000",
-        "All 28 LLM entrants (7 companies x 2 models x 2 thinking levels) vs engine:az-puct-4000 (4 balanced games each = 112 games).",
+        "Batch 1C: 20 LLM Entrants vs engine:az-puct-4000",
+        "All 20 LLM entrants (5 companies x 2 models x 2 thinking levels) vs engine:az-puct-4000 (4 balanced games each = 80 games).",
         b01_by_engine["engine:az-puct-4000"],
     )
 
@@ -197,15 +197,15 @@ def build_all_manifests() -> None:
     _write_manifest(
         "batch_01_vs_engines.json",
         "batch_01_vs_engines",
-        "Batch 1: All 28 LLM Entrants vs 3 Tournament Engines",
-        "Combined 336-game LLM-vs-Engine calibration stage (Batch 1A + Batch 1B + Batch 1C).",
+        "Batch 1: All 20 LLM Entrants vs 3 Tournament Engines",
+        "Combined 240-game LLM-vs-Engine calibration stage (Batch 1A + Batch 1B + Batch 1C).",
         b01_all,
     )
 
     # -------------------------------------------------------------------------
-    # Batch 2: Thinking-Budget Delta & Intra-Company Tier Crossover (84 games)
-    #   Part A: 14 Intra-Model pairs (@high vs @low/@none) x 4 games = 56 games
-    #   Part B: 7 Intra-Company pairs (Flagship@low/@none vs Flash@high) x 4 games = 28 games
+    # Batch 2: Thinking-Budget Delta & Intra-Company Tier Crossover (60 games)
+    #   Part A: 10 Intra-Model pairs (@high vs @low/@none) x 4 games = 40 games
+    #   Part B: 5 Intra-Company pairs (Flagship@low/@none vs Flash@high) x 4 games = 20 games
     # -------------------------------------------------------------------------
     b02_matches: list[dict[str, Any]] = []
     pair_counter = 0
@@ -266,12 +266,12 @@ def build_all_manifests() -> None:
         "batch_02_thinking_delta.json",
         "batch_02_thinking_delta",
         "Batch 2: Intra-Model Thinking Delta & Intra-Company Tier Crossover",
-        "14 intra-model (@high vs @low/@none) pairs + 7 intra-company (Flagship@base vs Flash@high) pairs x 4 balanced games = 84 games.",
+        "10 intra-model (@high vs @low/@none) pairs + 5 intra-company (Flagship@base vs Flash@high) pairs x 4 balanced games = 60 games.",
         b02_matches,
     )
 
     # -------------------------------------------------------------------------
-    # Batch 3: 7-Company Flagship Round-Robin at @high (21 pairs x 4 games = 84 games)
+    # Batch 3: 5-Company Flagship Round-Robin at @high (10 pairs x 4 games = 40 games)
     # -------------------------------------------------------------------------
     b03_matches: list[dict[str, Any]] = []
     flagship_high_entrants = [
@@ -295,13 +295,13 @@ def build_all_manifests() -> None:
     _write_manifest(
         "batch_03_flagship_rr.json",
         "batch_03_flagship_rr",
-        "Batch 3: 7-Company Flagship Round-Robin (@high)",
-        "All 21 head-to-head pairs among the 7 company flagship models at @high x 4 balanced games = 84 games.",
+        "Batch 3: 5-Company Flagship Round-Robin (@high)",
+        "All 10 head-to-head pairs among the 5 company flagship models at @high x 4 balanced games = 40 games.",
         b03_matches,
     )
 
     # -------------------------------------------------------------------------
-    # Batch 4: 7-Company Flash Round-Robin at @high (21 pairs x 4 games = 84 games)
+    # Batch 4: 5-Company Flash Round-Robin at @high (10 pairs x 4 games = 40 games)
     # -------------------------------------------------------------------------
     b04_matches: list[dict[str, Any]] = []
     flash_high_entrants = [
@@ -325,8 +325,8 @@ def build_all_manifests() -> None:
     _write_manifest(
         "batch_04_flash_rr.json",
         "batch_04_flash_rr",
-        "Batch 4: 7-Company Flash Round-Robin (@high)",
-        "All 21 head-to-head pairs among the 7 company flash/cost-efficient models at @high x 4 balanced games = 84 games.",
+        "Batch 4: 5-Company Flash Round-Robin (@high)",
+        "All 10 head-to-head pairs among the 5 company flash/cost-efficient models at @high x 4 balanced games = 40 games.",
         b04_matches,
     )
 

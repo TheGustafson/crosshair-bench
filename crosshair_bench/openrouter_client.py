@@ -84,7 +84,7 @@ def load_openrouter_api_key(key_file: Path = DEFAULT_KEY_FILE) -> str:
                 val = v.strip().strip("'").strip('"')
                 if val:
                     return val
-        elif line.startswith("sk-or-"):
+        elif " " not in line:
             return line.strip("'").strip('"')
 
     raise RuntimeError(f"Could not parse OPENROUTER_API_KEY from {key_file}.")

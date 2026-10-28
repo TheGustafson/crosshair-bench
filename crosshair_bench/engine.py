@@ -38,6 +38,7 @@ ENGINE_SHORT_LABELS: dict[str, str] = {
 }
 
 _SEARCH_CACHE: dict[tuple[tuple[str, ...], str | None], dict[str, Any]] = {}
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def resolve_engine_bin() -> Path:
@@ -49,21 +50,21 @@ def resolve_engine_bin() -> Path:
             return p
         raise FileNotFoundError(f"AI_CROSSHAIR_BIN points to missing file: {p}")
 
-    candidates = [
-        Path("/home/nick/projects/private-blog/game-ai/target/release/ai-crosshair"),
-        Path("/home/nick/projects/ai-crosshair/target/release/ai-crosshair"),
-    ]
-    for cand in candidates:
-        if cand.is_file():
-            return cand
-
     which_bin = shutil.which("ai-crosshair")
     if which_bin:
         return Path(which_bin).resolve()
 
+    candidates = [
+        REPO_ROOT.parent / "ai-crosshair" / "target" / "release" / "ai-crosshair",
+        REPO_ROOT.parent / "private-blog" / "game-ai" / "target" / "release" / "ai-crosshair",
+    ]
+    for cand in candidates:
+        if cand.is_file():
+            return cand.resolve()
+
     raise FileNotFoundError(
-        "Could not locate `ai-crosshair` binary. Set AI_CROSSHAIR_BIN or build "
-        "`cargo build --release` in `ai-crosshair`."
+        "Could not locate `ai-crosshair` binary. Set AI_CROSSHAIR_BIN, add "
+        "`ai-crosshair` to PATH, or build `cargo build --release` in `../ai-crosshair`."
     )
 
 

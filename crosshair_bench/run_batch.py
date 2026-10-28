@@ -102,10 +102,15 @@ async def execute_batch(
     lock = asyncio.Lock()
 
     def build_status_doc(state_str: str) -> dict[str, Any]:
+        rel_manifest = (
+            str(manifest_path.relative_to(REPO_ROOT))
+            if manifest_path.is_relative_to(REPO_ROOT)
+            else str(manifest_path)
+        )
         return {
             "batch_id": batch_id,
             "title": title,
-            "manifest_path": str(manifest_path),
+            "manifest_path": rel_manifest,
             "state": state_str,
             "started_at": started_at,
             "updated_at": datetime.now(timezone.utc).isoformat(),

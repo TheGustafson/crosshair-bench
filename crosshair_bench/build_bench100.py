@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import statistics
 from datetime import datetime, timezone
 from pathlib import Path
@@ -21,9 +22,14 @@ from .engine import choose_engine_move, encode_board, query_engine
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_BENCH_OUT = REPO_ROOT / "benchmarks" / "crosshair_bench_100.json"
+BLOG_ROOT = (
+    Path(os.environ.get("PRIVATE_BLOG_ROOT", str(REPO_ROOT.parent / "private-blog")))
+    .expanduser()
+    .resolve()
+)
 DEFAULT_SOURCE_DIRS = [
     REPO_ROOT / "results" / "matches",
-    Path("/home/nick/projects/private-blog/notes/llm-arena/games"),
+    BLOG_ROOT / "notes" / "llm-arena" / "games",
 ]
 
 
@@ -128,7 +134,7 @@ def evaluate_position_candidates(
     }
 
 
-def build_suite(target_count: int = 30) -> dict[str, Any]:
+def build_suite(target_count: int = 100) -> dict[str, Any]:
     candidates: list[dict[str, Any]] = []
     seen_boards: set[tuple[str, int | None, int | None, str]] = set()
 
@@ -234,8 +240,8 @@ def main() -> None:
     parser.add_argument(
         "--target",
         type=int,
-        default=30,
-        help="Number of high-cliff positions to include (default: 30, expandable to 100)",
+        default=100,
+        help="Number of high-cliff positions to include (default: 100)",
     )
     parser.add_argument(
         "--out",
