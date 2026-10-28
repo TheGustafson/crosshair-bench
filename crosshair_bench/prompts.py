@@ -150,8 +150,9 @@ def build_retry_prompt(
     """Build a concise user retry prompt when the previous response had an illegal or missing move."""
     if was_truncated and not bad_move:
         return (
-            "You reached the output token limit before emitting your `<move>...</move>` tag.\n"
-            f"Choose from the legal moves ({', '.join(legal_moves)}) and respond IMMEDIATELY with ONLY your chosen coordinate inside XML tags (no extra commentary), e.g.:\n"
+            "Your previous response reached the output token limit before emitting a `<move>...</move>` tag.\n"
+            f"Using your partial analysis above, choose from the legal moves ({', '.join(legal_moves)}) "
+            "and finish with your chosen legal coordinate inside XML tags, e.g.:\n"
             f"<move>{legal_moves[0]}</move>"
         )
 
@@ -159,7 +160,7 @@ def build_retry_prompt(
     return (
         f"ERROR: Your move {bad_desc} is ILLEGAL in this position.\n"
         f"You MUST choose one of the legal moves: {', '.join(legal_moves)}\n"
-        f"Do not write a long essay—respond immediately with your chosen legal coordinate inside XML tags, e.g. <move>{legal_moves[0]}</move>."
+        f"Respond with your chosen legal coordinate inside XML tags, e.g. <move>{legal_moves[0]}</move>."
     )
 
 

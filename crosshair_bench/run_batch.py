@@ -64,20 +64,24 @@ async def execute_batch(
     all_items: list[dict[str, Any]] = manifest["matches"]
     raw_items = all_items[:limit] if limit is not None else list(all_items)
 
-    # Schedule slowest models (grok-4.7, gpt-6.1-sol, grok-4.3) at the very front,
-    # and interleave in round-robin across pairings with @high prioritized first.
+    # Schedule slowest models first, interleaved across providers so no single upstream
+    # endpoint receives a burst of 20 simultaneous connections at t=0.
     def _schedule_key(idx_and_item: tuple[int, dict[str, Any]]) -> tuple[int, int, int, int]:
         orig_idx, it = idx_and_item
         specs_str = f"{it.get('red', '')} {it.get('blue', '')}"
         is_slowest = any(
             s in specs_str
-            for s in ("x-ai/grok-4.7", "openai/gpt-6.1-sol@high", "x-ai/grok-4.3@high")
+            for s in (
+                "openai/gpt-6.1-sol@high",
+                "deepseek/deepseek-v4-pro-0813@high",
+                "google/gemini-4-argon@high",
+                "deepseek/deepseek-v4.1-flash-1017@high",
+            )
         )
         game_round = (int(it.get("opening_index", 1)) - 1) * 2 + int(
             it.get("swap_index", 1)
         )
-        has_high = "@high" in specs_str
-        return (0 if is_slowest else 1, game_round, 0 if has_high else 1, orig_idx)
+        return (0 if is_slowest else 1, game_round, orig_idx % 7, orig_idx)
 
     items = [
         it for _, it in sorted(enumerate(raw_items), key=_schedule_key)

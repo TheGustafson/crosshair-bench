@@ -34,30 +34,34 @@ def _extract_participants(doc: dict[str, Any]) -> tuple[dict[str, Any], dict[str
     if "red_player" in doc and "blue_player" in doc:
         rp = doc["red_player"]
         bp = doc["blue_player"]
+        r_lbl = "qwen3.8-max-0902@low" if rp["label"] == "qwen3.8-max-0902@none" else rp["label"]
+        b_lbl = "qwen3.8-max-0902@low" if bp["label"] == "qwen3.8-max-0902@none" else bp["label"]
+        r_eff = "low" if rp["label"] == "qwen3.8-max-0902@none" else rp.get("reasoning_effort")
+        b_eff = "low" if bp["label"] == "qwen3.8-max-0902@none" else bp.get("reasoning_effort")
         red_key = (
-            f"{rp['label']} ({rp['prompt_mode']})"
+            f"{r_lbl} ({rp['prompt_mode']})"
             if rp.get("actor_type") == "llm" and rp.get("prompt_mode")
-            else f"engine:{rp['label']}"
+            else f"engine:{r_lbl}"
         )
         blue_key = (
-            f"{bp['label']} ({bp['prompt_mode']})"
+            f"{b_lbl} ({bp['prompt_mode']})"
             if bp.get("actor_type") == "llm" and bp.get("prompt_mode")
-            else f"engine:{bp['label']}"
+            else f"engine:{b_lbl}"
         )
         return (
             {
                 "key": red_key,
-                "label": rp["label"],
+                "label": r_lbl,
                 "actor_type": rp["actor_type"],
                 "prompt_mode": rp.get("prompt_mode"),
-                "reasoning_effort": rp.get("reasoning_effort"),
+                "reasoning_effort": r_eff,
             },
             {
                 "key": blue_key,
-                "label": bp["label"],
+                "label": b_lbl,
                 "actor_type": bp["actor_type"],
                 "prompt_mode": bp.get("prompt_mode"),
-                "reasoning_effort": bp.get("reasoning_effort"),
+                "reasoning_effort": b_eff,
             },
         )
 
@@ -189,6 +193,7 @@ def compute_leaderboard(match_dirs: list[Path]) -> dict[str, Any]:
             "loss_sum": 0.0,
             "blunders": 0,
             "illegals": 0,
+            "retry_turns": 0,
             "latency_ms": 0.0,
             "prompt_tokens": 0,
             "completion_tokens": 0,
@@ -244,6 +249,8 @@ def compute_leaderboard(match_dirs: list[Path]) -> dict[str, Any]:
                 st["reasoning_tokens"] += int(tel.get("reasoning_tokens", 0))
                 st["cost_usd"] += float(tel.get("cost_usd", 0.0))
                 st["illegals"] += int(tel.get("illegal_retries", 0))
+                if int(tel.get("attempts", 1)) > 1:
+                    st["retry_turns"] += 1
 
             # Fallback for legacy docs without per-turn illegal_retries
             if "per_side_telemetry" not in doc and p_info["actor_type"] == "llm":
@@ -279,6 +286,8 @@ def compute_leaderboard(match_dirs: list[Path]) -> dict[str, Any]:
                 "blunders": st["blunders"],
                 "blunder_rate": round(st["blunders"] / et, 4) if has_eval else None,
                 "illegal_attempts": st["illegals"],
+                "retry_turns": st["retry_turns"],
+                "retry_rate": round(st["retry_turns"] / t_cnt, 4),
                 "avg_latency_ms": round(st["latency_ms"] / t_cnt, 1),
                 "avg_tokens_per_turn": round(
                     (st["prompt_tokens"] + st["completion_tokens"]) / t_cnt, 1

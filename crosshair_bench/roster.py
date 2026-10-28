@@ -88,7 +88,7 @@ COMPANY_DEFINITIONS: tuple[CompanyModels, ...] = (
         company_slug="qwen",
         flagship_model_id="qwen/qwen3.8-max-0902",
         flagship_short_base="qwen38max",
-        flagship_base_effort="none",
+        flagship_base_effort="low",
         flash_model_id="qwen/qwen3.8-flash",
         flash_short_base="qwen38flash",
         flash_base_effort="none",
@@ -135,6 +135,7 @@ ENTRANTS_BY_SPEC: dict[str, LLMEntrant] = {e.spec: e for e in LLM_ENTRANTS}
 CALIBRATION_ANCHOR_ENGINE = "engine:az-puct-1"
 TOURNAMENT_ENGINES: tuple[str, ...] = (
     "engine:random-uct-50",
+    "engine:az-puct-1",
     "engine:az-puct-400",
     "engine:az-puct-4000",
 )

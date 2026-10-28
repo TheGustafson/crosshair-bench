@@ -34,8 +34,8 @@ VALID_REASONING_EFFORTS = ("minimal", "low", "medium", "high", "none")
 DEEPSEEK_REASONING_BUDGETS = {
     "minimal": 384,
     "low": 640,
-    "medium": 1280,
-    "high": 2048,
+    "medium": 2048,
+    "high": 4096,
 }
 
 
@@ -186,14 +186,14 @@ def _build_reasoning_config(
         return {"effort": "high"}, 8192
 
     if m_low.startswith(("qwen/", "meta/muse-")):
-        budget = DEEPSEEK_REASONING_BUDGETS.get(reasoning_effort, 1280)
-        return {"max_tokens": budget}, budget + 1536
+        budget = DEEPSEEK_REASONING_BUDGETS.get(reasoning_effort, 2048)
+        return {"max_tokens": budget}, max(budget + 3072, 7168)
 
     if m_low.startswith("x-ai/grok-"):
-        min_tok = 4096 if reasoning_effort in ("medium", "high") else 2560
+        min_tok = 8192 if reasoning_effort in ("medium", "high") else 2560
         return {"effort": reasoning_effort}, min_tok
 
-    min_tok = 4608 if reasoning_effort in ("medium", "high") else 3072
+    min_tok = 8192 if reasoning_effort in ("medium", "high") else 4096
     return {"effort": reasoning_effort}, min_tok
 
 
@@ -205,14 +205,14 @@ def call_openrouter_chat(
     max_tokens: int = 4096,
     temperature: float | None = 0.0,
     reasoning_effort: str | None = None,
-    timeout_s: float = 150.0,
+    timeout_s: float = 180.0,
 ) -> dict[str, Any]:
     """
     Execute a synchronous OpenRouter chat completion call with automatic fallback
     if a model/provider rejects `reasoning` or `temperature`.
     """
     reas_cfg, min_tokens = _build_reasoning_config(model_id, reasoning_effort)
-    eff_max_tokens = min_tokens if max_tokens in (4096, 3584) else max(max_tokens, min_tokens)
+    eff_max_tokens = max(max_tokens, min_tokens)
 
     req_messages = list(messages)
     if model_id.lower().startswith("x-ai/grok-"):
@@ -225,6 +225,18 @@ def call_openrouter_chat(
                 "content": (
                     f"Keep your internal thinking trace concise (strictly under {grok_reas_limit} "
                     "of reasoning). Do not loop or re-verify the same coordinates repeatedly."
+                ),
+            },
+            *req_messages,
+        ]
+    elif model_id.lower().startswith("deepseek/") and reasoning_effort in ("medium", "high"):
+        req_messages = [
+            {
+                "role": "system",
+                "content": (
+                    "Keep your internal thinking trace focused and concise (under 2,500 tokens of reasoning). "
+                    "Do not loop or re-verify the same coordinates repeatedly; once you have compared the top 2-3 "
+                    "candidate moves, finish thinking and output your <move>coord</move>."
                 ),
             },
             *req_messages,
@@ -258,7 +270,7 @@ def call_openrouter_chat(
     payload = dict(base_payload)
     last_err: Exception | None = None
 
-    for attempt in range(6):
+    for attempt in range(8):
         body = json.dumps(payload).encode("utf-8")
         t0 = time.perf_counter()
         try:
@@ -343,15 +355,17 @@ def call_openrouter_chat(
                 raise RuntimeError(
                     f"Non-retryable HTTP {exc.code} from OpenRouter for {model_id}: {err_body}"
                 ) from exc
-            if attempt < 5:
-                backoff = (3.0 if exc.code == 429 else 1.5) * (2**attempt)
+            if attempt < 7:
+                backoff = (3.0 if exc.code == 429 else 1.5) * (1.8**attempt)
                 time.sleep(min(backoff, 30.0))
 
-        except (urllib.error.URLError, TimeoutError, RuntimeError) as exc:
+        except Exception as exc:
+            if isinstance(exc, RuntimeError) and "Non-retryable HTTP" in str(exc):
+                raise
             last_err = exc
-            if attempt < 5:
-                time.sleep(min(1.5 * (2**attempt), 20.0))
+            if attempt < 7:
+                time.sleep(min(2.0 * (1.8**attempt), 25.0))
 
     raise RuntimeError(
-        f"OpenRouter request failed after 6 attempts for {model_id}: {last_err}"
+        f"OpenRouter request failed after 8 attempts for {model_id}: {last_err}"
     )

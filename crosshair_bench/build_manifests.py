@@ -188,17 +188,27 @@ def build_all_manifests() -> None:
         "All 20 LLM entrants (5 companies x 2 models x 2 thinking levels) vs engine:az-puct-4000 (4 balanced games each = 80 games).",
         b01_by_engine["engine:az-puct-4000"],
     )
+    for item in b01_by_engine["engine:az-puct-1"]:
+        item["skip_shadow_oracle"] = True
+    _write_manifest(
+        "batch_01d_vs_az1.json",
+        "batch_01d_vs_az1",
+        "Batch 1D: 20 LLM Entrants vs engine:az-puct-1",
+        "All 20 LLM entrants (5 companies x 2 models x 2 thinking levels) vs engine:az-puct-1 (4 balanced games each = 80 games).",
+        b01_by_engine["engine:az-puct-1"],
+    )
 
     b01_all = (
         b01_by_engine["engine:random-uct-50"]
+        + b01_by_engine["engine:az-puct-1"]
         + b01_by_engine["engine:az-puct-400"]
         + b01_by_engine["engine:az-puct-4000"]
     )
     _write_manifest(
         "batch_01_vs_engines.json",
         "batch_01_vs_engines",
-        "Batch 1: All 20 LLM Entrants vs 3 Tournament Engines",
-        "Combined 240-game LLM-vs-Engine calibration stage (Batch 1A + Batch 1B + Batch 1C).",
+        "Batch 1: All 20 LLM Entrants vs 4 Tournament Engines",
+        "Combined 320-game LLM-vs-Engine calibration stage (Batch 1A + Batch 1D + Batch 1B + Batch 1C).",
         b01_all,
     )
 

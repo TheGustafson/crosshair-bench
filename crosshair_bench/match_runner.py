@@ -203,7 +203,7 @@ async def run_match(
     match_id: str | None = None,
     seed: int = 42,
     opening: str = "",
-    oracle_sims: int = 400,
+    oracle_sims: int = 4000,
     skip_shadow_oracle: bool = False,
     max_illegal_retries: int = 3,
     overwrite: bool = False,
@@ -401,26 +401,29 @@ async def run_match(
             messages: list[dict[str, str]] = [{"role": "user", "content": prompt_text}]
             eff_max_tokens = current_player.max_tokens
             if current_player.reasoning_effort and current_player.reasoning_effort != "none":
-                eff_max_tokens = max(eff_max_tokens, 3584)
+                eff_max_tokens = max(
+                    eff_max_tokens,
+                    8192 if current_player.reasoning_effort in ("medium", "high") else 4096,
+                )
 
             prior_thoughts: list[str] = []
             for attempt_idx in range(max_illegal_retries + 1):
                 attempts_used += 1
-                attempt_effort = (
-                    current_player.reasoning_effort
-                    if attempt_idx == 0
-                    else (
-                        "none"
-                        if current_player.reasoning_effort == "none"
-                        else "low"
-                    )
-                )
+                if (
+                    attempt_idx > 0
+                    and current_player.model_id.lower().startswith("deepseek/")
+                ):
+                    # DeepSeek's Attempt 0 @high reasoning is passed in <partial_thinking>;
+                    # emit the final <move> coordinate directly from that @high analysis.
+                    attempt_effort: str | None = "none"
+                else:
+                    attempt_effort = current_player.reasoning_effort
                 resp = await asyncio.to_thread(
                     call_openrouter_chat,
                     api_key=resolved_key,
                     model_id=current_player.model_id,
                     messages=messages,
-                    max_tokens=eff_max_tokens if attempt_idx == 0 else 2560,
+                    max_tokens=eff_max_tokens,
                     temperature=current_player.temperature,
                     reasoning_effort=attempt_effort,
                 )
@@ -450,19 +453,31 @@ async def run_match(
                     reasoning_trace = reas_t
                     break
 
-                # Truncated or illegal move -> record retry
+                # Truncated or illegal move -> record retry without downgrading reasoning_effort
                 was_truncated = (
                     finish_reason.lower() in ("length", "max_tokens")
                     and cand_move is None
                 )
                 if was_truncated:
-                    eff_max_tokens = max(eff_max_tokens * 2, 8192)
+                    eff_max_tokens = max(eff_max_tokens + 8192, 16384)
                 else:
                     turn_illegal_retries += 1
                     match_doc["illegal_attempts"] += 1
                     per_side_telemetry[side]["illegal_attempts"] += 1
 
-                assistant_reply = resp.get("content") or "<empty response>"
+                content_part = (resp.get("content") or "").strip()
+                native_reas_part = (resp.get("native_reasoning") or "").strip()
+                if was_truncated and native_reas_part:
+                    reas_tail = (
+                        native_reas_part[-2400:]
+                        if len(native_reas_part) > 2400
+                        else native_reas_part
+                    )
+                    assistant_reply = (
+                        f"<partial_thinking>\n{reas_tail}\n</partial_thinking>\n{content_part}".strip()
+                    )
+                else:
+                    assistant_reply = content_part or "<empty response>"
                 messages.append({"role": "assistant", "content": assistant_reply})
                 messages.append(
                     {

@@ -17,58 +17,57 @@ Models receive a stateless prompt on each turn via OpenRouter containing the rul
 
 Entrants play paired games (swapping Red and Blue from balanced 2-ply openings) against four deterministic [`ai-crosshair`](https://github.com/TheGustafson/ai-crosshair) engine baselines and against each other:
 
-- **`random-uct-50` (`1135.4 Elo`):** 50-simulation uniform-rollout MCTS with no neural network.
+- **`random-uct-50` (`1078.4 Elo`):** 50-simulation uniform-rollout MCTS with no neural network.
 - **`az-puct-1` (`1200.0 Elo` anchor):** The raw 114,290-parameter (`457 KB`) AlphaZero policy network with tree search turned off (`1` simulation, zero lookahead).
-- **`az-puct-400` (`1887.7 Elo`):** 400-simulation AlphaZero PUCT search.
-- **`az-puct-4000` (`2343.4 Elo`):** 4,000-simulation AlphaZero PUCT search.
+- **`az-puct-400` (`1730.4 Elo`):** 400-simulation AlphaZero PUCT search.
+- **`az-puct-4000` (`2096.8 Elo`):** 4,000-simulation AlphaZero PUCT search.
 
-On every turn of every LLM game, a 4,000-simulation AlphaZero shadow oracle evaluates the board before and after the chosen move to record win-probability trajectories, Mean Win-Probability Loss (`MWPL`), Blunder Rate ($\Delta\text{WinProb} \le -0.10$), and Top-1 / Top-3 agreement with `az-puct-4000`. All completed game logs live in `results/matches/`.
+On every turn of every game, a 4,000-simulation AlphaZero shadow oracle evaluates the board before and after the chosen move to record win-probability trajectories, Mean Win-Probability Loss (`MWPL`), Blunder Rate ($\Delta\text{WinProb} \le -0.10$), and Top-1 / Top-3 agreement with `az-puct-4000`. All completed game logs live in `results/matches/`.
 
 ### 2. Single-Turn Tactical Suite (`benchmarks/crosshair_bench_100.json`)
 
 `Crosshair-Bench-100` contains 100 high-leverage positions mined from tournament games where the best move and median legal move differ by at least 14% win probability. Every legal move in every position is pre-graded by `ai-crosshair`, allowing fast single-turn evaluation of any model in under two minutes without running local MCTS searches during grading.
 
-## Results (495-Game Tournament)
+## Results (556-Game Tournament)
 
-20 LLM configurations (`5 labs × 2 model tiers × 2 reasoning budgets`, all in unassisted `raw` mode) were evaluated alongside the 4 engine baselines across 495 complete games:
+20 LLM configurations (`5 labs × 2 model tiers × 2 reasoning budgets`, all in unassisted `raw` mode) were evaluated alongside the 4 engine baselines across 556 complete games:
 
-- **Batch 0 (`96 games`):** Engine calibration round-robin (`random-uct-50`, `az-puct-1`, `az-puct-400`, `az-puct-4000`).
-- **Batch 1 (`240 games`):** All 20 LLM configurations vs. `random-uct-50`, `az-puct-400`, and `az-puct-4000` (4 games per pair).
+- **Batch 0 (`96 games`):** Engine calibration round-robin (`random-uct-50`, `az-puct-1`, `az-puct-400`, `az-puct-4000`; 16 games per pair).
+- **Batch 1 (`320 games`):** All 20 LLM configurations vs. `random-uct-50`, `az-puct-1`, `az-puct-400`, and `az-puct-4000` (4 games per pair).
 - **Batch 2 (`60 games`):** Same-model thinking ablation (`@high` vs. `@low`/`@none`) and cross-tier showdown (`Flash @high` vs. `Flagship @low`/`@none`).
 - **Batch 3 (`40 games`):** 5×5 Flagship `@high` round-robin.
 - **Batch 4 (`40 games`):** 5×5 Flash `@high` round-robin.
-- **Pilot (`19 games`):** Prompt scaffolding ablation (`raw`, `assisted`, `strategic`).
 
 ### 24-Entrant Anchored BayesElo Leaderboard
 
-Ratings are fit jointly across all 495 games via regularized Bradley-Terry maximum likelihood anchored at `az-puct-1 = 1200.0 Elo`.
+Ratings are fit jointly across all 556 tournament games via regularized Bradley-Terry maximum likelihood anchored at `az-puct-1 = 1200.0 Elo`.
 
-| Rank | Model / Engine | Elo | Overall W–L | vs `uct50` | vs `az400` | vs `az4000` | AZ-4000 Top-1% | AZ-4000 Top-3% | MWPL | Blunder% | Cost/Game |
-| ---: | :--- | ---: | :---: | :---: | :---: | :---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | `engine:az-puct-4000` | **2343.4** | 127–1 | - | - | - | 100.0% | 100.0% | 0.009 | 0.2% | $0.000 |
-| 2 | `engine:az-puct-400` | **1887.7** | 117–18 | - | - | - | 80.8% | 99.2% | 0.015 | 0.9% | $0.000 |
-| 3 | `gemini-4-argon@high` | **1440.4** | 19–13 | 4–0 | 1–3 | 0–4 | 43.9% | 74.7% | 0.048 | 12.0% | $0.390 |
-| 4 | `gpt-6.1-sol@low` | **1408.3** | 9–11 | 4–0 | 0–4 | 0–4 | 43.6% | 69.4% | 0.043 | 11.3% | $0.137 |
-| 5 | `gpt-6.1-sol@high` | **1397.5** | 17–15 | 4–0 | 0–4 | 0–4 | 44.0% | 68.8% | 0.044 | 11.2% | $0.488 |
-| 6 | `gemini-3.8-flash@high` | **1327.8** | 20–16 | 1–3 | 0–4 | 0–4 | 44.5% | 68.5% | 0.048 | 13.9% | $0.166 |
-| 7 | `gemini-4-argon@low` | **1290.0** | 6–14 | 3–1 | 0–4 | 0–4 | 42.1% | 72.6% | 0.061 | 14.7% | $0.095 |
-| 8 | `claude-opus-5.5@high` | **1258.9** | 14–18 | 3–1 | 0–4 | 0–4 | 36.0% | 63.1% | 0.058 | 15.9% | $0.551 |
-| 9 | `claude-haiku-5.5@low` | **1255.3** | 5–11 | 3–1 | 0–4 | 0–4 | 37.8% | 59.0% | 0.055 | 20.2% | $0.010 |
-| 10 | `claude-haiku-5.5@high` | **1222.7** | 16–20 | 2–2 | 0–4 | 0–4 | 39.4% | 60.4% | 0.057 | 21.0% | $0.019 |
-| 11 | `deepseek-v4.1-flash@high` | **1211.2** | 18–18 | 2–2 | 0–4 | 0–4 | 40.2% | 65.0% | 0.053 | 14.9% | $0.043 |
-| 12 | `engine:az-puct-1` (anchor) | **1200.0** | 12–45 | - | - | - | 58.3% | 91.7% | 0.109 | 16.7% | $0.000 |
-| 13 | `gpt-6-luna@high` | **1157.5** | 13–23 | 2–2 | 0–4 | 0–4 | 33.1% | 63.5% | 0.058 | 15.5% | $0.021 |
-| 14 | `deepseek-v4-pro@high` | **1147.7** | 11–21 | 3–1 | 0–4 | 0–4 | 39.2% | 67.0% | 0.059 | 15.9% | $0.321 |
-| 15 | `engine:random-uct-50` | **1135.4** | 46–83 | - | - | - | 29.5% | 58.1% | 0.060 | 18.6% | $0.000 |
-| 16 | `gemini-3.8-flash@low` | **1135.1** | 3–13 | 3–1 | 0–4 | 0–4 | 37.1% | 56.4% | 0.058 | 15.8% | $0.037 |
-| 17 | `claude-opus-5.5@low` | **1085.3** | 4–16 | 2–2 | 0–4 | 0–4 | 33.3% | 54.0% | 0.075 | 23.4% | $0.312 |
-| 18 | `qwen3.8-flash@high` | **1035.6** | 11–25 | 1–3 | 0–4 | 0–4 | 28.3% | 59.0% | 0.060 | 17.8% | $0.013 |
-| 19 | `qwen3.8-max@high` | **978.0** | 6–26 | 1–3 | 0–4 | 0–4 | 29.5% | 61.0% | 0.055 | 17.5% | $0.183 |
-| 20 | `gpt-6-luna@low` | **969.5** | 2–14 | 0–4 | 0–4 | 0–4 | 28.7% | 56.6% | 0.067 | 16.4% | $0.008 |
-| 21 | `qwen3.8-flash@none` | **908.9** | 2–14 | 0–4 | 0–4 | 0–4 | 23.3% | 47.9% | 0.069 | 20.5% | $0.008 |
-| 22 | `deepseek-v4-pro@none` | **899.4** | 2–18 | 1–3 | 0–4 | 0–4 | 18.0% | 51.4% | 0.061 | 18.8% | $0.021 |
-| 23 | `qwen3.8-max@none` | **866.2** | 3–17 | 1–3 | 0–4 | 0–4 | 27.3% | 57.8% | 0.056 | 17.3% | $0.172 |
-| 24 | `deepseek-v4.1-flash@none` | **864.7** | 1–15 | 1–3 | 0–4 | 0–4 | 20.2% | 51.7% | 0.063 | 18.0% | $0.003 |
+| Rank | Model / Engine | Elo | Overall W–L | vs `uct50` | vs `az1` | vs `az400` | vs `az4000` | AZ-4000 Top-1% | AZ-4000 Top-3% | MWPL | Blunder% | Cost/Game |
+| ---: | :--- | ---: | :---: | :---: | :---: | :---: | :---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | `engine:az-puct-4000` | **2096.8** | 126–2 | - | - | - | - | 100.0% | 100.0% | 0.010 | 0.8% | $0.000 |
+| 2 | `engine:az-puct-400` | **1730.4** | 110–18 | - | - | - | - | 78.1% | 99.0% | 0.019 | 2.2% | $0.000 |
+| 3 | `gpt-6.1-sol@high` | **1464.0** | 24–12 | 3–1 | 3–1 | 2–2 | 1–3 | 46.0% | 77.5% | 0.036 | 6.8% | $0.627 |
+| 4 | `gemini-4-argon@high` | **1409.5** | 23–13 | 3–1 | 2–2 | 1–3 | 0–4 | 47.0% | 76.6% | 0.037 | 8.2% | $0.408 |
+| 5 | `gpt-6.1-sol@low` | **1296.8** | 10–14 | 4–0 | 2–2 | 0–4 | 0–4 | 41.5% | 69.3% | 0.053 | 12.2% | $0.152 |
+| 6 | `engine:az-puct-1` (anchor) | **1200.0** | 65–63 | - | - | - | - | 52.8% | 89.1% | 0.051 | 10.6% | $0.000 |
+| 7 | `gemini-3.8-flash@high` | **1156.6** | 19–21 | 1–3 | 1–3 | 0–4 | 0–4 | 41.6% | 67.8% | 0.044 | 12.7% | $0.189 |
+| 8 | `gpt-6-luna@high` | **1144.3** | 18–22 | 2–2 | 2–2 | 0–4 | 0–4 | 35.2% | 63.9% | 0.055 | 14.4% | $0.022 |
+| 9 | `gemini-3.8-flash@low` | **1139.1** | 6–14 | 3–1 | 1–3 | 0–4 | 0–4 | 39.5% | 58.3% | 0.051 | 15.2% | $0.042 |
+| 10 | `claude-opus-5.5@high` | **1124.1** | 13–23 | 3–1 | 2–2 | 0–4 | 0–4 | 36.1% | 62.9% | 0.056 | 15.9% | $0.537 |
+| 11 | `claude-haiku-5.5@high` | **1116.4** | 18–22 | 3–1 | 1–3 | 0–4 | 0–4 | 38.6% | 58.4% | 0.061 | 22.1% | $0.018 |
+| 12 | `gemini-4-argon@low` | **1106.5** | 6–18 | 3–1 | 0–4 | 0–4 | 0–4 | 41.3% | 72.1% | 0.052 | 14.2% | $0.101 |
+| 13 | `engine:random-uct-50` | **1078.4** | 47–81 | - | - | - | - | 27.3% | 54.9% | 0.057 | 16.9% | $0.000 |
+| 14 | `claude-haiku-5.5@low` | **1071.2** | 5–15 | 3–1 | 1–3 | 0–4 | 0–4 | 33.3% | 56.6% | 0.056 | 17.7% | $0.010 |
+| 15 | `deepseek-v4-pro@high` | **1066.4** | 12–24 | 2–2 | 1–3 | 0–4 | 0–4 | 38.4% | 59.9% | 0.060 | 17.8% | $0.109 |
+| 16 | `deepseek-v4.1-flash@none` | **1048.4** | 5–15 | 1–3 | 2–2 | 0–4 | 0–4 | 23.8% | 55.5% | 0.068 | 17.2% | $0.004 |
+| 17 | `deepseek-v4.1-flash@high` | **1046.8** | 16–24 | 3–1 | 0–4 | 0–4 | 0–4 | 40.2% | 65.2% | 0.057 | 16.8% | $0.044 |
+| 18 | `gpt-6-luna@low` | **1021.1** | 4–16 | 0–4 | 1–3 | 0–4 | 0–4 | 28.0% | 55.2% | 0.064 | 15.8% | $0.007 |
+| 19 | `claude-opus-5.5@low` | **994.1** | 5–19 | 2–2 | 1–3 | 0–4 | 0–4 | 33.3% | 54.5% | 0.075 | 24.0% | $0.320 |
+| 20 | `qwen3.8-max@high` | **955.4** | 8–28 | 1–3 | 2–2 | 0–4 | 0–4 | 28.5% | 60.9% | 0.059 | 18.1% | $0.165 |
+| 21 | `qwen3.8-flash@high` | **862.2** | 9–31 | 1–3 | 0–4 | 0–4 | 0–4 | 27.8% | 57.6% | 0.068 | 18.4% | $0.013 |
+| 22 | `qwen3.8-flash@none` | **843.2** | 3–17 | 0–4 | 1–3 | 0–4 | 0–4 | 26.0% | 48.4% | 0.064 | 19.6% | $0.009 |
+| 23 | `qwen3.8-max@low` | **755.9** | 3–21 | 1–3 | 1–3 | 0–4 | 0–4 | 27.0% | 59.4% | 0.064 | 18.0% | $0.189 |
+| 24 | `deepseek-v4-pro@none` | **656.5** | 1–23 | 1–3 | 0–4 | 0–4 | 0–4 | 19.3% | 46.7% | 0.067 | 19.6% | $0.014 |
 
 ### Flash `@high` vs. Flagship `@low`/`@none` (`16–4`)
 
@@ -76,33 +75,33 @@ In direct 4-game head-to-head matches within each lab, smaller Flash models with
 
 | Lab | Flash `@high` | Flagship `@low`/`@none` | Head-to-Head | Elo Delta | Cost/Game (`Flash` vs `Flagship`) |
 | :--- | :--- | :--- | :---: | ---: | :--- |
-| **Anthropic** | `claude-haiku-5.5@high` | `claude-opus-5.5@low` | **4–0** | +137.4 | $0.019 vs $0.312 (`16.5×` cheaper) |
-| **DeepSeek** | `deepseek-v4.1-flash@high` | `deepseek-v4-pro@none` | **4–0** | +311.8 | $0.043 vs $0.021 |
-| **Qwen** | `qwen3.8-flash@high` | `qwen3.8-max@none` | **4–0** | +169.4 | $0.013 vs $0.172 (`13.1×` cheaper) |
-| **Google** | `gemini-3.8-flash@high` | `gemini-4-argon@low` | **2–2** | +37.8 | $0.166 vs $0.095 |
-| **OpenAI** | `gpt-6-luna@high` | `gpt-6.1-sol@low` | **2–2** | -250.8 | $0.021 vs $0.137 (`6.6×` cheaper) |
+| **Anthropic** | `claude-haiku-5.5@high` | `claude-opus-5.5@low` | **4–0** | +122.3 | $0.018 vs $0.320 (`17.5×` cheaper) |
+| **DeepSeek** | `deepseek-v4.1-flash@high` | `deepseek-v4-pro@none` | **4–0** | +390.3 | $0.044 vs $0.014 |
+| **Qwen** | `qwen3.8-flash@high` | `qwen3.8-max@low` | **4–0** | +106.3 | $0.013 vs $0.189 (`14.0×` cheaper) |
+| **Google** | `gemini-3.8-flash@high` | `gemini-4-argon@low` | **2–2** | +50.1 | $0.189 vs $0.101 |
+| **OpenAI** | `gpt-6-luna@high` | `gpt-6.1-sol@low` | **2–2** | -152.5 | $0.022 vs $0.152 (`6.8×` cheaper) |
 
 ### 5×5 Round-Robin Standings (Batch 3 & Batch 4)
 
 **Batch 3: Flagship `@high` Round-Robin (`40 games`)**
 
-| Rank | Model | RR W–L | Win% | vs `gpt-6.1-sol` | vs `gemini-4-argon` | vs `claude-opus-5.5` | vs `deepseek-v4-pro` | vs `qwen3.8-max` |
+| Rank | Model | RR W–L | Win% | vs `gemini-4-argon` | vs `gpt-6.1-sol` | vs `claude-opus-5.5` | vs `deepseek-v4-pro` | vs `qwen3.8-max` |
 | ---: | :--- | :---: | ---: | :---: | :---: | :---: | :---: | :---: |
-| 1 | `gpt-6.1-sol@high` | **12–4** | 75.0% | - | 2–2 | 4–0 | 2–2 | 4–0 |
-| 2 | `gemini-4-argon@high` | **11–5** | 68.8% | 2–2 | - | 1–3 | 4–0 | 4–0 |
-| 3 | `claude-opus-5.5@high` | **9–7** | 56.3% | 0–4 | 3–1 | - | 2–2 | 4–0 |
-| 4 | `deepseek-v4-pro@high` | **5–11** | 31.3% | 2–2 | 0–4 | 2–2 | - | 1–3 |
-| 5 | `qwen3.8-max@high` | **3–13** | 18.8% | 0–4 | 0–4 | 0–4 | 3–1 | - |
+| 1 | `gemini-4-argon@high` | **14–2** | 87.5% | - | 2–2 | 4–0 | 4–0 | 4–0 |
+| 2 | `gpt-6.1-sol@high` | **13–3** | 81.2% | 2–2 | - | 3–1 | 4–0 | 4–0 |
+| 3 | `claude-opus-5.5@high` | **6–10** | 37.5% | 0–4 | 1–3 | - | 2–2 | 3–1 |
+| 4 | `deepseek-v4-pro@high` | **5–11** | 31.2% | 0–4 | 0–4 | 2–2 | - | 3–1 |
+| 5 | `qwen3.8-max@high` | **2–14** | 12.5% | 0–4 | 0–4 | 1–3 | 1–3 | - |
 
 **Batch 4: Flash `@high` Round-Robin (`40 games`)**
 
-| Rank | Model | RR W–L | Win% | vs `gemini-3.8-flash` | vs `claude-haiku-5.5` | vs `deepseek-v4.1-flash` | vs `gpt-6-luna` | vs `qwen3.8-flash` |
+| Rank | Model | RR W–L | Win% | vs `gemini-3.8-flash` | vs `gpt-6-luna` | vs `claude-haiku-5.5` | vs `deepseek-v4.1-flash` | vs `qwen3.8-flash` |
 | ---: | :--- | :---: | ---: | :---: | :---: | :---: | :---: | :---: |
-| 1 | `gemini-3.8-flash@high` | **13–3** | 81.3% | - | 3–1 | 4–0 | 4–0 | 2–2 |
-| 2 | `claude-haiku-5.5@high` | **8–8** | 50.0% | 1–3 | - | 2–2 | 2–2 | 3–1 |
-| 3 | `deepseek-v4.1-flash@high` | **8–8** | 50.0% | 0–4 | 2–2 | - | 2–2 | 4–0 |
-| 4 | `gpt-6-luna@high` | **7–9** | 43.8% | 0–4 | 2–2 | 2–2 | - | 3–1 |
-| 5 | `qwen3.8-flash@high` | **4–12** | 25.0% | 2–2 | 1–3 | 0–4 | 1–3 | - |
+| 1 | `gemini-3.8-flash@high` | **13–3** | 81.2% | - | 2–2 | 4–0 | 3–1 | 4–0 |
+| 2 | `gpt-6-luna@high` | **11–5** | 68.8% | 2–2 | - | 2–2 | 3–1 | 4–0 |
+| 3 | `claude-haiku-5.5@high` | **7–9** | 43.8% | 0–4 | 2–2 | - | 2–2 | 3–1 |
+| 4 | `deepseek-v4.1-flash@high` | **7–9** | 43.8% | 1–3 | 1–3 | 2–2 | - | 3–1 |
+| 5 | `qwen3.8-flash@high` | **2–14** | 12.5% | 0–4 | 0–4 | 1–3 | 1–3 | - |
 
 ## Quickstart
 
