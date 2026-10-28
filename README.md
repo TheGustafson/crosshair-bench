@@ -5,7 +5,7 @@
 Because the game is brand new, zero games, opening books, or strategy guides exist in pretraining data. Red connects top to bottom; Blue connects left to right; orthogonal sandwiches and 2×2 diagonal crosscuts flip enemy stones in chain reactions. Every game finishes within 49 plies with zero draws, and each move restricts the next player to the same row or column (~8 to 12 legal moves per turn).
 
 - **Live Leaderboard & Game Explorer:** [thegustafson.com/benchmark](https://thegustafson.com/benchmark)
-- **Technical Writeup:** [thegustafson.com/blog/llms-vs-crosshair](https://thegustafson.com/blog/llms-vs-crosshair)
+- **Technical Writeup:** [Crosshair-Bench: Evaluating Frontier Models on an Unseen Game](https://thegustafson.com/blog/llms-vs-crosshair)
 - **Play Crosshair:** [thegustafson.com/games/crosshair](https://thegustafson.com/games/crosshair)
 - **Rust AlphaZero Engine (`ai-crosshair`):** [github.com/TheGustafson/ai-crosshair](https://github.com/TheGustafson/ai-crosshair) ([training writeup](https://thegustafson.com/blog/crosshair-alphazero))
 
