@@ -3,7 +3,10 @@ Zero-dependency OpenRouter client for Crosshair-Bench.
 
 Supports:
 - Model specs with optional reasoning effort (`provider/model@effort`)
-- `reasoning: {"effort": ...}` with automatic parameter fallback on HTTP 400
+- Proper handling of hybrid vs always-reasoning models so non-reasoning runs do not
+  accidentally trigger unbounded thinking budgets
+- `reasoning: {"effort": ...}` (or `max_tokens` budget for DeepSeek thinking) with
+  automatic parameter fallback on HTTP 400
 - Extraction of native `reasoning` / `reasoning_content` / `reasoning_details`
 - Full per-call telemetry (`latency_ms`, `prompt_tokens`, `completion_tokens`,
   `reasoning_tokens`, `cost_usd`, `provider_model`, `finish_reason`, `raw_response_excerpt`)
@@ -27,6 +30,13 @@ OPENROUTER_CHAT_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPENROUTER_KEY_URL = "https://openrouter.ai/api/v1/key"
 
 VALID_REASONING_EFFORTS = ("minimal", "low", "medium", "high", "none")
+
+DEEPSEEK_REASONING_BUDGETS = {
+    "minimal": 1024,
+    "low": 2048,
+    "medium": 4096,
+    "high": 8192,
+}
 
 
 def ensure_secure_config_dir() -> None:
@@ -130,6 +140,55 @@ def _extract_native_reasoning(msg: dict[str, Any]) -> str | None:
     return None
 
 
+def _build_reasoning_config(
+    model_id: str, reasoning_effort: str | None
+) -> tuple[dict[str, Any] | None, int]:
+    """
+    Determine the appropriate OpenRouter `reasoning` config and minimum `max_tokens`
+    for `(model_id, reasoning_effort)`.
+
+    Important findings from OpenRouter live testing:
+    - Passing `include_reasoning: True` when `reasoning_effort is None` silently forces
+      hybrid models (`deepseek/deepseek-v4.1-flash`, `anthropic/claude-haiku-5.5`) into
+      extended thinking mode, where DeepSeek can spend 4096+ tokens thinking and hit
+      `finish_reason="length"` with empty `content`.
+    - When `reasoning_effort is None`, hybrid models (`deepseek/`, `anthropic/`, `qwen/`)
+      should use `reasoning: {"effort": "none"}`, whereas always-thinking models
+      (`google/gemini-3`, `google/gemini-4`, `openai/gpt-5`, `openai/gpt-6`, `openai/o`)
+      default to `reasoning: {"effort": "low"}` unless a higher effort is requested.
+    """
+    m_low = model_id.lower()
+    is_always_thinking = m_low.startswith(
+        (
+            "google/gemini-2.5-pro",
+            "google/gemini-3",
+            "google/gemini-4",
+            "openai/gpt-5",
+            "openai/gpt-6",
+            "openai/o1",
+            "openai/o3",
+            "openai/o4",
+        )
+    ) or "thinking" in m_low or "r1" in m_low
+
+    if reasoning_effort is None:
+        if is_always_thinking:
+            return {"effort": "low"}, 6144
+        return {"effort": "none"}, 6144
+
+    if reasoning_effort == "none":
+        if is_always_thinking:
+            return {"effort": "low"}, 6144
+        return {"effort": "none"}, 6144
+
+    if m_low.startswith("deepseek/"):
+        budget = DEEPSEEK_REASONING_BUDGETS.get(reasoning_effort, 4096)
+        return {"max_tokens": budget}, budget + 2048
+
+    min_tok = 6144 if reasoning_effort in ("medium", "high") else 4096
+    return {"effort": reasoning_effort}, min_tok
+
+
 def call_openrouter_chat(
     *,
     api_key: str,
@@ -144,28 +203,24 @@ def call_openrouter_chat(
     Execute a synchronous OpenRouter chat completion call with automatic fallback
     if a model/provider rejects `reasoning` or `temperature`.
     """
+    reas_cfg, min_tokens = _build_reasoning_config(model_id, reasoning_effort)
+    eff_max_tokens = max(max_tokens, min_tokens)
+
     base_payload: dict[str, Any] = {
         "model": model_id,
         "messages": messages,
-        "max_tokens": max_tokens,
+        "max_tokens": eff_max_tokens,
         "usage": {"include": True},
     }
 
-    # OpenAI GPT-5/6/o-series and Anthropic Claude 5.x models often reject temperature
-    # or do not list temperature in supported_parameters when reasoning is active.
     supports_temp = not model_id.startswith(
         ("openai/gpt-5", "openai/gpt-6", "openai/o", "anthropic/")
     )
     if temperature is not None and supports_temp and not reasoning_effort:
         base_payload["temperature"] = temperature
 
-    if reasoning_effort:
-        if reasoning_effort == "none":
-            base_payload["reasoning"] = {"effort": "none", "exclude": True}
-        else:
-            base_payload["reasoning"] = {"effort": reasoning_effort}
-    else:
-        base_payload["include_reasoning"] = True
+    if reas_cfg is not None:
+        base_payload["reasoning"] = reas_cfg
 
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -201,12 +256,10 @@ def call_openrouter_chat(
                     if isinstance(err_obj, dict)
                     else str(err_obj)
                 )
-                # If provider rejected reasoning/temperature inside a 200 error envelope, strip & retry
                 if attempt < 2 and (
                     "reasoning" in err_msg.lower() or "temperature" in err_msg.lower()
                 ):
                     payload.pop("reasoning", None)
-                    payload.pop("include_reasoning", None)
                     payload.pop("temperature", None)
                     continue
                 raise RuntimeError(f"OpenRouter API error for {model_id}: {err_msg}")
@@ -258,14 +311,8 @@ def call_openrouter_chat(
             except Exception:
                 pass
             if exc.code == 400 and attempt < 2:
-                # Fallback if model/provider rejected reasoning or temperature parameters
-                if (
-                    "reasoning" in payload
-                    or "include_reasoning" in payload
-                    or "temperature" in payload
-                ):
+                if "reasoning" in payload or "temperature" in payload:
                     payload.pop("reasoning", None)
-                    payload.pop("include_reasoning", None)
                     payload.pop("temperature", None)
                     continue
             if exc.code in (400, 401, 403):

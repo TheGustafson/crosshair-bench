@@ -360,6 +360,7 @@ async def run_match(
             if current_player.reasoning_effort and current_player.reasoning_effort != "none":
                 eff_max_tokens = max(eff_max_tokens, 6144)
 
+            prior_thoughts: list[str] = []
             for attempt_idx in range(max_illegal_retries + 1):
                 attempts_used += 1
                 resp = await asyncio.to_thread(
@@ -384,21 +385,30 @@ async def run_match(
                 cand_move, comb_t, vis_t, reas_t = extract_move_and_thoughts(
                     resp.get("content", ""),
                     resp.get("native_reasoning"),
+                    finish_reason=finish_reason,
                 )
+                if comb_t:
+                    prior_thoughts.append(comb_t)
                 if cand_move and cand_move in legal_moves:
                     chosen_move = cand_move
-                    combined_thought = comb_t
-                    visible_thought = vis_t
+                    combined_thought = "\n\n".join(prior_thoughts).strip()
+                    if len(combined_thought) > 2500:
+                        combined_thought = combined_thought[:2497] + "..."
+                    visible_thought = vis_t or combined_thought
                     reasoning_trace = reas_t
                     break
 
-                # Illegal or missing move -> record retry
-                turn_illegal_retries += 1
-                match_doc["illegal_attempts"] += 1
-                per_side_telemetry[side]["illegal_attempts"] += 1
-                was_truncated = finish_reason.lower() in ("length", "max_tokens")
+                # Truncated or illegal move -> record retry
+                was_truncated = (
+                    finish_reason.lower() in ("length", "max_tokens")
+                    and cand_move is None
+                )
                 if was_truncated:
                     eff_max_tokens = max(eff_max_tokens * 2, 8192)
+                else:
+                    turn_illegal_retries += 1
+                    match_doc["illegal_attempts"] += 1
+                    per_side_telemetry[side]["illegal_attempts"] += 1
 
                 assistant_reply = resp.get("content") or "<empty response>"
                 messages.append({"role": "assistant", "content": assistant_reply})

@@ -134,7 +134,7 @@ def build_turn_prompt(
             out.append(f"  - {mv}: {'; '.join(parts)}")
 
     out.append(
-        "\nThink step-by-step about the board, candidate moves, flips, and where your move routes the opponent next (keep your reasoning concise, under 250 words).\n"
+        "\nBriefly evaluate the top 2–3 candidate moves, checking flips and where your move routes the opponent next (keep your analysis concise, strictly under 200 words; do NOT exhaustively analyze every legal move).\n"
         "End your response with your final chosen legal coordinate inside XML tags, like:\n"
         "<move>d4</move>"
     )
@@ -149,13 +149,15 @@ def build_retry_prompt(
 ) -> str:
     """Build a concise user retry prompt when the previous response had an illegal or missing move."""
     if was_truncated and not bad_move:
-        reason = "Your previous response was cut off before you emitted a `<move>...</move>` tag."
-    else:
-        bad_desc = f"'{bad_move}'" if bad_move else "<no coordinate found>"
-        reason = f"ERROR: Your move {bad_desc} is ILLEGAL in this position."
+        return (
+            "You reached the output token limit before emitting your `<move>...</move>` tag.\n"
+            f"Choose from the legal moves ({', '.join(legal_moves)}) and respond IMMEDIATELY with ONLY your chosen coordinate inside XML tags (no extra commentary), e.g.:\n"
+            f"<move>{legal_moves[0]}</move>"
+        )
 
+    bad_desc = f"'{bad_move}'" if bad_move else "<no coordinate found>"
     return (
-        f"{reason}\n"
+        f"ERROR: Your move {bad_desc} is ILLEGAL in this position.\n"
         f"You MUST choose one of the legal moves: {', '.join(legal_moves)}\n"
         f"Do not write a long essay—respond immediately with your chosen legal coordinate inside XML tags, e.g. <move>{legal_moves[0]}</move>."
     )
@@ -164,15 +166,20 @@ def build_retry_prompt(
 def extract_move_and_thoughts(
     content: str | None,
     native_reasoning: str | None = None,
+    *,
+    finish_reason: str = "stop",
 ) -> tuple[str | None, str, str, str | None]:
     """
     Extract `(move, combined_thought, visible_thought, reasoning_trace)` from an LLM response.
-    Prefers the last `<move>([a-g][1-7])</move>` tag, falling back to structured patterns
-    if the model omitted XML tags.
+    Prefers the last `<move>([a-g][1-7])</move>` tag.
+    Crucially, if `finish_reason` is `'length'` or `'max_tokens'`, disables loose coordinate
+    fallbacks (`**coord**` / bare `\\b[a-g][1-7]\\b`) so a response cut off mid-sentence
+    never accidentally plays a random square mentioned in its incomplete analysis.
     """
     text = (content or "").strip()
     move: str | None = None
     visible_thought = text
+    was_truncated = finish_reason.lower() in ("length", "max_tokens")
 
     tag_matches = list(MOVE_TAG_RE.finditer(text))
     if tag_matches:
@@ -182,7 +189,11 @@ def extract_move_and_thoughts(
             text[: last_match.start()] + text[last_match.end() :]
         ).strip()
     else:
-        for idx, pat in enumerate(FALLBACK_MOVE_PATTERNS):
+        # If truncated, only accept explicit "Final move: X" / "Chosen move: X" labels
+        allowed_patterns = (
+            FALLBACK_MOVE_PATTERNS[:2] if was_truncated else FALLBACK_MOVE_PATTERNS
+        )
+        for idx, pat in enumerate(allowed_patterns):
             search_region = text if idx < 4 else "\n".join(text.splitlines()[-3:])
             matches = list(pat.finditer(search_region))
             if matches:
@@ -194,6 +205,18 @@ def extract_move_and_thoughts(
         if (native_reasoning and native_reasoning.strip())
         else None
     )
+
+    # Fallback: if content was empty or had no move, check native_reasoning for explicit <move> tag
+    if move is None and reasoning_clean:
+        r_tags = list(MOVE_TAG_RE.finditer(reasoning_clean))
+        if r_tags:
+            move = r_tags[-1].group(1).lower()
+        elif not was_truncated:
+            for pat in FALLBACK_MOVE_PATTERNS[:3]:
+                matches = list(pat.finditer(reasoning_clean))
+                if matches:
+                    move = matches[-1].group(1).lower()
+                    break
 
     thought_parts: list[str] = []
     if reasoning_clean:
