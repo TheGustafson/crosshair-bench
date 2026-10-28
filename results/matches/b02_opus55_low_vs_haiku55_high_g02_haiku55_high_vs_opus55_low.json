@@ -5,7 +5,7 @@
   "match_type": "llm_vs_llm",
   "created_at": "2026-10-28T05:00:31.224946+00:00",
   "seed": 46100,
-  "oracle_sims": 400,
+  "oracle_sims": 4000,
   "opening": [
     "d4",
     "f4"
@@ -95,52 +95,54 @@
       "visible_thought": "**Candidates**\n\n- **e4:** Places Red between d4 and f4, cutting Blue's row-4 link toward the center. It creates a threat: a Red stone at g4 would sandwich f4 (`R B R` \u2192 `R R R`) and flip it. Blue can block by playing g4 or responding in column e, but either way Blue's stones stay split.\n- **f3 / f5:** These sit in column f next to Blue's f4, but no sandwich exists (I'd need red on f3 and f5 both). They don't flip anything and don't interrupt Blue's row-4 development.\n- **c4 / b4 / a4:** Red stones on the far side of d4 build width, not the top-to-bottom path Red needs, and don't threaten flips.\n\n**Choice**\n\ne4 gives the most immediate value: it blocks Blue's most natural extension along row 4, creates a flip threat on f4, and keeps Red's stones connected to the d-file for a later vertical push. It also doesn't flip anything for Blue to exploit, since Blue's only stone is f4 and it can't sandwich e4 without a Blue stone at d4 (already Red).",
       "reasoning_trace": "With Red at d4 and Blue at f4, I'm checking if playing e4 would sandwich f4 between two red stones, but there's no red at g4 to complete that flip, so it fails. I'm now considering f5 as an alternative move instead.\n\nRed at f5 doesn't flip anything either since f3 is empty, and f3 also fails to flip since f5 would need to already be occupied. I'm weighing strategic direction instead - Red likely wants a top-bottom chain while Blue wants left-right, and I'm testing whether e4 creates a useful row-4 split between d4-R and f4-B, forcing Blue's next move into column e or row 4, though the sandwiching crosscut rules make deep chain-building tricky since each move must share a row or column with the prior one.\n\nLooking at e4 more closely, it sets up a potential sandwich on f4 if Red later plays g4 (e4-R, f4-B, g4-R flips f4), but Blue's forced response to column e or row 4 lets Blue block g4 directly. Given it's central, blocks Blue's row-4 expansion, and creates this flip threat, I'll go with e4.",
       "eval": {
-        "az400_best_move": "c4",
+        "az4000_best_move": "e4",
+        "az400_best_move": "e4",
         "az1_top_prior_move": "c4",
         "chosen_move": "e4",
         "chosen_prior": 0.0824,
-        "chosen_visits_400": 41,
-        "chosen_expected_score": 0.565,
+        "chosen_visits_4000": 2029,
+        "chosen_visits_400": 2029,
+        "chosen_expected_score": 0.5844,
         "policy_rank": 6,
-        "search_rank": 5,
+        "search_rank": 1,
         "num_legal": 11,
-        "win_prob_before": 0.5614,
-        "win_prob_after": 0.5687,
-        "delta_win_prob": 0.0073,
+        "win_prob_before": 0.5844,
+        "win_prob_after": 0.5869,
+        "delta_win_prob": 0.0025,
         "win_prob_loss": 0.0,
-        "red_win_prob_before": 0.5614,
-        "red_win_prob_after": 0.5687,
+        "red_win_prob_before": 0.5844,
+        "red_win_prob_after": 0.5869,
         "network_value_before": 0.1286,
         "top_candidates": [
           {
-            "move": "c4",
-            "visits": 77,
-            "prior": 0.1755,
-            "expectedScore": 0.5614
+            "move": "e4",
+            "visits": 2029,
+            "prior": 0.0824,
+            "expectedScore": 0.5844
           },
           {
             "move": "f2",
-            "visits": 55,
+            "visits": 517,
             "prior": 0.0726,
-            "expectedScore": 0.5751
+            "expectedScore": 0.5749
+          },
+          {
+            "move": "c4",
+            "visits": 510,
+            "prior": 0.1755,
+            "expectedScore": 0.5678
           },
           {
             "move": "f6",
-            "visits": 50,
+            "visits": 274,
             "prior": 0.0729,
-            "expectedScore": 0.5733
+            "expectedScore": 0.5706
           },
           {
             "move": "f7",
-            "visits": 43,
+            "visits": 167,
             "prior": 0.1288,
-            "expectedScore": 0.5524
-          },
-          {
-            "move": "e4",
-            "visits": 41,
-            "prior": 0.0824,
-            "expectedScore": 0.565
+            "expectedScore": 0.5515
           }
         ]
       },
@@ -188,52 +190,54 @@
       "visible_thought": "**Candidates**\n\n- **e5**: This blocks Red's column e directly below e4, but it is risky. Red can answer f5, which forms R B / B R in the e4-f4-e5-f5 block. That crosscut flips both f4 and e5 to Red, which is a disaster.\n\n- **e3**: This has the same problem in mirror. Red's reply f3 creates the crosscut f3 R, e3 B / e4 R, f4 B. That flips both e3 and f4.\n\n- **g4**: This makes the solid Blue pair f4-g4 that reaches the right edge. No flips result.\n  - It routes Red to row 4 (a4, b4 or c4, all poor for vertical connection) or to column g, which is the edge.\n  - Red's g5 or g3 cannot crosscut, because f4 and g4 are both Blue.\n  - It keeps Red's next move away from the centre and away from column e.\n\n**Choice**: g4 is safe and gains edge connection, while e5 and e3 hand Red a crosscut that flips two Blue stones.",
       "reasoning_trace": "I'm weighing whether to block Red's row 4 threat by playing near column e, checking if e5 creates any flips against the existing red and blue pieces, and whether it stops Red from extending toward row 5.\n\nChecking f5 and e3 reveals both create crosscut patterns that would let Red flip my stones, so those are too risky. Instead, g4 looks safer \u2014 it extends my f4 stone into a pair without opening any crosscut vulnerabilities, and restricts Red to weaker options along column g or row 4, so I'll go with g4.",
       "eval": {
+        "az4000_best_move": "g4",
         "az400_best_move": "g4",
         "az1_top_prior_move": "g4",
         "chosen_move": "g4",
         "chosen_prior": 0.2727,
-        "chosen_visits_400": 125,
-        "chosen_expected_score": 0.4313,
+        "chosen_visits_4000": 1209,
+        "chosen_visits_400": 1209,
+        "chosen_expected_score": 0.4131,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 10,
-        "win_prob_before": 0.4313,
-        "win_prob_after": 0.4101,
-        "delta_win_prob": -0.0212,
-        "win_prob_loss": 0.0212,
-        "red_win_prob_before": 0.5687,
-        "red_win_prob_after": 0.5899,
+        "win_prob_before": 0.4131,
+        "win_prob_after": 0.3931,
+        "delta_win_prob": -0.02,
+        "win_prob_loss": 0.02,
+        "red_win_prob_before": 0.5869,
+        "red_win_prob_after": 0.6069,
         "network_value_before": -0.1126,
         "top_candidates": [
           {
             "move": "g4",
-            "visits": 125,
+            "visits": 1209,
             "prior": 0.2727,
-            "expectedScore": 0.4313
-          },
-          {
-            "move": "b4",
-            "visits": 68,
-            "prior": 0.142,
-            "expectedScore": 0.4324
-          },
-          {
-            "move": "a4",
-            "visits": 54,
-            "prior": 0.1472,
-            "expectedScore": 0.4244
+            "expectedScore": 0.4131
           },
           {
             "move": "e7",
-            "visits": 41,
+            "visits": 627,
             "prior": 0.0993,
-            "expectedScore": 0.428
+            "expectedScore": 0.4161
+          },
+          {
+            "move": "b4",
+            "visits": 567,
+            "prior": 0.142,
+            "expectedScore": 0.412
+          },
+          {
+            "move": "a4",
+            "visits": 511,
+            "prior": 0.1472,
+            "expectedScore": 0.4104
           },
           {
             "move": "e1",
-            "visits": 30,
+            "visits": 427,
             "prior": 0.0933,
-            "expectedScore": 0.4182
+            "expectedScore": 0.4134
           }
         ]
       },
@@ -281,52 +285,54 @@
       "visible_thought": "**Candidates**\n\n- **g3**: No flips (f3 is empty, so no 2x2 crosscut, and no sandwich). It starts a Red column-g chain toward the top edge and threatens g5, which would sandwich Blue's g4 and flip it. Blue must answer in row 3 or column g, so the threat forces a reply.\n- **g5**: Also no flips. It threatens g3 to flip g4 from below, but it leads toward the bottom edge, and Blue can answer with g3, which blocks the upward route.\n- **c4**: No flips, since b4 is empty. It extends row 4 horizontally but adds no vertical connection, and Blue's f4/g4 already block the row, so it is low value.\n\n**Choice**\n\ng3 is best. It keeps Red's column-g path open toward the top edge, creates a real flip threat, and Blue's forced reply (row 3 or column g) is limited to squares that don't help Blue's left-right chain much. Blue's f4/g4 pair remains vulnerable to a column sandwich.",
       "reasoning_trace": "Looking at row 4, the empty squares are a4, b4, c4, while rooks and bishops occupy d4, e4, f4, g4. Since the piece can move along the active row or the g-column, the legal destinations are a4, b4, c4 plus g1, g2, g3, g5, g6, g7.\n\nI'm checking whether moving to c4 creates any sandwich or crosscut flips \u2014 it doesn't, since neighboring squares are empty or don't match the flip pattern. Playing c4 extends along row 4 but doesn't strongly help Red's top-bottom connection goal, so I'm weighing whether a g-column move like g5 might be more valuable instead, though it similarly doesn't trigger immediate flips.\n\nThinking about column g as Red's vertical path, I notice g4 is currently blue, blocking it \u2014 but if Red places stones at both g3 and g5, that sandwich would flip g4 to red. Playing g5 first sets up this threat, though Blue could respond by blocking at g3 or taking g5's column itself, so I'm leaning toward trying g5 as the move to test this plan.\n\nThe g5 crosscut check doesn't pan out since the opposite diagonal isn't filled, so no flip there. I'll go with g3 \u2014 it moves toward the top edge and sets up a follow-up threat, since if Blue ignores column g, Red can play g5 next and flip g4.",
       "eval": {
+        "az4000_best_move": "c4",
         "az400_best_move": "c4",
         "az1_top_prior_move": "c4",
         "chosen_move": "g3",
         "chosen_prior": 0.0544,
-        "chosen_visits_400": 14,
-        "chosen_expected_score": 0.5609,
+        "chosen_visits_4000": 50,
+        "chosen_visits_400": 50,
+        "chosen_expected_score": 0.5621,
         "policy_rank": 7,
         "search_rank": 6,
         "num_legal": 9,
-        "win_prob_before": 0.5899,
-        "win_prob_after": 0.5521,
-        "delta_win_prob": -0.0378,
-        "win_prob_loss": 0.0378,
-        "red_win_prob_before": 0.5899,
-        "red_win_prob_after": 0.5521,
+        "win_prob_before": 0.6069,
+        "win_prob_after": 0.5623,
+        "delta_win_prob": -0.0446,
+        "win_prob_loss": 0.0446,
+        "red_win_prob_before": 0.6069,
+        "red_win_prob_after": 0.5623,
         "network_value_before": 0.1007,
         "top_candidates": [
           {
             "move": "c4",
-            "visits": 151,
+            "visits": 3082,
             "prior": 0.2557,
-            "expectedScore": 0.5899
-          },
-          {
-            "move": "g6",
-            "visits": 85,
-            "prior": 0.1893,
-            "expectedScore": 0.5822
+            "expectedScore": 0.6069
           },
           {
             "move": "g2",
-            "visits": 77,
+            "visits": 329,
             "prior": 0.1908,
-            "expectedScore": 0.579
+            "expectedScore": 0.5846
+          },
+          {
+            "move": "g6",
+            "visits": 292,
+            "prior": 0.1893,
+            "expectedScore": 0.5817
           },
           {
             "move": "g7",
-            "visits": 26,
+            "visits": 81,
             "prior": 0.0869,
-            "expectedScore": 0.5661
+            "expectedScore": 0.5625
           },
           {
             "move": "g1",
-            "visits": 24,
+            "visits": 75,
             "prior": 0.0849,
-            "expectedScore": 0.5651
+            "expectedScore": 0.56
           }
         ]
       },
@@ -374,52 +380,54 @@
       "visible_thought": "**Candidates:**\n\n- **e3:** It causes no flips. It routes Red to row 3 or column e. It is dangerous, though. Red can answer f3, and the e3/f3/e4/f4 block becomes B R / R B. That is a crosscut that flips both e3 and f4 to Red. Rejected.\n\n- **g5:** It causes no flips and extends my right-edge group downward. It routes Red to row 5 or column g. It does little to push toward the left edge, though, and it leaves f3 open for Red.\n\n- **f3:** It causes no flips. The f3/g3/f4/g4 block reads B R / B B, which is not a crosscut. It solidifies my group into f3, f4 and g4, and it claims space above Red's d4\u2013e4 pair.\n  - Red is routed to row 3 or column f.\n  - Red e3 makes the e3/f3/e4/f4 block R B / R B, so nothing flips.\n  - Red f5 makes the e4/f4/e5/f5 block R B / . R, which is not a crosscut either.\n  - No immediate Red flip threat appears.\n\n**Choice:** f3 is the safest constructive move.",
       "reasoning_trace": "Looking at the board with Red at g3, d4, e4 and Blue at f4, g4, I'm exploring moves in row 3 or column g to find a flip opportunity. I'm checking placements like f3 and e3 to see if they create a 2x2 crosscut pattern that would let me capture pieces.\n\nI'm now worried about a Red response threat: if I play e3 and Red follows with f3, the resulting 2x2 block of e3, f3, e4, f4 would form a crosscut with alternating colors on the diagonals, which could flip the situation back in Red's favor.\n\nSo instead I'll switch to f3 \u2014 checking the same block logic there, it stays safe without creating a crosscut, and it also links up nicely with my existing f4 and g4 group. I'll go with f3.",
       "eval": {
+        "az4000_best_move": "g2",
         "az400_best_move": "g2",
         "az1_top_prior_move": "g2",
         "chosen_move": "f3",
         "chosen_prior": 0.0433,
-        "chosen_visits_400": 8,
-        "chosen_expected_score": 0.3958,
+        "chosen_visits_4000": 36,
+        "chosen_visits_400": 36,
+        "chosen_expected_score": 0.3891,
         "policy_rank": 10,
         "search_rank": 8,
         "num_legal": 11,
-        "win_prob_before": 0.4479,
-        "win_prob_after": 0.3515,
-        "delta_win_prob": -0.0964,
-        "win_prob_loss": 0.0964,
-        "red_win_prob_before": 0.5521,
-        "red_win_prob_after": 0.6485,
+        "win_prob_before": 0.4377,
+        "win_prob_after": 0.337,
+        "delta_win_prob": -0.1007,
+        "win_prob_loss": 0.1007,
+        "red_win_prob_before": 0.5623,
+        "red_win_prob_after": 0.663,
         "network_value_before": -0.0701,
         "top_candidates": [
           {
             "move": "g2",
-            "visits": 197,
+            "visits": 2901,
             "prior": 0.2708,
-            "expectedScore": 0.4479
+            "expectedScore": 0.4377
           },
           {
             "move": "b3",
-            "visits": 73,
+            "visits": 544,
             "prior": 0.1283,
-            "expectedScore": 0.4421
+            "expectedScore": 0.4311
           },
           {
             "move": "a3",
-            "visits": 37,
+            "visits": 160,
             "prior": 0.0978,
-            "expectedScore": 0.4281
+            "expectedScore": 0.4141
           },
           {
             "move": "c3",
-            "visits": 31,
+            "visits": 157,
             "prior": 0.0956,
-            "expectedScore": 0.4236
+            "expectedScore": 0.4143
           },
           {
-            "move": "g6",
-            "visits": 12,
-            "prior": 0.0777,
-            "expectedScore": 0.372
+            "move": "g5",
+            "visits": 45,
+            "prior": 0.0568,
+            "expectedScore": 0.3859
           }
         ]
       },
@@ -469,52 +477,54 @@
       "visible_thought": "**Candidate 1: e3 (best).** Placing Red at e3 sandwiches Blue's f3 between e3 and g3 along row 3 (`R [B] R` becomes `R R R`), so f3 flips to Red. The cascade stops there: f4 has no Red stone above it that sandwiches it against another Red stone, and no 2x2 crosscut pattern forms. Red gains e3, f3, g3, d4 and e4 as one connected group, four stones from the top-side route and within reach of rows 1 and 7. Blue's reply is then restricted to row 3 (a3\u2013d3) or column e (e1, e2, e5, e6, e7).\n\n**Candidate 2: f2.** Column f has f3 and f4 as Blue stones, so f2 sandwiches nothing (f5 is empty). It advances toward row 1 but gains no material and leaves Blue's f3/f4 wall intact.\n\n**Candidate 3: f5.** Column f has f3 and f4 Blue with f2 empty, so there is no sandwich. It pushes toward row 7 but leaves Red's d4/e4 group disconnected from g3 and does not flip anything.\n\ne3 is clearly strongest: it flips a key Blue stone, unifies Red's pieces into one group, and keeps a short path to both edges.",
       "reasoning_trace": "Let me map out the board: Red has pieces at g3, d4, e4; Blue has f3, f4, g4. Since the last move was f3, I need to check what's available along row 3 and column f for valid moves there.\n\nTesting a move at e3 for Red: this creates a sandwich pattern in row 3 (e3-R, f3-B, g3-R), flipping f3 to Red. I check for cascading flips in column e and row 4, plus 2x2 crosscut patterns around the affected squares, but none trigger further flips. This leaves Red with a solid run at e3, f3, g3 plus d4, e4, and I'm now tracing whether this connects toward the top row for a win.\n\nComparing e3 against f2 and f5 as alternatives, neither produces a capture since column f doesn't form a valid sandwich at those spots\u2014confirming e3 is the strongest move, since after it Blue is constrained to responding in row 3 or column e. I'm settling on e3 as my answer with a brief explanation.",
       "eval": {
+        "az4000_best_move": "e3",
         "az400_best_move": "e3",
         "az1_top_prior_move": "e3",
         "chosen_move": "e3",
         "chosen_prior": 0.4113,
-        "chosen_visits_400": 286,
-        "chosen_expected_score": 0.6485,
+        "chosen_visits_4000": 3596,
+        "chosen_visits_400": 3596,
+        "chosen_expected_score": 0.663,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 10,
-        "win_prob_before": 0.6485,
-        "win_prob_after": 0.6317,
-        "delta_win_prob": -0.0168,
-        "win_prob_loss": 0.0168,
-        "red_win_prob_before": 0.6485,
-        "red_win_prob_after": 0.6317,
+        "win_prob_before": 0.663,
+        "win_prob_after": 0.6552,
+        "delta_win_prob": -0.0078,
+        "win_prob_loss": 0.0078,
+        "red_win_prob_before": 0.663,
+        "red_win_prob_after": 0.6552,
         "network_value_before": 0.2292,
         "top_candidates": [
           {
             "move": "e3",
-            "visits": 286,
+            "visits": 3596,
             "prior": 0.4113,
-            "expectedScore": 0.6485
+            "expectedScore": 0.663
           },
           {
             "move": "c3",
-            "visits": 33,
+            "visits": 116,
             "prior": 0.1573,
-            "expectedScore": 0.6031
+            "expectedScore": 0.6075
           },
           {
             "move": "d3",
-            "visits": 19,
+            "visits": 97,
             "prior": 0.0974,
-            "expectedScore": 0.5988
+            "expectedScore": 0.6234
           },
           {
             "move": "f1",
-            "visits": 17,
+            "visits": 51,
             "prior": 0.0786,
-            "expectedScore": 0.6047
+            "expectedScore": 0.6002
           },
           {
-            "move": "f6",
-            "visits": 15,
-            "prior": 0.0509,
-            "expectedScore": 0.6212
+            "move": "f7",
+            "visits": 43,
+            "prior": 0.0624,
+            "expectedScore": 0.6026
           }
         ]
       },
@@ -562,52 +572,54 @@
       "visible_thought": "**Candidates:**\n\n- **e5:** This blocks Red's column directly and flips nothing. The problem is that Red can answer with **f5**, which is legal because it is in row 5. That creates a crosscut on the e4/f4/e5/f5 block (R B / B R). Both f4 and e5 would flip to Red, which is disastrous.\n\n- **e2:** This blocks Red's path to the top. But Red can answer with **e1**, sandwiching e2 between e1 and e3, so it flips. Bad.\n\n- **e6:** This blocks Red's path toward the bottom from a distance. It flips nothing and is not adjacent to any Red stones, so no immediate sandwich or crosscut is possible. Red is routed to row 6 or column e.\n  - If Red plays e5, there is no flip, and e7 is still empty, so e6 survives for now.\n  - Row 6 replies give Red no immediate tactical flips.\n  \n  This keeps Blue flexible, with f4 and g4 intact and the possibility of later building through row 5 or 6.\n\n**Choice:** e6 is the safest blocking move.",
       "reasoning_trace": "I'm checking whether placing Blue at e5 blocks Red's column extension, testing a few flip patterns around e4/e5 for a crosscut, but none of them seem to produce a valid flip.\n\nLooking further, f5 looks risky since Red could crosscut there and flip pieces to red, so I should avoid leaving that open. e6 seems like a safer choice that still limits Red's downward progress without creating an exploitable crosscut.",
       "eval": {
+        "az4000_best_move": "b3",
         "az400_best_move": "b3",
         "az1_top_prior_move": "c3",
         "chosen_move": "e6",
         "chosen_prior": 0.1231,
-        "chosen_visits_400": 32,
-        "chosen_expected_score": 0.3294,
+        "chosen_visits_4000": 162,
+        "chosen_visits_400": 162,
+        "chosen_expected_score": 0.3141,
         "policy_rank": 5,
         "search_rank": 5,
         "num_legal": 9,
-        "win_prob_before": 0.3683,
-        "win_prob_after": 0.2798,
-        "delta_win_prob": -0.0885,
-        "win_prob_loss": 0.0885,
-        "red_win_prob_before": 0.6317,
-        "red_win_prob_after": 0.7202,
+        "win_prob_before": 0.3448,
+        "win_prob_after": 0.2808,
+        "delta_win_prob": -0.064,
+        "win_prob_loss": 0.064,
+        "red_win_prob_before": 0.6552,
+        "red_win_prob_after": 0.7192,
         "network_value_before": -0.2301,
         "top_candidates": [
           {
             "move": "b3",
-            "visits": 153,
+            "visits": 2433,
             "prior": 0.1723,
-            "expectedScore": 0.3683
+            "expectedScore": 0.3448
           },
           {
             "move": "c3",
-            "visits": 72,
+            "visits": 507,
             "prior": 0.1925,
-            "expectedScore": 0.3472
+            "expectedScore": 0.331
           },
           {
             "move": "a3",
-            "visits": 59,
+            "visits": 487,
             "prior": 0.1102,
-            "expectedScore": 0.3582
+            "expectedScore": 0.3379
           },
           {
             "move": "e7",
-            "visits": 36,
+            "visits": 185,
             "prior": 0.1461,
-            "expectedScore": 0.3265
+            "expectedScore": 0.3128
           },
           {
             "move": "e6",
-            "visits": 32,
+            "visits": 162,
             "prior": 0.1231,
-            "expectedScore": 0.3294
+            "expectedScore": 0.3141
           }
         ]
       },
@@ -655,52 +667,54 @@
       "visible_thought": "**Candidates: e5, d6, e7**\n\n**e5:** No flips, since no sandwich or 2x2 crosscut forms. It extends the Red group (e3, e4, e5) and walls off Blue's e6 stone from the north. Blue must answer in row 5 or column e, which keeps Red's options open. Red still needs routes to both edges: upward via e2/e1 and downward via d5-d6-d7.\n\n**d6:** No flips. It heads toward the bottom edge through column d (d4 to d6 needs d5 to connect, and d7 completes the bottom). It's useful but slower, and it leaves e5 for Blue to use as a block.\n\n**e7:** Reaches the bottom edge directly, and it sets up a threat: a later Red e5 would sandwich e6 (e5 R, e6 B, e7 R) and flip it. However, Blue can simply answer at e5, which blocks the flip and cuts column e.\n\n**Choice:** e5 is the strongest. It takes the key central square, creates no weakness for Blue to exploit, and forces Blue's reply into row 5 or column e, away from Red's main routes.",
       "reasoning_trace": "I'm tracing through the board positions and move order - R placed d4, f4 B, e4 R, g4 B, g3 R, f3 B, then e3 - trying to reconstruct the sequence correctly.\n\nNow it's Red's turn, restricted to row 6 or column e, with ten legal moves available (a6-g6 minus e6, plus e1, e2, e5, e7). Red's group spans e3, f3, g3, d4, e4 and needs to connect top to bottom, so I'm checking e5 for flip potential by examining the 2x2 crosscut patterns around it, but none of the diagonal configurations with f4, f5, or e6 seem to satisfy the capture condition yet.\n\nSince the column-e path toward the bottom is blocked by e6 (Black), I'm considering alternatives through d4-d5-d6-d7, or through f6, or e7. Checking flip conditions for d6 and f6 both come up empty, but e7 is interesting: placing R there doesn't directly flip e6 since e5 is empty, but if e5 is also red, the sandwich e5-e6-e7 would flip e6 and potentially cascade further.\n\nSince this forces Blue to respond in row 5 or column e after a Red e5, I'm working out what Blue's best counter at e5 itself would look like and whether it blocks the flip or creates its own flip opportunity with neighboring diagonal cells.\n\nOverall, I'm leaning toward e5 as the move since it's central, consolidates the Red group, and keeps pressure on Blue's e-column while leaving routes open toward both the top and bottom edges.",
       "eval": {
+        "az4000_best_move": "e5",
         "az400_best_move": "e5",
         "az1_top_prior_move": "e5",
         "chosen_move": "e5",
         "chosen_prior": 0.2756,
-        "chosen_visits_400": 287,
-        "chosen_expected_score": 0.7202,
+        "chosen_visits_4000": 3560,
+        "chosen_visits_400": 3560,
+        "chosen_expected_score": 0.7192,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 10,
-        "win_prob_before": 0.7202,
-        "win_prob_after": 0.7045,
-        "delta_win_prob": -0.0157,
-        "win_prob_loss": 0.0157,
-        "red_win_prob_before": 0.7202,
-        "red_win_prob_after": 0.7045,
+        "win_prob_before": 0.7192,
+        "win_prob_after": 0.7106,
+        "delta_win_prob": -0.0086,
+        "win_prob_loss": 0.0086,
+        "red_win_prob_before": 0.7192,
+        "red_win_prob_after": 0.7106,
         "network_value_before": 0.2175,
         "top_candidates": [
           {
             "move": "e5",
-            "visits": 287,
+            "visits": 3560,
             "prior": 0.2756,
-            "expectedScore": 0.7202
-          },
-          {
-            "move": "e2",
-            "visits": 30,
-            "prior": 0.1392,
-            "expectedScore": 0.6656
+            "expectedScore": 0.7192
           },
           {
             "move": "e7",
-            "visits": 29,
+            "visits": 113,
             "prior": 0.1637,
-            "expectedScore": 0.6557
+            "expectedScore": 0.6576
+          },
+          {
+            "move": "e2",
+            "visits": 112,
+            "prior": 0.1392,
+            "expectedScore": 0.6675
           },
           {
             "move": "e1",
-            "visits": 14,
+            "visits": 55,
             "prior": 0.0801,
-            "expectedScore": 0.6567
+            "expectedScore": 0.6583
           },
           {
             "move": "g6",
-            "visits": 10,
+            "visits": 43,
             "prior": 0.0809,
-            "expectedScore": 0.6275
+            "expectedScore": 0.6398
           }
         ]
       },
@@ -748,52 +762,54 @@
       "visible_thought": "**Candidates considered:**\n\n- **d5:** It blocks Red's d5-d6-d7 route around e6. But Red can answer **d6**. That makes the 2x2 block d5/e5/d6/e6 hold Red on e5 and d6 and Blue on d5 and e6, both pairs diagonal. The crosscut flips d5 and e6 to Red, which wrecks my bottom block. Rejected.\n\n- **f5:** It extends f4 downward. Red can answer **f6**. Then the block e5/f5/e6/f6 has Red on e5 and f6 and Blue on f5 and e6, again diagonal. Both Blue stones flip. Rejected.\n\n- **e2:** It places no new pair of diagonal Blue stones next to Red, so I see no immediate crosscut against it. It caps Red's straight e-column path from e3-e4-e5 toward the top edge. Red is then routed to row 2 or column e. Their remaining column-e square is e1 or e7. A Red stone on e7 alone doesn't connect while e6 stays Blue, though it still makes no flips. Row 2 options are spread out, so Red gets no forcing double threat. The cost is that Red's top can still go around e2 via f3-f2 or g3-g2. Even so, this is the safest constructive choice.",
       "reasoning_trace": "I'm retracing the move sequence to check how f3 ended up as R instead of B\u2014it looks like e3 being placed later sandwiches f3 between e3 and g3, flipping it to red.\n\nContinuing from there, after 8 e6 B and 9 e5 R, I'm mapping out Red's chain along the e-column and testing where Blue can block it. I check several blocking squares\u2014d5, f5, d6, f6\u2014each time looking for 2x2 diagonal patterns that would backfire and flip Blue's piece to Red instead, which rules most of them out as safe options; e7 seems like it might secure the bottom of the column for Red.\n\nWeighing the remaining options, both d5 and f5 risk an immediate crosscut flip, while g5 feels too passive. I settle on e2, since it forces Red's development toward row2/column e and helps block the top-center expansion.",
       "eval": {
+        "az4000_best_move": "e7",
         "az400_best_move": "e7",
         "az1_top_prior_move": "b5",
         "chosen_move": "e2",
         "chosen_prior": 0.0325,
-        "chosen_visits_400": 5,
-        "chosen_expected_score": 0.2235,
+        "chosen_visits_4000": 16,
+        "chosen_visits_400": 16,
+        "chosen_expected_score": 0.206,
         "policy_rank": 8,
         "search_rank": 8,
         "num_legal": 9,
-        "win_prob_before": 0.2955,
-        "win_prob_after": 0.1897,
-        "delta_win_prob": -0.1058,
-        "win_prob_loss": 0.1058,
-        "red_win_prob_before": 0.7045,
-        "red_win_prob_after": 0.8103,
+        "win_prob_before": 0.2894,
+        "win_prob_after": 0.1778,
+        "delta_win_prob": -0.1116,
+        "win_prob_loss": 0.1116,
+        "red_win_prob_before": 0.7106,
+        "red_win_prob_after": 0.8222,
         "network_value_before": -0.3167,
         "top_candidates": [
           {
             "move": "e7",
-            "visits": 157,
+            "visits": 2982,
             "prior": 0.1949,
-            "expectedScore": 0.2955
+            "expectedScore": 0.2894
           },
           {
             "move": "b5",
-            "visits": 82,
+            "visits": 327,
             "prior": 0.2964,
-            "expectedScore": 0.2624
+            "expectedScore": 0.2519
           },
           {
             "move": "c5",
-            "visits": 65,
+            "visits": 276,
             "prior": 0.1631,
-            "expectedScore": 0.278
+            "expectedScore": 0.266
           },
           {
             "move": "g5",
-            "visits": 39,
+            "visits": 163,
             "prior": 0.0878,
-            "expectedScore": 0.2807
+            "expectedScore": 0.2682
           },
           {
             "move": "a5",
-            "visits": 31,
+            "visits": 143,
             "prior": 0.1162,
-            "expectedScore": 0.2606
+            "expectedScore": 0.2553
           }
         ]
       },
@@ -843,52 +859,54 @@
       "visible_thought": "**Candidate 1: e7.** Red lands on the bottom edge and sandwiches Blue's e6 between e5 and e7 (`R [B] R`), flipping e6 to Red. No further cascade occurs, since no 2x2 crosscut forms. Red now holds a column e chain from e3 to e7, connected to the bottom edge. Blue's next move must go in row 7 or column e, so Blue can only block the bottom area or e1, not Red's top route.\n\n**Candidate 2: f2.** This extends toward the top via f1 and creates no flips. But Red would still need a long path to row 7 through a blue-occupied e6 area, so it is slower.\n\n**Candidate 3: g2.** This heads for the top through g1 but flips nothing and leaves the bottom unresolved.\n\n**Choice:** e7 is best. It gains a flip, secures the bottom connection, and leaves Red with several two-stone routes to row 1 (f3\u2013f2\u2013f1, g3\u2013g2\u2013g1, or d4\u2013d3\u2013d2\u2013d1 with more stones). Blue cannot block all of them with one move.",
       "reasoning_trace": "I'm mapping out the board state: Black has a stone at e2 and e6/f4/g4, while Red occupies e3, f3, g3, d4, e4, and e5, with the last move apparently at e-something that I need to pin down.\n\nRed needs to connect top (row 1) to bottom (row 7), and right now the connected group runs e3-e4-e5 plus e3-f3-g3 and e4-d4, so I'm checking possible paths upward through f2/f1 or g2/g1, and downward through d5-d6-d7, since e2 and e6 block the direct center route. I'm considering playing f2 and checking whether it triggers any capture patterns against the blue stone at e2, looking at both linear sandwiches and 2x2 diagonal crosscuts around that square.\n\nPlaying e7 looks much stronger: it sandwiches e6 (Blue) between e5 and e7, flipping e6 to Red and instantly connecting the e3-e7 column all the way to the bottom row. That leaves the remaining question of linking this group up to row 1, which could go through f3-f2-f1, g3-g2-g1, or d4 down through d3-d2-d1.\n\nChecking the crosscut patterns around the newly flipped e6 against neighboring squares shows no issues, and Blue's position doesn't have a strong immediate counter since their stones are scattered. Blue will likely try to block one of my paths to the top, but with three possible routes open I should still be in good shape \u2014 I'll commit to e7.",
       "eval": {
-        "az400_best_move": "e7",
+        "az4000_best_move": "e1",
+        "az400_best_move": "e1",
         "az1_top_prior_move": "e7",
         "chosen_move": "e7",
         "chosen_prior": 0.4813,
-        "chosen_visits_400": 235,
-        "chosen_expected_score": 0.8103,
+        "chosen_visits_4000": 1650,
+        "chosen_visits_400": 1650,
+        "chosen_expected_score": 0.8131,
         "policy_rank": 1,
-        "search_rank": 1,
+        "search_rank": 2,
         "num_legal": 8,
-        "win_prob_before": 0.8103,
-        "win_prob_after": 0.8063,
-        "delta_win_prob": -0.004,
-        "win_prob_loss": 0.004,
-        "red_win_prob_before": 0.8103,
-        "red_win_prob_after": 0.8063,
+        "win_prob_before": 0.8222,
+        "win_prob_after": 0.8133,
+        "delta_win_prob": -0.0089,
+        "win_prob_loss": 0.0089,
+        "red_win_prob_before": 0.8222,
+        "red_win_prob_after": 0.8133,
         "network_value_before": 0.4351,
         "top_candidates": [
           {
-            "move": "e7",
-            "visits": 235,
-            "prior": 0.4813,
-            "expectedScore": 0.8103
+            "move": "e1",
+            "visits": 2299,
+            "prior": 0.3564,
+            "expectedScore": 0.8222
           },
           {
-            "move": "e1",
-            "visits": 155,
-            "prior": 0.3564,
-            "expectedScore": 0.8064
+            "move": "e7",
+            "visits": 1650,
+            "prior": 0.4813,
+            "expectedScore": 0.8131
           },
           {
             "move": "g2",
-            "visits": 4,
+            "visits": 18,
             "prior": 0.0468,
-            "expectedScore": 0.6946
-          },
-          {
-            "move": "c2",
-            "visits": 3,
-            "prior": 0.0352,
-            "expectedScore": 0.7004
+            "expectedScore": 0.7141
           },
           {
             "move": "a2",
-            "visits": 3,
+            "visits": 12,
             "prior": 0.0377,
-            "expectedScore": 0.6836
+            "expectedScore": 0.6969
+          },
+          {
+            "move": "c2",
+            "visits": 12,
+            "prior": 0.0352,
+            "expectedScore": 0.696
           }
         ]
       },
@@ -936,52 +954,54 @@
       "visible_thought": "**Candidates:**\n\n1. **e1 (forced defence).** Red's chain e3\u2013e7 already reaches the bottom edge. If Red plays e1, then e1 and e3 sandwich my e2 stone. That flips e2 to Red, completing e1\u2013e7, and Red wins immediately. Playing e1 myself stops that.\n   - Flips: none. It simply stacks e1 onto e2.\n   - Routing: column e becomes completely full, so Red must answer in row 1. A Red stone at d1 or f1 still needs two more stones (d2\u2013d3 or f2) to link up. I can contest those next turn.\n\n2. **d7 or f7.** These do nothing about the threat. They also route Red into column d or f, or row 7, leaving e1 open. Even if Red cannot reach e1 at once, the sandwich threat on e2 stays live and is very hard to stop.\n\n3. **a7, b7, c7.** These are irrelevant to the threat and lose the same way.\n\nOnly e1 removes the immediate sandwich threat and keeps my e2 stone. It also confines Red to row 1, where no single move wins.",
       "reasoning_trace": "I'm checking if Red can play e1 to sandwich e2 between e1 and its chain e3-e7, which would flip e2 and connect top to bottom for a win\u2014so Blue needs to take e1 first to block that connection.",
       "eval": {
+        "az4000_best_move": "b7",
         "az400_best_move": "b7",
         "az1_top_prior_move": "b7",
         "chosen_move": "e1",
         "chosen_prior": 0.1458,
-        "chosen_visits_400": 60,
-        "chosen_expected_score": 0.1859,
+        "chosen_visits_4000": 943,
+        "chosen_visits_400": 943,
+        "chosen_expected_score": 0.1858,
         "policy_rank": 3,
-        "search_rank": 3,
+        "search_rank": 2,
         "num_legal": 7,
-        "win_prob_before": 0.1937,
-        "win_prob_after": 0.1736,
-        "delta_win_prob": -0.0201,
-        "win_prob_loss": 0.0201,
-        "red_win_prob_before": 0.8063,
-        "red_win_prob_after": 0.8264,
+        "win_prob_before": 0.1867,
+        "win_prob_after": 0.1764,
+        "delta_win_prob": -0.0103,
+        "win_prob_loss": 0.0103,
+        "red_win_prob_before": 0.8133,
+        "red_win_prob_after": 0.8236,
         "network_value_before": -0.5738,
         "top_candidates": [
           {
             "move": "b7",
-            "visits": 142,
+            "visits": 1907,
             "prior": 0.2661,
-            "expectedScore": 0.1937
-          },
-          {
-            "move": "a7",
-            "visits": 69,
-            "prior": 0.1617,
-            "expectedScore": 0.1875
+            "expectedScore": 0.1867
           },
           {
             "move": "e1",
-            "visits": 60,
+            "visits": 943,
             "prior": 0.1458,
-            "expectedScore": 0.1859
+            "expectedScore": 0.1858
           },
           {
-            "move": "d7",
-            "visits": 55,
-            "prior": 0.1224,
-            "expectedScore": 0.1888
+            "move": "a7",
+            "visits": 412,
+            "prior": 0.1617,
+            "expectedScore": 0.1752
           },
           {
             "move": "c7",
-            "visits": 36,
+            "visits": 366,
             "prior": 0.1032,
-            "expectedScore": 0.1789
+            "expectedScore": 0.1801
+          },
+          {
+            "move": "d7",
+            "visits": 179,
+            "prior": 0.1224,
+            "expectedScore": 0.1622
           }
         ]
       },
@@ -1029,52 +1049,54 @@
       "visible_thought": "**Legal moves:** Column e is full, so I must play on row 1 (a1, b1, c1, d1, f1, g1).\n\n**Candidate 1: f1.** No flips occur, since f1 has no sandwich or crosscut partner. It threatens f2, which would complete f1-f2-f3-e3-e4-e5-e6-e7, a win. Blue's only direct block is f2, and that flips my f3 stone (Blue f2 and f4 sandwich f3). The chain breaks, but Blue's block is forced, so I keep the initiative and must answer in row 2 or column f.\n\n**Candidate 2: g1.** Same idea: it threatens g2 (g1-g2-g3-f3-e3-\u2026-e7). Blue's block at g2 sandwiches g3 between g2 and g4 and flips it. It is structurally similar to f1 but gives Blue a stronger left-side Blue framework along row 2.\n\n**Candidate 3: d1.** No flips and no immediate threat. It needs d2 and d3 to link to d4, so Blue gets a free move to strengthen its e1/e2/f4/g4 structure or pre-block.\n\n**Choice:** f1 gives the most forcing play. It makes Blue respond immediately and keeps Red's bottom connection (e3\u2013e7) intact for future top-row threats.",
       "reasoning_trace": "Mapping out the board, I see column e is fully occupied, so the active constraint forces play onto row 1, leaving a1, b1, c1, d1, f1, g1 as the only legal moves. Red already has a near-complete vertical chain from e3 through e7, which is a serious threat toward a top-bottom win.\n\nI'm checking each candidate row-1 move for Red to see if it creates any flips through sandwiches or 2x2 crosscuts -- testing d1 and f1 against the nearby blue stones at e1 and e2, but neither produces a valid flip pattern. Now I'm turning to Blue's side, since Blue is pursuing a left-right win with stones at e1, e2, f4, and g4.\n\nIf Red plays f1 to extend toward the top, it would need f2 to link f1 down to f3 and complete the connection to the bottom chain through e3-e7. But an opponent playing f2 could set up a column sandwich with f2-f3-f4, flipping f3 from red to blue, which would break that connection -- so I need to check whether that sandwich actually works before relying on this plan.\n\nChecking alternative starting points like d1 or g1 shows similar problems: d1 requires filling two gaps (d2, d3), while g1 threatens to connect via g2 but is just as vulnerable to a sandwich flip from the opponent playing g2 between g1 and g3.\n\nThat means f1 is still the most promising move since it creates an immediate winning threat at f2 \u2014 if unblocked, it completes the full chain from row 1 to row 7.\n\nTrying g1 similarly: Blue would block at g2, flipping g3 to Blue as well, leaving Blue controlling the whole g column. Then Blue's row 2 has e2 and g2 with f2 open, so Blue playing f2 next would connect across the row and create further threats.\n\nChecking whether Red has a good follow-up at g2 instead: I'm tracing out the resulting 2x2 block pattern at f2/g2/f3/g3 to see if it sets up a flip for Red, but the diagonal arrangement looks mixed rather than giving Red a clean capture.\n\nThis is getting too deep to fully verify. I'll settle on f1 as my choice since it creates an immediate forcing threat Blue must answer at f2, even though that reply flips f3 back \u2014 the alternative g1 has the same tradeoff, and a quieter move like d1 just gives Blue a free tempo instead.",
       "eval": {
+        "az4000_best_move": "c1",
         "az400_best_move": "c1",
         "az1_top_prior_move": "g1",
         "chosen_move": "f1",
         "chosen_prior": 0.1578,
-        "chosen_visits_400": 51,
-        "chosen_expected_score": 0.8078,
+        "chosen_visits_4000": 247,
+        "chosen_visits_400": 247,
+        "chosen_expected_score": 0.7997,
         "policy_rank": 4,
         "search_rank": 4,
         "num_legal": 6,
-        "win_prob_before": 0.8264,
-        "win_prob_after": 0.7707,
-        "delta_win_prob": -0.0557,
-        "win_prob_loss": 0.0557,
-        "red_win_prob_before": 0.8264,
-        "red_win_prob_after": 0.7707,
+        "win_prob_before": 0.8236,
+        "win_prob_after": 0.7657,
+        "delta_win_prob": -0.0579,
+        "win_prob_loss": 0.0579,
+        "red_win_prob_before": 0.8236,
+        "red_win_prob_after": 0.7657,
         "network_value_before": 0.6211,
         "top_candidates": [
           {
             "move": "c1",
-            "visits": 102,
+            "visits": 1691,
             "prior": 0.1821,
-            "expectedScore": 0.8264
-          },
-          {
-            "move": "g1",
-            "visits": 99,
-            "prior": 0.2524,
-            "expectedScore": 0.8157
+            "expectedScore": 0.8236
           },
           {
             "move": "a1",
-            "visits": 96,
+            "visits": 976,
             "prior": 0.1757,
-            "expectedScore": 0.8261
+            "expectedScore": 0.8204
+          },
+          {
+            "move": "g1",
+            "visits": 802,
+            "prior": 0.2524,
+            "expectedScore": 0.8144
           },
           {
             "move": "f1",
-            "visits": 51,
+            "visits": 247,
             "prior": 0.1578,
-            "expectedScore": 0.8078
+            "expectedScore": 0.7997
           },
           {
             "move": "b1",
-            "visits": 32,
+            "visits": 233,
             "prior": 0.1085,
-            "expectedScore": 0.8049
+            "expectedScore": 0.8076
           }
         ]
       },
@@ -1124,52 +1146,54 @@
       "visible_thought": "**f2 is forced.** Red has f1 on the top edge, f3 connected to e3, and e3\u2013e7 reaching the bottom. If Red plays f2, the chain f1-f2-f3-e3\u2026e7 connects top to bottom and Red wins.\n\n**Candidates:**\n- **f2 (chosen):** This blocks the winning point.\n  - It also makes a column sandwich: f2(B), f3(R), f4(B), so f3 flips to Blue.\n  - Cascade check: g3 sits on the edge, so it cannot be sandwiched in row 3. No 2x2 crosscut appears (the e2/f3/e3/f2 block is B, B, R, B). The cascade stops after f3.\n  - Result: Blue now has a connected group e1-e2-f2-f3-f4-g4, which already touches the right edge.\n  - Red is routed to row 2 or column f, which offers only modest options (g2, d2, f5, and similar).\n- **g1 or d1:** These do not stop f2, so Red wins next move.\n- **f5\u2013f7:** These also fail to cover f2, so Red wins.\n\nOnly f2 saves the game, and it also gains a stone and strengthens Blue's right-side group.",
       "reasoning_trace": "Red has a connecting path through f1-f2-f3 linking to the e-column chain top to bottom, so I need to block by playing f2 myself to stop that win.\n\nChecking the flips from f2: f3 sits between f2(B) and f4(B) vertically, so it sandwiches and flips to Blue, cutting Red's connection. I also check the diagonal 2x2 patterns around e1-f1-e2-f2 but none trigger extra flips, so this move cleanly breaks Red's threat while leaving Red's remaining options manageable.",
       "eval": {
+        "az4000_best_move": "g1",
         "az400_best_move": "g1",
         "az1_top_prior_move": "g1",
         "chosen_move": "f2",
         "chosen_prior": 0.1828,
-        "chosen_visits_400": 47,
-        "chosen_expected_score": 0.1887,
+        "chosen_visits_4000": 220,
+        "chosen_visits_400": 220,
+        "chosen_expected_score": 0.2,
         "policy_rank": 3,
         "search_rank": 2,
         "num_legal": 9,
-        "win_prob_before": 0.2293,
-        "win_prob_after": 0.197,
-        "delta_win_prob": -0.0323,
-        "win_prob_loss": 0.0323,
-        "red_win_prob_before": 0.7707,
-        "red_win_prob_after": 0.803,
+        "win_prob_before": 0.2343,
+        "win_prob_after": 0.2223,
+        "delta_win_prob": -0.012,
+        "win_prob_loss": 0.012,
+        "red_win_prob_before": 0.7657,
+        "red_win_prob_after": 0.7777,
         "network_value_before": -0.6023,
         "top_candidates": [
           {
             "move": "g1",
-            "visits": 213,
+            "visits": 3345,
             "prior": 0.201,
-            "expectedScore": 0.2293
+            "expectedScore": 0.2343
           },
           {
             "move": "f2",
-            "visits": 47,
+            "visits": 220,
             "prior": 0.1828,
-            "expectedScore": 0.1887
+            "expectedScore": 0.2
           },
           {
             "move": "d1",
-            "visits": 44,
+            "visits": 158,
             "prior": 0.1837,
-            "expectedScore": 0.1844
+            "expectedScore": 0.1853
           },
           {
             "move": "b1",
-            "visits": 37,
+            "visits": 103,
             "prior": 0.1352,
-            "expectedScore": 0.1923
+            "expectedScore": 0.1787
           },
           {
             "move": "a1",
-            "visits": 26,
+            "visits": 69,
             "prior": 0.1004,
-            "expectedScore": 0.1873
+            "expectedScore": 0.1728
           }
         ]
       },
@@ -1217,52 +1241,54 @@
       "visible_thought": "**Board situation:** Red's strongest asset is the column-e chain e4\u2013e7 plus d4. Blue's e1/e2 block the direct top route, so Red needs a path through column d (d1\u2013d3) or elsewhere on the top.\n\n**Candidate 1: d2.** Red's only useful route to the top runs d1\u2013d2\u2013d3\u2013d4. This move creates no flips, since e2/f2 is a two-stone Blue run that a single red stone can't sandwich, and no 2x2 diagonal pattern forms. It forces Blue to answer in row 2 or column d. The main risk is Blue d3, which sandwiches e3 between d3 and f3 and flips it, cutting e3 off from the column-e chain.\n\n**Candidate 2: f5 (or f6/f7).** Column f is blocked by Blue f2\u2013f4, so no sandwich or crosscut flips occur. It adds little to the top-bottom connection and leaves Red's top access unchanged.\n\n**Candidate 3: g2.** It links g3 to the top only via g1, but g3 is walled off below by Blue g4 and f3. This route is a dead end.\n\n**Choice:** d2 is the only move that advances the top connection. It accepts the d3 counter-flip risk, but the alternatives do nothing for Red's path.",
       "reasoning_trace": "Looking at the board state, I'm mapping out the pieces across rows and columns, focusing on the active constraint around row 2 and column f, and identifying the legal moves available: a2, b2, c2, d2, g2, f5, f6, f7.\n\nI'm checking Red's connectivity for a top-to-bottom win. Red holds a solid chain from e3 through e7, but needs a path from the top down to e3, since e1 and e2 are Blue-controlled. Tracing possible routes through f1/g1/g2/g3 and the d-column, most paths dead-end into Blue stones, except a longer route through d1-d2-d3-d4-e4 which would require three more moves. I'm now considering d2 as a strong candidate move and checking what it would sandwich given the neighboring stones in row 2.\n\nChecking the other 2x2 blocks around f5 doesn't produce any flips either, so that move is weak. Column f doesn't offer much value beyond reinforcing e7's connection. The d2 move still looks strongest since it helps build the top route through the d-column toward d4.\n\nBut I need to think about Blue's response. Blue could play d3, which would sandwich e3 between d3 and f3, flipping it to blue \u2014 that's a real risk since Blue already has pieces at e1, e2, f2, f3, f4, g4 and just needs to connect left to column a. I should weigh whether Red should claim d3 first instead to prevent that flip.\n\nChecking other options like c2, b2, or g2 \u2014 none seem to help much, so d2 still looks like the best move despite the e3 flip risk, since Red's e4 still connects through d4. I'll settle on d2 and keep the explanation concise.",
       "eval": {
+        "az4000_best_move": "g2",
         "az400_best_move": "g2",
         "az1_top_prior_move": "g2",
         "chosen_move": "d2",
         "chosen_prior": 0.048,
-        "chosen_visits_400": 8,
-        "chosen_expected_score": 0.7534,
+        "chosen_visits_4000": 30,
+        "chosen_visits_400": 30,
+        "chosen_expected_score": 0.7189,
         "policy_rank": 8,
         "search_rank": 8,
         "num_legal": 8,
-        "win_prob_before": 0.803,
-        "win_prob_after": 0.6601,
-        "delta_win_prob": -0.1429,
-        "win_prob_loss": 0.1429,
-        "red_win_prob_before": 0.803,
-        "red_win_prob_after": 0.6601,
+        "win_prob_before": 0.7777,
+        "win_prob_after": 0.5609,
+        "delta_win_prob": -0.2168,
+        "win_prob_loss": 0.2168,
+        "red_win_prob_before": 0.7777,
+        "red_win_prob_after": 0.5609,
         "network_value_before": 0.5979,
         "top_candidates": [
           {
             "move": "g2",
-            "visits": 124,
+            "visits": 1103,
             "prior": 0.2807,
-            "expectedScore": 0.803
-          },
-          {
-            "move": "a2",
-            "visits": 69,
-            "prior": 0.1158,
-            "expectedScore": 0.8113
+            "expectedScore": 0.7777
           },
           {
             "move": "f6",
-            "visits": 62,
+            "visits": 1098,
             "prior": 0.178,
-            "expectedScore": 0.7946
+            "expectedScore": 0.7818
           },
           {
-            "move": "c2",
-            "visits": 56,
-            "prior": 0.0933,
-            "expectedScore": 0.81
+            "move": "a2",
+            "visits": 584,
+            "prior": 0.1158,
+            "expectedScore": 0.7802
+          },
+          {
+            "move": "b2",
+            "visits": 395,
+            "prior": 0.0523,
+            "expectedScore": 0.7831
           },
           {
             "move": "f7",
-            "visits": 35,
+            "visits": 313,
             "prior": 0.1548,
-            "expectedScore": 0.774
+            "expectedScore": 0.767
           }
         ]
       },
@@ -1312,52 +1338,54 @@
       "visible_thought": "**Candidate 1: d3 (chosen)**\n- Red's main threat is to link its e3\u2013e7 column to the top edge via e3\u2013d3\u2013d2\u2013d1. Red needs both d3 and d1 for this.\n- Playing d3 takes that key square away.\n- It also flips e3: Blue d3 and Blue f3 sandwich Red e3 in row 3, so e3 turns Blue. No further cascade follows, since e4 and d4 are not sandwiched and no 2x2 crosscut forms.\n- Red's column e now starts at e4 and is cut off from the top. Blue gains a row-3 presence at d3\u2013e3\u2013f3, connected to f2, f4 and g4.\n- Red is routed to row 3 or column d (a3, b3, c3, d1, d5, d6, d7). Even d1 joins only d2, which is isolated because d3 is now Blue.\n\n**Candidate 2: d1**\n- This blocks Red's top access via column d.\n- But Red then plays d3, linking d2\u2013d3\u2013e3 and keeping a strong central mass.\n- There are no flips, so it is weaker than d3.\n\n**Candidate 3: c2**\n- No flips, and it is passive.\n- It leaves the d3/d1 route open for Red.\n\nd3 blocks Red's connection and wins material, so it is clearly best.",
       "reasoning_trace": "I'm tracing red's connection options in column e and through d3-d2, checking whether red needs both d1 and d3 to secure the link to the top row.\n\nBut checking blue's response at d3: that move sandwiches e3 between d3 and f3, flipping it to blue, which cascades through the local pattern without creating any illegal 2x2 crosscuts. After that exchange, red can still reach the top via d1 even though d3 is now blue, so d3 looks like a strong move for blue regardless.",
       "eval": {
-        "az400_best_move": "c2",
+        "az4000_best_move": "d3",
+        "az400_best_move": "d3",
         "az1_top_prior_move": "c2",
         "chosen_move": "d3",
         "chosen_prior": 0.0818,
-        "chosen_visits_400": 72,
-        "chosen_expected_score": 0.3461,
+        "chosen_visits_4000": 3576,
+        "chosen_visits_400": 3576,
+        "chosen_expected_score": 0.4391,
         "policy_rank": 5,
-        "search_rank": 2,
+        "search_rank": 1,
         "num_legal": 9,
-        "win_prob_before": 0.3399,
-        "win_prob_after": 0.3718,
-        "delta_win_prob": 0.0319,
-        "win_prob_loss": 0.0,
-        "red_win_prob_before": 0.6601,
-        "red_win_prob_after": 0.6282,
+        "win_prob_before": 0.4391,
+        "win_prob_after": 0.4333,
+        "delta_win_prob": -0.0058,
+        "win_prob_loss": 0.0058,
+        "red_win_prob_before": 0.5609,
+        "red_win_prob_after": 0.5667,
         "network_value_before": -0.6221,
         "top_candidates": [
           {
-            "move": "c2",
-            "visits": 296,
-            "prior": 0.4742,
-            "expectedScore": 0.3399
+            "move": "d3",
+            "visits": 3576,
+            "prior": 0.0818,
+            "expectedScore": 0.4391
           },
           {
-            "move": "d3",
-            "visits": 72,
-            "prior": 0.0818,
-            "expectedScore": 0.3461
+            "move": "c2",
+            "visits": 349,
+            "prior": 0.4742,
+            "expectedScore": 0.3414
           },
           {
             "move": "g2",
-            "visits": 9,
+            "visits": 21,
             "prior": 0.116,
-            "expectedScore": 0.1957
+            "expectedScore": 0.1993
           },
           {
             "move": "a2",
-            "visits": 8,
+            "visits": 18,
             "prior": 0.1096,
-            "expectedScore": 0.1758
+            "expectedScore": 0.1691
           },
           {
             "move": "b2",
-            "visits": 7,
+            "visits": 16,
             "prior": 0.093,
-            "expectedScore": 0.1905
+            "expectedScore": 0.1942
           }
         ]
       },
@@ -1407,52 +1435,54 @@
       "visible_thought": "**Candidate 1: d1.** Red stone on d1 sandwiches Blue's e1 between d1 and f1 (`R [B] R`), flipping e1 to Red. No cascade follows, since no 2x2 crosscut forms. Red gets a solid top-edge group (d1, e1, f1, d2) that is one step from Red's stones on d2. Blue's next move must be in row 1 or column d, so Blue cannot immediately play c2 or c3 to block Red's leftward route.\n\n**Candidate 2: d5.** This flips nothing: column d already has Red on both sides of Blue's d3, but that sandwich was never created by a placement, so it does not flip. It also doesn't address the top edge, since d3 still cuts Red's column d off from the top. It mainly reinforces the bottom half, which is already connected through e4\u2013e7.\n\n**Candidate 3: a3/b3/c3.** These block Blue's row-3 route to the left edge (Blue's group reaches g4 on the right and needs three more stones leftward from d3). However, Red has no real connection gained there, and Blue can answer on the same row to keep the cut-off threat alive.\n\nRed's most urgent need is to connect the top edge to the e4\u2013e7 column. d1 does that most directly, while also flipping a Blue stone and limiting Blue's next placement.",
       "reasoning_trace": "I'm mapping out the pieces on the board, noting the positions of red (R) and black (B) pieces across each row to understand the current layout.\n\nThe legal moves available are the empty squares in row 3 and column d: a3, b3, c3, d1, d5, d6, d7. I'm thinking red needs a path connecting top to bottom, and the e-column already links e4 through e7 to the bottom edge, so the key question is how to extend that connection upward past the black stone at e3.\n\nI'm considering placing at d5 to see if it creates a sandwich flip along column d, where d2 and d4 are already red and d3 is black \u2014 but I need to work out whether a flip actually triggers here, since the sandwiching stones existed before this move rather than being created by it.\n\nChecking the 2x2 crosscut blocks around d5 and e5, I find they're all red or empty, so no flips occur there either.\n\nI'm now mapping out blue's connected group from e1 through g4, tracing how it links through e2, e3, d3, f3, and f4 to reach the right edge, which means blue only needs to extend left along row 3 through c3, b3, a3 to complete a left-right connection and win. Meanwhile red's path to victory depends on linking the e4-e7 column down to the bottom edge while still needing to find a way through the top past the black stones blocking e3.\n\nI'm now examining whether playing d1 would work for red, checking if it sandwiches e1 between d1 and f1 to flip it, then tracing how that cascades into column e and triggers any crosscut flips.\n\nHaving confirmed d1 flips e1 to red without creating a disallowed diagonal crosscut, I'm now trying to figure out how red's top group at d1/e1/f1/d2 could connect down to the e4-e7 chain, possibly via d2-c2-c3-c4-d4, and starting to consider how Blue might respond.\n\nRed's path via c2-c3-c4 to connect to d4/e4 takes three more moves, giving Blue chances to interrupt via the crosshair constraint. Still, d1 looks like the strongest candidate since it flips e1, secures the top row, and restricts Blue to row 1 or column d, limiting Blue's options.",
       "eval": {
+        "az4000_best_move": "d1",
         "az400_best_move": "d1",
         "az1_top_prior_move": "d5",
         "chosen_move": "d1",
         "chosen_prior": 0.2497,
-        "chosen_visits_400": 234,
-        "chosen_expected_score": 0.6282,
+        "chosen_visits_4000": 2795,
+        "chosen_visits_400": 2795,
+        "chosen_expected_score": 0.5667,
         "policy_rank": 2,
         "search_rank": 1,
         "num_legal": 7,
-        "win_prob_before": 0.6282,
-        "win_prob_after": 0.5809,
-        "delta_win_prob": -0.0473,
-        "win_prob_loss": 0.0473,
-        "red_win_prob_before": 0.6282,
-        "red_win_prob_after": 0.5809,
+        "win_prob_before": 0.5667,
+        "win_prob_after": 0.5582,
+        "delta_win_prob": -0.0085,
+        "win_prob_loss": 0.0085,
+        "red_win_prob_before": 0.5667,
+        "red_win_prob_after": 0.5582,
         "network_value_before": 0.4153,
         "top_candidates": [
           {
             "move": "d1",
-            "visits": 234,
+            "visits": 2795,
             "prior": 0.2497,
-            "expectedScore": 0.6282
-          },
-          {
-            "move": "d5",
-            "visits": 55,
-            "prior": 0.3385,
-            "expectedScore": 0.5569
+            "expectedScore": 0.5667
           },
           {
             "move": "b3",
-            "visits": 36,
+            "visits": 475,
             "prior": 0.1259,
-            "expectedScore": 0.5936
+            "expectedScore": 0.5578
+          },
+          {
+            "move": "d5",
+            "visits": 287,
+            "prior": 0.3385,
+            "expectedScore": 0.5182
+          },
+          {
+            "move": "a3",
+            "visits": 201,
+            "prior": 0.0519,
+            "expectedScore": 0.5589
           },
           {
             "move": "d6",
-            "visits": 27,
+            "visits": 118,
             "prior": 0.101,
-            "expectedScore": 0.5919
-          },
-          {
-            "move": "d7",
-            "visits": 24,
-            "prior": 0.0993,
-            "expectedScore": 0.5835
+            "expectedScore": 0.5319
           }
         ]
       },
@@ -1502,52 +1532,54 @@
       "visible_thought": "**Candidate 1: d5 (chosen)**\n- d5 and d3 sandwich Red's d4 in column d, so d4 flips to Blue.\n- Cascade: e4 (Red) is now sandwiched between d4 and f4 (both Blue) in row 4, so e4 flips to Blue too.\n- I checked the 2x2 crosscuts around d4/e4/d5/e5 and none trigger further flips.\n- Result: Blue holds d4\u2013e4\u2013f4\u2013g4, touching the right edge. Only c4, b4 and a4 remain to reach the left edge.\n- This also breaks Red's d4\u2013e4 link to the e5\u2013e7 column, so Red's top-to-bottom route is cut.\n- Red is routed to row 5 or column d: a5\u2013c5, f5, g5, d6 or d7. None of these immediately repairs Red's connection.\n\n**Candidate 2: d6 / d7**\n- No flips.\n- Red keeps d4\u2013e4\u2013e7 and can work toward the top via c2\u2013c3\u2013c4.\n- Too passive.\n\n**Candidate 3: c1 / b1 / a1**\n- No flips.\n- They do little to stop Red and do not build Blue's left-to-right chain.\n\nd5 is clearly best: it gains two stones, gives Blue a strong row-4 chain, and cuts Red's chain.",
       "reasoning_trace": "I'm tracing red's potential connecting path down column e and d, checking whether d2 can link through c-column cells up to d4 to complete a top-to-bottom chain.\n\nThen I notice a tactical flip: if blue plays d5, it sandwiches d4 red between d3 and d5 blue, flipping it blue, and that cascades to flip e4 too since it sits between the now-blue d4 and f4. This gives blue a connected row at row 4, forcing red to respond in row 5 or along column d to block the link to the edge.",
       "eval": {
+        "az4000_best_move": "d5",
         "az400_best_move": "d5",
         "az1_top_prior_move": "d5",
         "chosen_move": "d5",
         "chosen_prior": 0.397,
-        "chosen_visits_400": 349,
-        "chosen_expected_score": 0.4191,
+        "chosen_visits_4000": 3837,
+        "chosen_visits_400": 3837,
+        "chosen_expected_score": 0.4418,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 7,
-        "win_prob_before": 0.4191,
-        "win_prob_after": 0.4155,
-        "delta_win_prob": -0.0036,
-        "win_prob_loss": 0.0036,
-        "red_win_prob_before": 0.5809,
-        "red_win_prob_after": 0.5845,
+        "win_prob_before": 0.4418,
+        "win_prob_after": 0.4396,
+        "delta_win_prob": -0.0022,
+        "win_prob_loss": 0.0022,
+        "red_win_prob_before": 0.5582,
+        "red_win_prob_after": 0.5604,
         "network_value_before": -0.4434,
         "top_candidates": [
           {
             "move": "d5",
-            "visits": 349,
+            "visits": 3837,
             "prior": 0.397,
-            "expectedScore": 0.4191
+            "expectedScore": 0.4418
           },
           {
             "move": "b1",
-            "visits": 19,
+            "visits": 56,
             "prior": 0.177,
-            "expectedScore": 0.3044
+            "expectedScore": 0.3071
           },
           {
             "move": "a1",
-            "visits": 11,
+            "visits": 37,
             "prior": 0.1288,
-            "expectedScore": 0.2824
+            "expectedScore": 0.2929
           },
           {
             "move": "c1",
-            "visits": 8,
+            "visits": 33,
             "prior": 0.1136,
-            "expectedScore": 0.2478
+            "expectedScore": 0.2962
           },
           {
             "move": "g1",
-            "visits": 5,
+            "visits": 14,
             "prior": 0.0828,
-            "expectedScore": 0.2338
+            "expectedScore": 0.1977
           }
         ]
       },
@@ -1597,52 +1629,54 @@
       "visible_thought": "**Candidate 1: c5 (flips d5)**\nRed on c5 sandwiches Blue's d5 between c5 and e5 (`R [B] R` \u2192 `R R R`). No cascade follows, since the 2x2 blocks around d5 don't match the crosscut pattern. This gives Red a d5\u2013e5\u2013e4\u2013e6\u2013e7 group that already touches the bottom edge. It also removes Blue's d5 link and blocks row 5 as a leftward route for Blue. Blue's left-edge path through c3/c4 stays open, so Blue will likely answer in column c or row 5.\n\n**Candidate 2: f5**\nRed on f5 flips nothing. It links to e5 but stays cut from the top, because f4 and d4 are Blue and e2/e3 are Blue. It is a passive move.\n\n**Candidate 3: d6 or d7**\nNeither flips anything. Column d holds three Blue stones (d3\u2013d5), so a single sandwich is impossible. These moves only extend the bottom group.\n\n**Routing:** After c5, Blue must play in row 5 or column c. That keeps play on the left side, where Red needs to contest Blue's c-column access. Red's top connection still has to come through d3/d4 or via c-column flips, so this is a long fight.\n\n**Choice:** c5 is the only candidate that flips material and cuts Blue's most direct left-side link.",
       "reasoning_trace": "I'm mapping out the grid of red and blue cells row by row, and now focusing on row 5 as the constraint to check.\n\nLegal moves on row 5 and column d are a5, b5, c5, f5, g5, d6, d7. Red needs a top-to-bottom connection, and the e-column group from e4 to e7 reaches the bottom but is cut off from the top by blue stones at e2/e3 and surrounded blocks at d4/f4. I'm checking whether placing at f5 would flip anything through a sandwich, but since f3 is blue rather than red, that capture doesn't work.\n\nI'm also checking 2x2 crosscut patterns near e4-f5-g5, but none match the required diagonal enemy/own pattern, so f5 doesn't create an immediate connection toward the top either.\n\nMeanwhile blue is building a left-right chain from g4 through f4-f3-f2-e2-e3-d3-d4-d5, already touching the right edge at g4 and needing just a few more stones leftward through column c, b, a to win \u2014 so blue's threat is fairly close. Looking at red's column d options, d6 connects to e6 but checking the vertical sandwich through d5-d4-d3 against d2, none of these create a valid capture either.\n\nTrying c5 for red, though: placing there sandwiches d5 horizontally (c5 R, d5 B, e5 R), flipping d5 to red. I check whether that flip cascades further, but the surrounding crosscut blocks don't quite complete another capture yet.\n\nAfter the flip, Red's d-column still has d3 and d4 blocking a clean vertical link to the top, so the top connection remains unresolved. I consider Blue's likely responses \u2014 playing somewhere in row 5 or column c to counter, like c4 or f5 \u2014 but none immediately re-sandwich c5 cleanly, so the position stays tense around Red's path to the top edge.\n\nWeighing it all, c5 seems like the strongest move: it flips d5, cuts Blue's link there, and partially blocks Blue's leftward route along row 5, while f5 looks comparatively weaker. I'll settle on recommending c5 and write a concise explanation, keeping it under 200 words.",
       "eval": {
+        "az4000_best_move": "c5",
         "az400_best_move": "c5",
         "az1_top_prior_move": "c5",
         "chosen_move": "c5",
         "chosen_prior": 0.3994,
-        "chosen_visits_400": 229,
-        "chosen_expected_score": 0.5845,
+        "chosen_visits_4000": 3148,
+        "chosen_visits_400": 3148,
+        "chosen_expected_score": 0.5604,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 7,
-        "win_prob_before": 0.5845,
-        "win_prob_after": 0.5624,
-        "delta_win_prob": -0.0221,
-        "win_prob_loss": 0.0221,
-        "red_win_prob_before": 0.5845,
-        "red_win_prob_after": 0.5624,
+        "win_prob_before": 0.5604,
+        "win_prob_after": 0.5515,
+        "delta_win_prob": -0.0089,
+        "win_prob_loss": 0.0089,
+        "red_win_prob_before": 0.5604,
+        "red_win_prob_after": 0.5515,
         "network_value_before": 0.2319,
         "top_candidates": [
           {
             "move": "c5",
-            "visits": 229,
+            "visits": 3148,
             "prior": 0.3994,
-            "expectedScore": 0.5845
+            "expectedScore": 0.5604
           },
           {
             "move": "g5",
-            "visits": 64,
+            "visits": 261,
             "prior": 0.1985,
-            "expectedScore": 0.5658
-          },
-          {
-            "move": "f5",
-            "visits": 33,
-            "prior": 0.0745,
-            "expectedScore": 0.5744
+            "expectedScore": 0.5317
           },
           {
             "move": "d7",
-            "visits": 30,
+            "visits": 254,
             "prior": 0.1374,
-            "expectedScore": 0.5434
+            "expectedScore": 0.5415
           },
           {
-            "move": "b5",
-            "visits": 18,
-            "prior": 0.0732,
-            "expectedScore": 0.5492
+            "move": "f5",
+            "visits": 120,
+            "prior": 0.0745,
+            "expectedScore": 0.5376
+          },
+          {
+            "move": "a5",
+            "visits": 81,
+            "prior": 0.0617,
+            "expectedScore": 0.5317
           }
         ]
       },
@@ -1690,52 +1724,54 @@
       "visible_thought": "**Candidates:**\n\n- **c4:** This extends my d3\u2013d4\u2013e3\u2013f3\u2013f4\u2013g4 group, which already touches the right edge, one step further left. It also cuts Red's most direct route upward (c5\u2192c4\u2192c3\u2192c2\u2192d2). Flips: none. The only 2x2 to check is c4/d4 over c5/d5, which pairs as B B / R R rather than a diagonal pattern. Red is then routed to row 4 or column c (a4, b4, c1, c2, c3, c6, c7). Red's best reply is probably b4 or c3 to block me, but I still keep options through row 3 and row 4.\n\n- **c3:** This also extends leftward from d3 and blocks the c-column route higher up. However, it leaves c4 open, so Red could play c4 and link c5 toward c3's neighbours.\n\n- **f5/g5:** These are purely defensive and add nothing to my connection.\n\n**Choice:** c4 both advances my connection and blocks Red's key path, so I play it.",
       "reasoning_trace": "I'm checking Blue's path needs to connect left-right through c and b columns, while also tracing whether Red's bottom group can reach their top group through the e-column or needs to route around Blue's blocking pieces.",
       "eval": {
+        "az4000_best_move": "c4",
         "az400_best_move": "c4",
         "az1_top_prior_move": "c2",
         "chosen_move": "c4",
         "chosen_prior": 0.2426,
-        "chosen_visits_400": 305,
-        "chosen_expected_score": 0.4376,
+        "chosen_visits_4000": 3716,
+        "chosen_visits_400": 3716,
+        "chosen_expected_score": 0.4485,
         "policy_rank": 2,
         "search_rank": 1,
         "num_legal": 10,
-        "win_prob_before": 0.4376,
-        "win_prob_after": 0.3976,
-        "delta_win_prob": -0.04,
-        "win_prob_loss": 0.04,
-        "red_win_prob_before": 0.5624,
-        "red_win_prob_after": 0.6024,
+        "win_prob_before": 0.4485,
+        "win_prob_after": 0.4428,
+        "delta_win_prob": -0.0057,
+        "win_prob_loss": 0.0057,
+        "red_win_prob_before": 0.5515,
+        "red_win_prob_after": 0.5572,
         "network_value_before": -0.35,
         "top_candidates": [
           {
             "move": "c4",
-            "visits": 305,
+            "visits": 3716,
             "prior": 0.2426,
-            "expectedScore": 0.4376
+            "expectedScore": 0.4485
           },
           {
             "move": "c2",
-            "visits": 57,
+            "visits": 156,
             "prior": 0.2835,
-            "expectedScore": 0.3753
+            "expectedScore": 0.3705
           },
           {
             "move": "c3",
-            "visits": 13,
+            "visits": 49,
             "prior": 0.1338,
-            "expectedScore": 0.2972
+            "expectedScore": 0.3279
           },
           {
             "move": "b5",
-            "visits": 8,
+            "visits": 27,
             "prior": 0.1114,
-            "expectedScore": 0.2661
+            "expectedScore": 0.271
           },
           {
-            "move": "c6",
-            "visits": 5,
-            "prior": 0.0603,
-            "expectedScore": 0.2884
+            "move": "g5",
+            "visits": 13,
+            "prior": 0.0344,
+            "expectedScore": 0.3312
           }
         ]
       },
@@ -1785,52 +1821,54 @@
       "visible_thought": "**Candidate: c3 (wins immediately)**\n\nPlacing Red at c3 triggers a cascade:\n1. **Column c sandwich:** c3 (R), c4 (B), c5 (R) flips c4 to Red.\n2. **Row 4 sandwich:** c4 (R), d4 (B), e4 (R) flips d4 to Red.\n3. **Column d sandwich:** d2 (R), d3 (B), d4 (R) flips d3 to Red.\n\nNo further flips occur. Blue keeps e2, f2, e3, f3, f4, g4.\n\nThe chain d1 \u2192 d2 \u2192 d3 \u2192 d4 \u2192 e4 \u2192 e5 \u2192 e6 \u2192 e7 now connects row 1 to row 7 orthogonally, so Red wins immediately.\n\n**Other candidates (briefly):**\n- **c6 or c7:** Both extend the bottom-left Red mass but create no top connection, and the cascade gains nothing. Blue would then have free rein to block d-column routes.\n- **b4 or a4:** These are edge-ish moves that flip nothing and leave Red far from row 1.\n\nc3 is the only move that both flips the key Blue stones and completes the connection, so it is the clear choice.",
       "reasoning_trace": "I'm mapping out the board state, labeling columns a-g and rows 1-7, and noting the piece positions (R for red, B for black) in each row to understand the current configuration.\n\nLegal moves are limited to the empty squares in column c and row 4. Looking at Red's connectivity, I see a strong red cluster around e4-e7 reaching the bottom edge, but it's blocked from the top by blue stones at d4, f4, e3, c4. I'm now tracing an alternate path through g3/f5/g5 to see if red can link this bottom group up through the g-column back to the top row via f1/g1.\n\nRight side blocked \u2014 g4 is Blue, cutting off g3 from the lower group. I'm checking the left side instead, through column c and b, looking for a way to connect c5 down to b1 on the top edge, which would need several moves. I'm also considering whether placing a stone and flipping captured blue pieces could open a shorter connection.\n\nLet me trace through c3 as a candidate: placing Red there sandwiches c4 between c3 and c5, flipping it, which then triggers a cascade \u2014 d4 flips via c4/e4, then d3 flips via d4/d2, chaining several blue stones to red along column d. I'm mapping out exactly which stones end up red after this cascade to see if it connects the top group to the bottom group.\n\nNow I'm checking for additional flips I might have missed, going through each 2x2 block near the d3/e3/f3/f4/g4 area to see if any crosscut diagonal patterns trigger further flips \u2014 so far most blocks have mismatched colors that don't qualify, so the cascade seems to stop where I calculated.\n\nThen I trace red's connectivity: column d is now fully red (d1-d5), c3-c5 red, and e4-e7 red, with d4 adjacent to e4. This forms a continuous chain from d1 at the top row all the way to e7 at the bottom row \u2014 meaning placing at c3 and triggering this cascade would give Red an immediate win, so I'm double-checking the flip order (c3 flips c4, which then helps trigger d4's flip through the row) to make sure this win condition actually holds.",
       "eval": {
+        "az4000_best_move": "c3",
         "az400_best_move": "c3",
         "az1_top_prior_move": "c6",
         "chosen_move": "c3",
         "chosen_prior": 0.2069,
-        "chosen_visits_400": 238,
-        "chosen_expected_score": 0.6024,
+        "chosen_visits_4000": 3437,
+        "chosen_visits_400": 3437,
+        "chosen_expected_score": 0.5572,
         "policy_rank": 2,
         "search_rank": 1,
         "num_legal": 7,
-        "win_prob_before": 0.6024,
-        "win_prob_after": 0.5865,
-        "delta_win_prob": -0.0159,
-        "win_prob_loss": 0.0159,
-        "red_win_prob_before": 0.6024,
-        "red_win_prob_after": 0.5865,
+        "win_prob_before": 0.5572,
+        "win_prob_after": 0.5524,
+        "delta_win_prob": -0.0048,
+        "win_prob_loss": 0.0048,
+        "red_win_prob_before": 0.5572,
+        "red_win_prob_after": 0.5524,
         "network_value_before": 0.3174,
         "top_candidates": [
           {
             "move": "c3",
-            "visits": 238,
+            "visits": 3437,
             "prior": 0.2069,
-            "expectedScore": 0.6024
-          },
-          {
-            "move": "c1",
-            "visits": 42,
-            "prior": 0.1051,
-            "expectedScore": 0.5685
-          },
-          {
-            "move": "c6",
-            "visits": 38,
-            "prior": 0.2292,
-            "expectedScore": 0.5234
+            "expectedScore": 0.5572
           },
           {
             "move": "a4",
-            "visits": 30,
+            "visits": 143,
             "prior": 0.1643,
-            "expectedScore": 0.5272
+            "expectedScore": 0.508
           },
           {
-            "move": "c7",
-            "visits": 28,
-            "prior": 0.1735,
-            "expectedScore": 0.5208
+            "move": "c1",
+            "visits": 126,
+            "prior": 0.1051,
+            "expectedScore": 0.5218
+          },
+          {
+            "move": "c6",
+            "visits": 113,
+            "prior": 0.2292,
+            "expectedScore": 0.4684
+          },
+          {
+            "move": "c2",
+            "visits": 91,
+            "prior": 0.0641,
+            "expectedScore": 0.5278
           }
         ]
       },
@@ -1880,52 +1918,54 @@
       "visible_thought": "**c2 (chosen):** This blocks Red's immediate winning threat. Red's chain c3\u2011c4\u2011c5\u2011d5\u2011e5\u2011e6\u2011e7 already reaches the bottom edge. A Red stone on c2 would join c3 to d2\u2011d1 at the top and win at once. Playing c2 also sandwiches d2 between c2 and e2, so d2 flips to Blue. That cuts Red's top group, leaving d1/e1/f1 cut off from the c\u2011column chain. Red is then routed to row 2 or column c: c1, a2, b2, g2, c6 or c7. None of these connects immediately.\n\n**c1:** This does not stop Red's c2, which still connects c3\u2011c2\u2011d2\u2011d1 and wins. It is a losing move.\n\n**b3/a3:** These do nothing against c2, so Red wins next move.",
       "reasoning_trace": "I'm checking Red's connectivity along column e and the c-d chain linking bottom to top, seeing if c2/c1 or d2/d1 can bridge the gap to complete a top-to-bottom path.\n\nSo c2 is critical: it connects c3 to d2, which links to d1 at the top, giving Red a win unless I take it. Playing c2 myself also sandwiches d2 between c2 and e2, flipping it to my color and cutting that route, so I lock in c2 as my move and then anticipate Red's forced reply elsewhere in row 2 or column c.",
       "eval": {
+        "az4000_best_move": "b3",
         "az400_best_move": "b3",
         "az1_top_prior_move": "b3",
         "chosen_move": "c2",
         "chosen_prior": 0.2365,
-        "chosen_visits_400": 8,
-        "chosen_expected_score": 0.0431,
+        "chosen_visits_4000": 24,
+        "chosen_visits_400": 24,
+        "chosen_expected_score": 0.0144,
         "policy_rank": 2,
         "search_rank": 2,
         "num_legal": 6,
-        "win_prob_before": 0.4135,
+        "win_prob_before": 0.4476,
         "win_prob_after": 0.0,
-        "delta_win_prob": -0.4135,
-        "win_prob_loss": 0.4135,
-        "red_win_prob_before": 0.5865,
+        "delta_win_prob": -0.4476,
+        "win_prob_loss": 0.4476,
+        "red_win_prob_before": 0.5524,
         "red_win_prob_after": 1.0,
         "network_value_before": -0.5564,
         "top_candidates": [
           {
             "move": "b3",
-            "visits": 379,
+            "visits": 3936,
             "prior": 0.528,
-            "expectedScore": 0.4135
+            "expectedScore": 0.4476
           },
           {
             "move": "c2",
-            "visits": 8,
+            "visits": 24,
             "prior": 0.2365,
-            "expectedScore": 0.0431
+            "expectedScore": 0.0144
           },
           {
             "move": "a3",
-            "visits": 6,
+            "visits": 21,
             "prior": 0.1029,
-            "expectedScore": 0.2206
+            "expectedScore": 0.2394
           },
           {
             "move": "c6",
-            "visits": 4,
+            "visits": 9,
             "prior": 0.0641,
-            "expectedScore": 0.1969
+            "expectedScore": 0.1481
           },
           {
             "move": "c1",
-            "visits": 2,
+            "visits": 6,
             "prior": 0.0429,
-            "expectedScore": 0.2286
+            "expectedScore": 0.1354
           }
         ]
       },
@@ -1975,11 +2015,13 @@
       "visible_thought": "**Candidate: c1 (wins immediately)**\n\nPlacing Red at c1 sandwiches Blue's c2 vertically between c1 and Red's c3 (`R [B] R`), so c2 flips to Red. Cascade checks: no further flips are triggered by c2 in row 2 (g2 is empty) or in the 2x2 blocks around c2, so the cascade stops there.\n\nThe resulting Red chain is c1 (top edge) \u2192 c2 \u2192 c3 \u2192 c4 \u2192 c5 \u2192 d5 \u2192 e5 \u2192 e6 \u2192 e7 (bottom edge). Each link is orthogonal:\n- c1\u2013c2 (column c)\n- c2\u2013c3, c3\u2013c4, c4\u2013c5 (column c)\n- c5\u2013d5, d5\u2013e5 (row 5)\n- e5\u2013e6, e6\u2013e7 (column e)\n\nAll of these are Red stones, so Red connects top to bottom and wins.\n\n**Other candidates (briefly):**\n- **c6 or c7:** These extend the column-c group downward but don't win immediately and give Blue a move to block.\n- **g2 or a2/b2:** These don't flip anything useful and leave the top connection unresolved.\n\nc1 is the decisive move.",
       "reasoning_trace": "I'm mapping out the board positions row by row, noting where the red and blue pieces are placed across each column.\n\nChecking legal moves, I see Red needs a top-to-bottom connection, with pieces at d1/e1/f1 up top and e5/e6/e7 down low, but column e has blue blockers at e2/e3 interrupting the path.\n\nTesting c1 as a candidate move, I'm tracing how it could sandwich and flip c2, then cascading that flip into checking row 2 and diagonal patterns around c2/d2/c3/d3 for further captures.\n\nIf c1 and c2 both flip to red, the entire c1-c5 column becomes a solid red chain connecting to the top row, leaving only c6/c7 needed to reach the bottom edge \u2014 but those cells are still open for the opponent to contest.\n\nThat confirms it's a valid single-enemy sandwich in column c, so the flip is legal and the win is confirmed.",
       "eval": {
+        "az4000_best_move": "c1",
         "az400_best_move": "c1",
         "az1_top_prior_move": "c1",
         "chosen_move": "c1",
         "chosen_prior": 0.4611,
-        "chosen_visits_400": 382,
+        "chosen_visits_4000": 3937,
+        "chosen_visits_400": 3937,
         "chosen_expected_score": 1.0,
         "policy_rank": 1,
         "search_rank": 1,
@@ -1994,33 +2036,33 @@
         "top_candidates": [
           {
             "move": "c1",
-            "visits": 382,
+            "visits": 3937,
             "prior": 0.4611,
             "expectedScore": 1.0
           },
           {
             "move": "c7",
-            "visits": 6,
+            "visits": 20,
             "prior": 0.1618,
-            "expectedScore": 0.6484
+            "expectedScore": 0.6497
           },
           {
             "move": "g2",
-            "visits": 5,
+            "visits": 17,
             "prior": 0.1417,
-            "expectedScore": 0.6651
+            "expectedScore": 0.6486
           },
           {
             "move": "c6",
-            "visits": 4,
+            "visits": 15,
             "prior": 0.139,
-            "expectedScore": 0.6184
+            "expectedScore": 0.5882
           },
           {
             "move": "a2",
-            "visits": 3,
+            "visits": 9,
             "prior": 0.0745,
-            "expectedScore": 0.664
+            "expectedScore": 0.6672
           }
         ]
       },

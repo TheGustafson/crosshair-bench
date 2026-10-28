@@ -5,7 +5,7 @@
   "match_type": "llm_vs_engine",
   "created_at": "2026-10-28T02:43:01.174214+00:00",
   "seed": 26800,
-  "oracle_sims": 400,
+  "oracle_sims": 4000,
   "opening": [
     "d4",
     "f4"
@@ -94,52 +94,54 @@
       "visible_thought": null,
       "reasoning_trace": null,
       "eval": {
-        "az400_best_move": "c4",
+        "az4000_best_move": "e4",
+        "az400_best_move": "e4",
         "az1_top_prior_move": "c4",
         "chosen_move": "c4",
         "chosen_prior": 0.1755,
-        "chosen_visits_400": 77,
-        "chosen_expected_score": 0.5614,
+        "chosen_visits_4000": 510,
+        "chosen_visits_400": 510,
+        "chosen_expected_score": 0.5678,
         "policy_rank": 1,
-        "search_rank": 1,
+        "search_rank": 3,
         "num_legal": 11,
-        "win_prob_before": 0.5614,
-        "win_prob_after": 0.5505,
-        "delta_win_prob": -0.0109,
-        "win_prob_loss": 0.0109,
-        "red_win_prob_before": 0.5614,
-        "red_win_prob_after": 0.5505,
+        "win_prob_before": 0.5844,
+        "win_prob_after": 0.5641,
+        "delta_win_prob": -0.0203,
+        "win_prob_loss": 0.0203,
+        "red_win_prob_before": 0.5844,
+        "red_win_prob_after": 0.5641,
         "network_value_before": 0.1286,
         "top_candidates": [
           {
-            "move": "c4",
-            "visits": 77,
-            "prior": 0.1755,
-            "expectedScore": 0.5614
+            "move": "e4",
+            "visits": 2029,
+            "prior": 0.0824,
+            "expectedScore": 0.5844
           },
           {
             "move": "f2",
-            "visits": 55,
+            "visits": 517,
             "prior": 0.0726,
-            "expectedScore": 0.5751
+            "expectedScore": 0.5749
+          },
+          {
+            "move": "c4",
+            "visits": 510,
+            "prior": 0.1755,
+            "expectedScore": 0.5678
           },
           {
             "move": "f6",
-            "visits": 50,
+            "visits": 274,
             "prior": 0.0729,
-            "expectedScore": 0.5733
+            "expectedScore": 0.5706
           },
           {
             "move": "f7",
-            "visits": 43,
+            "visits": 167,
             "prior": 0.1288,
-            "expectedScore": 0.5524
-          },
-          {
-            "move": "e4",
-            "visits": 41,
-            "prior": 0.0824,
-            "expectedScore": 0.565
+            "expectedScore": 0.5515
           }
         ]
       },
@@ -189,52 +191,54 @@
       "visible_thought": "**Evaluation of top candidates:**\n\n1. **g4** \u2013 Secures the RIGHT edge immediately and connects orthogonally to f4, forming a 2-stone chain on Blue's goal edge. No flips occur. Routes opponent to Row 4 or Column g \u2014 they could grab e4 or a4, but Blue's right-edge anchor is locked in.\n\n2. **e4** \u2013 Extends the chain toward center (e4-f4), but doesn't reach either edge yet. No flips. Routes opponent to Row 4 or Column e \u2014 gives them flexibility to contest the center or grab g4 themselves.\n\n3. **a4** \u2013 Claims the LEFT edge anchor, but is completely disconnected from f4. Would require building a long bridge across the board. Routes opponent to Row 4 or Column a.\n\n**Decision:** g4 is strongest \u2014 it immediately touches Blue's goal edge and builds a connected pair (f4\u2013g4). Even if Red contests the center next, Blue's right-side foothold is guaranteed.",
       "reasoning_trace": "Let me analyze the current board state and find the best move for Blue (connecting left col a to right col g).\n\nCurrent board:\n- Row 4: c4=R, d4=R, f4=B\n- Active constraint: Row 4 or Column c\n\nLegal moves: c1, c2, c3, a4, b4, e4, g4, c5, c6, c7\n\nBlue wants to connect col a to col g. Blue has f4 already.\n\nLet me evaluate top candidates:\n\n1. **e4** - Places B at e4. This is in row 4, adjacent to f4 (B). This extends Blue toward the center. After placing at e4, opponent must play in row 4 or column e. Row 4 has c4=R, d4=R, e4=B, f4=B. Column e is empty except e4. So opponent could play a4, b4, g4 (row 4 empties) or e1-e3, e5-e7. That gives opponent many options.\n\nCheck flips: e4 is B. Neighbors: d4=R (left), f4=B (right). So we have B(e4) and B(f4) adjacent - no sandwich of R. What about d4? d4=R has c4=R on left and e4=B on right - no sandwich for R either. No 2x2 crosscut applies since only row 4 has stones. No flips.\n\n2. **g4** - Places B at g4. This is on the RIGHT edge! Blue needs to connect a to g. Having g4 is great for the right side. After placing at g4, opponent must play in row 4 or column g. Row 4 empties: a4, b4, e4. Column g: g1-g3, g5-g7. Opponent gets many options.\n\nCheck flips: g4=B, f4=B adjacent. No sandwich. No flips.\n\n3. **a4** - Places B at a4. This is on the LEFT edge! Blue needs to connect a to g. Having a4 is great for the left side. After placing at a4, opponent must play in row 4 or column a. Row 4 empties: b4, e4, g4. Column a: a1-a3, a5-a7.\n\nCheck flips: a4=B. b4 is empty. No sandwich possible. No flips.\n\nNow, which is best strategically?\n\nBlue needs to connect a to g. Currently has f4. \n\n- **g4** gives the right edge anchor and connects to f4. This is very strong - Blue would have f4-g4 connected, touching the right edge.\n- **a4** gives the left edge anchor but is disconnected from f4.\n- **e4** extends toward center, connects to f4, but doesn't reach either edge yet.\n\ng4 seems strongest because:\n1. It immediately claims the right edge (goal edge)\n2. It connects to f4, building a chain\n3. It routes opponent to row 4 or column g - row 4 still has b4, e4, a4 available which could be useful for Blue later\n\nBut wait - if I play g4, opponent could play e4 next (row 4), which would put R between my f4 and... no, e4 would be R, breaking my chain. Actually opponent playing e4 would give them R at e4, which is between d4=R and f4=B. That's not great for me.\n\nIf I play e4 instead, I have e4-f4 connected (2 stones toward right edge). Opponent must play row 4 or col e. They could play g4 (giving me no right edge) or a4/b4.\n\nActually, let me reconsider. Playing g4 is strong because it secures the right edge immediately. Even if opponent plays e4 next, I still have f4-g4 connected on the right edge. I just need to build leftward from there.\n\nI'll go with **g4** - it secures the right edge and connects to f4.",
       "eval": {
+        "az4000_best_move": "e4",
         "az400_best_move": "e4",
         "az1_top_prior_move": "g4",
         "chosen_move": "g4",
         "chosen_prior": 0.2332,
-        "chosen_visits_400": 102,
-        "chosen_expected_score": 0.4351,
+        "chosen_visits_4000": 731,
+        "chosen_visits_400": 731,
+        "chosen_expected_score": 0.4247,
         "policy_rank": 1,
         "search_rank": 2,
         "num_legal": 10,
-        "win_prob_before": 0.4495,
-        "win_prob_after": 0.4185,
-        "delta_win_prob": -0.031,
-        "win_prob_loss": 0.031,
-        "red_win_prob_before": 0.5505,
-        "red_win_prob_after": 0.5815,
+        "win_prob_before": 0.4359,
+        "win_prob_after": 0.4034,
+        "delta_win_prob": -0.0325,
+        "win_prob_loss": 0.0325,
+        "red_win_prob_before": 0.5641,
+        "red_win_prob_after": 0.5966,
         "network_value_before": -0.1202,
         "top_candidates": [
           {
             "move": "e4",
-            "visits": 119,
+            "visits": 2230,
             "prior": 0.149,
-            "expectedScore": 0.4495
+            "expectedScore": 0.4359
           },
           {
             "move": "g4",
-            "visits": 102,
+            "visits": 731,
             "prior": 0.2332,
-            "expectedScore": 0.4351
+            "expectedScore": 0.4247
           },
           {
             "move": "a4",
-            "visits": 65,
+            "visits": 357,
             "prior": 0.1678,
-            "expectedScore": 0.4309
+            "expectedScore": 0.4178
           },
           {
             "move": "c1",
-            "visits": 32,
+            "visits": 193,
             "prior": 0.1183,
-            "expectedScore": 0.4151
+            "expectedScore": 0.4115
           },
           {
             "move": "c7",
-            "visits": 26,
+            "visits": 182,
             "prior": 0.1009,
-            "expectedScore": 0.4145
+            "expectedScore": 0.4139
           }
         ]
       },
@@ -282,52 +286,54 @@
       "visible_thought": null,
       "reasoning_trace": null,
       "eval": {
-        "az400_best_move": "g6",
+        "az4000_best_move": "e4",
+        "az400_best_move": "e4",
         "az1_top_prior_move": "g6",
         "chosen_move": "a4",
         "chosen_prior": 0.0485,
-        "chosen_visits_400": 6,
-        "chosen_expected_score": 0.5096,
+        "chosen_visits_4000": 26,
+        "chosen_visits_400": 26,
+        "chosen_expected_score": 0.5189,
         "policy_rank": 9,
         "search_rank": 9,
         "num_legal": 9,
-        "win_prob_before": 0.5815,
-        "win_prob_after": 0.517,
-        "delta_win_prob": -0.0645,
-        "win_prob_loss": 0.0645,
-        "red_win_prob_before": 0.5815,
-        "red_win_prob_after": 0.517,
+        "win_prob_before": 0.5966,
+        "win_prob_after": 0.5347,
+        "delta_win_prob": -0.0619,
+        "win_prob_loss": 0.0619,
+        "red_win_prob_before": 0.5966,
+        "red_win_prob_after": 0.5347,
         "network_value_before": 0.1008,
         "top_candidates": [
           {
+            "move": "e4",
+            "visits": 2082,
+            "prior": 0.1606,
+            "expectedScore": 0.5966
+          },
+          {
             "move": "g6",
-            "visits": 109,
+            "visits": 789,
             "prior": 0.2,
-            "expectedScore": 0.5815
+            "expectedScore": 0.5885
           },
           {
             "move": "g2",
-            "visits": 90,
+            "visits": 681,
             "prior": 0.1732,
-            "expectedScore": 0.5804
-          },
-          {
-            "move": "e4",
-            "visits": 78,
-            "prior": 0.1606,
-            "expectedScore": 0.5785
+            "expectedScore": 0.5885
           },
           {
             "move": "g7",
-            "visits": 32,
+            "visits": 109,
             "prior": 0.0904,
-            "expectedScore": 0.5688
+            "expectedScore": 0.5632
           },
           {
             "move": "g1",
-            "visits": 31,
+            "visits": 109,
             "prior": 0.0937,
-            "expectedScore": 0.5645
+            "expectedScore": 0.5616
           }
         ]
       },
@@ -377,52 +383,54 @@
       "visible_thought": "**Analysis:**\n\n**e4** \u2014 Best candidate. Extends Blue's chain to e4-f4-g4 (3 connected). No flips occur (d4 is Red, but no sandwich pattern). Routes opponent to Row 4 (only b4 empty) or Column e. This forces Red into limited options while Blue builds toward the left edge.\n\n**b4** \u2014 Places a stone on the left side of row 4, but it's isolated from f4/g4. No flips triggered. Routes opponent to Row 4 or Column b. Doesn't advance the connected chain.\n\n**a3/a5** \u2014 Column a moves give a future left-edge anchor but aren't connected to anything yet and don't apply immediate pressure.\n\n**Conclusion:** e4 is strongest \u2014 it grows the connected Blue chain leftward and constrains Red's response options.",
       "reasoning_trace": "Let me analyze the position. I'm Blue, trying to connect left (col a) to right (col g).\n\nCurrent board row 4: R . R R . B B (a4=R, c4=R, d4=R, f4=B, g4=B)\n\nThe crosshair constraint says I must play in Row 4 or Column a.\n\nLegal moves: a1, a2, a3, b4, e4, a5, a6, a7\n\nLet me think about what Blue needs: a path from col a to col g. Currently Blue has f4 and g4 connected. Blue needs to extend leftward.\n\nKey candidates:\n\n1. **e4** - This is in row 4, adjacent to f4. If I play e4, I get e4-f4-g4 connected. Then I need to extend further left. After my move, the crosshair routes opponent to row 4 or column e. This is strong for extending my chain.\n\n2. **b4** - This is in row 4. If I play b4, I get b4 on the board but it's not adjacent to f4/g4. It's adjacent to a4 (Red) and c4 (Red). Let me check flips: b4 is Blue. Is there a sandwich? a4=R, b4=B, c4=R - no sandwich for Blue. For 2x2 crosscut - no adjacent Blue diagonal pairs. So no flips. This doesn't connect to my existing chain.\n\n3. **a4 is occupied by Red**, so I can't play there.\n\nLet me focus on **e4**:\n- After e4: Blue has e4, f4, g4 connected (3 stones in a row toward the right edge).\n- No flips occur (d4=R, e4=B, f4=B - no sandwich pattern for Blue).\n- Routes opponent to row 4 or column e. Row 4 still has b4 and e4 empty... wait e4 would be filled. Row 4 would have a4, c4, d4, e4, f4, g4 filled - only b4 empty. Column e has e4 filled, rest empty.\n- Opponent can play b4 or any empty square in column e.\n\n**b4**: \n- Blue plays b4. Blue has b4, f4, g4. b4 is not connected to f4/g4.\n- Check flips: a4=R, b4=B, c4=R. No Blue sandwich. No 2x2 crosscut.\n- Routes opponent to row 4 or column b.\n\ne4 is clearly better - it extends my connected chain toward the left edge.\n\nWhat about column a moves like a1, a2, etc.? These would give me a foothold on the left edge but not connected to anything yet.\n\ne4 is the best move - extends my chain and keeps pressure.",
       "eval": {
+        "az4000_best_move": "e4",
         "az400_best_move": "e4",
         "az1_top_prior_move": "e4",
         "chosen_move": "e4",
         "chosen_prior": 0.3579,
-        "chosen_visits_400": 218,
-        "chosen_expected_score": 0.483,
+        "chosen_visits_4000": 2819,
+        "chosen_visits_400": 2819,
+        "chosen_expected_score": 0.4653,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 8,
-        "win_prob_before": 0.483,
-        "win_prob_after": 0.4696,
-        "delta_win_prob": -0.0134,
-        "win_prob_loss": 0.0134,
-        "red_win_prob_before": 0.517,
-        "red_win_prob_after": 0.5304,
+        "win_prob_before": 0.4653,
+        "win_prob_after": 0.4506,
+        "delta_win_prob": -0.0147,
+        "win_prob_loss": 0.0147,
+        "red_win_prob_before": 0.5347,
+        "red_win_prob_after": 0.5494,
         "network_value_before": -0.0179,
         "top_candidates": [
           {
             "move": "e4",
-            "visits": 218,
+            "visits": 2819,
             "prior": 0.3579,
-            "expectedScore": 0.483
+            "expectedScore": 0.4653
           },
           {
             "move": "b4",
-            "visits": 52,
+            "visits": 458,
             "prior": 0.1068,
-            "expectedScore": 0.4777
+            "expectedScore": 0.4604
           },
           {
             "move": "a6",
-            "visits": 43,
+            "visits": 215,
             "prior": 0.1677,
-            "expectedScore": 0.4523
+            "expectedScore": 0.4361
           },
           {
             "move": "a1",
-            "visits": 27,
+            "visits": 172,
             "prior": 0.0946,
-            "expectedScore": 0.4578
+            "expectedScore": 0.4463
           },
           {
-            "move": "a2",
-            "visits": 26,
-            "prior": 0.0984,
-            "expectedScore": 0.4542
+            "move": "a7",
+            "visits": 152,
+            "prior": 0.0745,
+            "expectedScore": 0.4491
           }
         ]
       },
@@ -470,52 +478,54 @@
       "visible_thought": null,
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "e6",
         "az400_best_move": "e6",
         "az1_top_prior_move": "e6",
         "chosen_move": "e3",
         "chosen_prior": 0.0662,
-        "chosen_visits_400": 4,
-        "chosen_expected_score": 0.359,
+        "chosen_visits_4000": 13,
+        "chosen_visits_400": 13,
+        "chosen_expected_score": 0.3313,
         "policy_rank": 6,
-        "search_rank": 7,
+        "search_rank": 6,
         "num_legal": 7,
-        "win_prob_before": 0.5304,
-        "win_prob_after": 0.2578,
-        "delta_win_prob": -0.2726,
-        "win_prob_loss": 0.2726,
-        "red_win_prob_before": 0.5304,
-        "red_win_prob_after": 0.2578,
+        "win_prob_before": 0.5494,
+        "win_prob_after": 0.2681,
+        "delta_win_prob": -0.2813,
+        "win_prob_loss": 0.2813,
+        "red_win_prob_before": 0.5494,
+        "red_win_prob_after": 0.2681,
         "network_value_before": -0.0269,
         "top_candidates": [
           {
             "move": "e6",
-            "visits": 166,
+            "visits": 2751,
             "prior": 0.2635,
-            "expectedScore": 0.5304
+            "expectedScore": 0.5494
           },
           {
             "move": "e2",
-            "visits": 103,
+            "visits": 731,
             "prior": 0.1697,
-            "expectedScore": 0.5306
+            "expectedScore": 0.5373
           },
           {
             "move": "e7",
-            "visits": 57,
+            "visits": 235,
             "prior": 0.1558,
-            "expectedScore": 0.5153
+            "expectedScore": 0.5223
           },
           {
             "move": "e1",
-            "visits": 42,
+            "visits": 167,
             "prior": 0.1284,
-            "expectedScore": 0.5112
+            "expectedScore": 0.5187
           },
           {
             "move": "b4",
-            "visits": 24,
+            "visits": 92,
             "prior": 0.1523,
-            "expectedScore": 0.4674
+            "expectedScore": 0.4799
           }
         ]
       },
@@ -568,52 +578,54 @@
       "visible_thought": "## Analysis\n\n**d3** \u2014 Best move. Creates a 2\u00d72 Crosscut with e4: the block d3(B), e3(R), d4(R), e4(B) matches the `C E / E C` pattern. Both e3 and d4 flip to Blue! Result: Blue owns d3\u2013e3\u2013d4\u2013e4\u2013f4\u2013g4, a 6-stone connected chain reaching the right edge. Opponent is routed to Row 3 or Col d, where they have limited useful options.\n\n**c3** \u2014 No flips occur (no adjacent Blue or valid patterns). Blue gets c3 but it's disconnected from the e4\u2013g4 chain. Weaker.\n\n**b3** \u2014 Similarly isolated, no flips, no immediate connection. Weakest of the three.\n\n**d3 is dominant**: it flips two enemy stones, creates a massive connected group, and constrains Red's next move to a row/column where Blue already controls key squares.",
       "reasoning_trace": "Let me analyze the current board state and find the best move for Blue.\n\nCurrent board:\n- Row 3: e3 is Red\n- Row 4: a4=R, c4=R, d4=R, e4=B, f4=B, g4=B\n\nBlue needs to connect LEFT (col a) to RIGHT (col g). Blue already has e4, f4, g4 - a chain of 3 reaching the right edge. Blue needs to extend leftward to reach col a.\n\nThe crosshair constraint says I must play in Row 3 or Column e.\n\nLegal moves: e1, e2, a3, b3, c3, d3, f3, g3, e5, e6, e7\n\nLet me think about what's best:\n\n1. **d3** - Places Blue at d3. This is in row 3, adjacent to e3 (Red). After placing B at d3, check flips:\n   - Linear sandwich: d3 is B, e3 is R. Is there a B at f3? No. So no sandwich on that axis.\n   - Check column d: d3=B, d4=R. Is there a B at d5? No.\n   - 2x2 Crosscut: Check 2x2 blocks containing d3. \n     - d3,e3,d4,e4: d3=B, e3=R, d4=R, e4=B \u2192 diagonal B at d3,e4 and diagonal R at e3,d4 \u2192 This is the pattern `B R / R B` which matches the 2x2 Crosscut! Both enemy stones (e3 and d4) flip to Blue!\n   \n   After d3: e3 flips to B, d4 flips to B. Now check cascades:\n   - d4 is now B. Check linear sandwich: c4=R, d4=B, e4=B - no sandwich. a4=R, c4=R, d4=B - no sandwich for c4.\n   - e3 is now B. Check column e: e3=B, e4=B - no sandwich.\n   - Check 2x2 blocks with d4 now being B: c4=R, d4=B, c3=?, d3=B - c3 is empty. \n   - Check 2x2 with e3 now B: d3=B, e3=B, d4=B, e4=B - all B, no flip.\n   - What about c4? c3 empty, c4=R, d3=B, d4=B - not a 2x2 pattern.\n   - Linear: c4=R between d4=B and b4=empty. No flip.\n   \n   So after d3: Blue has d3, e3, d4, e4, f4, g4. That's a connected chain from d3 down to d4, then e4, f4, g4 reaching the right edge. But we still need to reach col a.\n\n   The crosshair would route opponent to Row 3 or Column d.\n\n2. **c3** - Places Blue at c3. Check flips:\n   - Column c: c3=B, c4=R. Is there a B at c5? No. No sandwich.\n   - Row 3: c3=B, d3=empty. No sandwich.\n   - 2x2: c3,d3,c4,d4: c3=B, d3=empty, c4=R, d4=R - not a valid pattern.\n   - No flips.\n   \n   After c3: Blue has c3, e4, f4, g4. c3 is not adjacent to e4 (diagonal). So no connection yet.\n\n3. **b3** - Places Blue at b3. Check flips:\n   - No adjacent Blue stones, no flips likely.\n   - 2x2: b3,c3,b4,c4: b3=B, c3=empty, b4=empty, c4=R - no pattern.\n   \n   After b3: Blue has b3, e4, f4, g4. No connection.\n\nSo d3 is clearly the best move - it creates a 2x2 Crosscut that flips both e3 and d4, giving Blue a strong connected group: d3, e3, d4, e4, f4, g4. This is 6 stones connected, reaching the right edge. Blue just needs to extend to col a.\n\nAfter d3, the crosshair routes opponent to Row 3 or Column d. The opponent (Red) would need to play in row 3 or column d. This could be problematic for Red since their stones at a4, c4 are now somewhat isolated.\n\nLet me verify the 2x2 crosscut pattern more carefully:\n- d3 (new B), e3 (R), d4 (R), e4 (B)\n- Pattern: B R / R B \u2192 diagonal B stones at d3 and e4, diagonal R stones at e3 and d4\n- Yes, this matches `C E / E C` where C=B. Both E (R) stones flip to B.\n\nThis is the best move by far.",
       "eval": {
+        "az4000_best_move": "d3",
         "az400_best_move": "d3",
         "az1_top_prior_move": "e2",
         "chosen_move": "d3",
         "chosen_prior": 0.3018,
-        "chosen_visits_400": 360,
-        "chosen_expected_score": 0.7422,
+        "chosen_visits_4000": 3862,
+        "chosen_visits_400": 3862,
+        "chosen_expected_score": 0.7319,
         "policy_rank": 2,
         "search_rank": 1,
         "num_legal": 11,
-        "win_prob_before": 0.7422,
-        "win_prob_after": 0.7209,
-        "delta_win_prob": -0.0213,
-        "win_prob_loss": 0.0213,
-        "red_win_prob_before": 0.2578,
-        "red_win_prob_after": 0.2791,
+        "win_prob_before": 0.7319,
+        "win_prob_after": 0.7235,
+        "delta_win_prob": -0.0084,
+        "win_prob_loss": 0.0084,
+        "red_win_prob_before": 0.2681,
+        "red_win_prob_after": 0.2765,
         "network_value_before": 0.0427,
         "top_candidates": [
           {
             "move": "d3",
-            "visits": 360,
+            "visits": 3862,
             "prior": 0.3018,
-            "expectedScore": 0.7422
+            "expectedScore": 0.7319
           },
           {
             "move": "e2",
-            "visits": 35,
+            "visits": 112,
             "prior": 0.489,
-            "expectedScore": 0.5568
+            "expectedScore": 0.5419
           },
           {
             "move": "c3",
-            "visits": 3,
+            "visits": 9,
             "prior": 0.0735,
-            "expectedScore": 0.4074
+            "expectedScore": 0.3752
           },
           {
             "move": "b3",
-            "visits": 1,
+            "visits": 4,
             "prior": 0.0217,
-            "expectedScore": 0.4817
+            "expectedScore": 0.4978
           },
           {
-            "move": "e1",
-            "visits": 1,
-            "prior": 0.0183,
-            "expectedScore": 0.4137
+            "move": "e5",
+            "visits": 2,
+            "prior": 0.0172,
+            "expectedScore": 0.4641
           }
         ]
       },
@@ -661,52 +673,54 @@
       "visible_thought": null,
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "a3",
         "az400_best_move": "a3",
         "az1_top_prior_move": "a3",
         "chosen_move": "d2",
         "chosen_prior": 0.0361,
-        "chosen_visits_400": 6,
-        "chosen_expected_score": 0.2208,
+        "chosen_visits_4000": 23,
+        "chosen_visits_400": 23,
+        "chosen_expected_score": 0.2087,
         "policy_rank": 9,
-        "search_rank": 7,
+        "search_rank": 8,
         "num_legal": 10,
-        "win_prob_before": 0.2791,
-        "win_prob_after": 0.2103,
-        "delta_win_prob": -0.0688,
-        "win_prob_loss": 0.0688,
-        "red_win_prob_before": 0.2791,
-        "red_win_prob_after": 0.2103,
+        "win_prob_before": 0.2765,
+        "win_prob_after": 0.2247,
+        "delta_win_prob": -0.0518,
+        "win_prob_loss": 0.0518,
+        "red_win_prob_before": 0.2765,
+        "red_win_prob_after": 0.2247,
         "network_value_before": -0.5044,
         "top_candidates": [
           {
             "move": "a3",
-            "visits": 219,
+            "visits": 3314,
             "prior": 0.2344,
-            "expectedScore": 0.2791
-          },
-          {
-            "move": "d6",
-            "visits": 53,
-            "prior": 0.1688,
-            "expectedScore": 0.249
+            "expectedScore": 0.2765
           },
           {
             "move": "d1",
-            "visits": 43,
+            "visits": 157,
             "prior": 0.1369,
-            "expectedScore": 0.2502
+            "expectedScore": 0.2406
           },
           {
-            "move": "d7",
-            "visits": 28,
-            "prior": 0.1126,
-            "expectedScore": 0.2389
+            "move": "d6",
+            "visits": 151,
+            "prior": 0.1688,
+            "expectedScore": 0.2299
           },
           {
             "move": "g3",
-            "visits": 27,
+            "visits": 128,
             "prior": 0.0988,
-            "expectedScore": 0.244
+            "expectedScore": 0.2453
+          },
+          {
+            "move": "d7",
+            "visits": 125,
+            "prior": 0.1126,
+            "expectedScore": 0.2397
           }
         ]
       },
@@ -758,52 +772,54 @@
       "visible_thought": "**Top Candidates:**\n\n1. **d1** \u2014 Linear sandwich! d1(B)\u2013d2(R)\u2013d3(B) \u2192 d2 flips to Blue. This removes a Red stone, strengthens Blue's central chain (d1-d2-d3-e3-d4-e4-f4-g4), and routes opponent to row 1 or col d. Strong tempo and material gain.\n\n2. **d5** \u2014 Extends the chain downward but no flips occur. Routes opponent to row 5 or col d. Passive; doesn't address the leftward gap.\n\n3. **b2** \u2014 No flips. Routes opponent to row 2 or col b. Could eventually support a leftward push via b3/b4, but too slow and indirect.\n\n**Conclusion:** d1 is clearly best \u2014 it flips d2, denies Red a stone, and consolidates Blue's dominant center-right structure while keeping future leftward expansion options open.",
       "reasoning_trace": "Let me analyze the current board state and find the best move for Blue.\n\nBlue needs to connect LEFT (col a) to RIGHT (col g). Blue already has a strong chain: d4-e4-f4-g4 (connected to right edge). Blue also has d3 and e3.\n\nSo Blue needs to extend leftward from d4 to reach col a. The squares b4 and a4 are key. a4 is occupied by Red. b4 is empty but not in the legal moves list.\n\nLegal moves: d1, a2, b2, c2, e2, f2, g2, d5, d6, d7\n\nLet me think about which moves help Blue connect left to right.\n\nCurrent Blue chain: d3-e3 connected to d4-e4-f4-g4. This chain touches the right edge (g4). Blue needs to reach col a.\n\nThe closest Blue stone to col a is d3/d4. Blue needs to go through c4, b4, a4 area. But c4 is Red, a4 is Red, b4 is empty but not a legal move right now.\n\nLet me evaluate the legal moves:\n\n1. **c2** - Places Blue at c2. Check flips: No immediate sandwiches or 2x2 crosscuts seem to apply. This routes opponent to row 2 or col c. Doesn't directly help Blue's connection but could set up future plays.\n\n2. **d5** - Places Blue at d5. Check flips: d4 is Blue, d5 is new Blue. No sandwich. Routes opponent to row 5 or col d. This extends Blue's chain downward but doesn't help left-right connection.\n\n3. **b2** - Places Blue at b2. Routes opponent to row 2 or col b. Could be useful for future leftward expansion.\n\nWait, let me think more strategically. Blue needs to reach col a. The key squares are b4 and a4 (or b3, a3, etc.). \n\nIf Blue plays c2, opponent must play in row 2 or col c. If opponent plays c4... wait c4 is already Red. Col c legal squares: c1, c2, c3, c5, c6, c7 (c4 is occupied). \n\nActually, let me think about what move sets up Blue best for reaching col a.\n\nIf Blue plays d5, it routes opponent to row 5 or col d. This doesn't immediately help Blue reach left.\n\nIf Blue plays b2, opponent goes to row 2 or col b. Col b has b4 empty - if Blue can later get b4, that's adjacent to c4 (Red) and could help.\n\nActually, the most important thing is: Blue needs to flip c4 or a4, or find a path around them.\n\nLet me reconsider. Blue's chain is d3-e3-d4-e4-f4-g4. To reach left, Blue needs c4 or c3/b3/a3 area.\n\nIf Blue plays c2: no flips occur (c3 is empty, c1 is empty, b2 is empty, d2 is Red - not a sandwich since we'd need Blue on both sides).\n\nWait - d2 is Red, c2 would be Blue. Is there a sandwich? We need C [E] C pattern. c2 is Blue, d2 is Red... we'd need e2 to be Blue too. It's not. So no flip.\n\nLet me think about d1. Blue plays d1. Check: d2 is Red, d3 is Blue. So we have d1(B), d2(R), d3(B) - that's a linear sandwich! d2 flips to Blue!\n\nAfter d2 flips to Blue: Blue has d1, d2, d3, e3, d4, e4, f4, g4. That's a strong vertical+horizontal chain. But still doesn't reach col a directly.\n\nAfter d2 flips, the cascade continues. Does anything else flip? d2 is now Blue. Check neighbors of d2: c2(empty), e2(empty), d1(Blue), d3(Blue). No new sandwiches or 2x2 crosscuts triggered.\n\nSo d1 gives Blue a flip of d2! That's good - it removes a Red stone and strengthens Blue's position. Then opponent is routed to row 1 or col d.\n\nThis seems like the best move. Blue gets a flip, strengthens the center, and the opponent is constrained to row 1 or col d.\n\nLet me also check d5: d4 is Blue, d5 would be Blue. No sandwich (d6 is empty). No flip. Less useful.\n\nAnd d6: d5 is empty, d7 is empty. No flip. Routes to row 6 or col d.\n\nSo d1 is clearly the best - it flips d2 from Red to Blue.",
       "eval": {
+        "az4000_best_move": "d1",
         "az400_best_move": "d1",
         "az1_top_prior_move": "d1",
         "chosen_move": "d1",
         "chosen_prior": 0.6169,
-        "chosen_visits_400": 316,
-        "chosen_expected_score": 0.7897,
+        "chosen_visits_4000": 3180,
+        "chosen_visits_400": 3180,
+        "chosen_expected_score": 0.7753,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 10,
-        "win_prob_before": 0.7897,
-        "win_prob_after": 0.7661,
-        "delta_win_prob": -0.0236,
-        "win_prob_loss": 0.0236,
-        "red_win_prob_before": 0.2103,
-        "red_win_prob_after": 0.2339,
+        "win_prob_before": 0.7753,
+        "win_prob_after": 0.7651,
+        "delta_win_prob": -0.0102,
+        "win_prob_loss": 0.0102,
+        "red_win_prob_before": 0.2247,
+        "red_win_prob_after": 0.2349,
         "network_value_before": 0.5328,
         "top_candidates": [
           {
             "move": "d1",
-            "visits": 316,
+            "visits": 3180,
             "prior": 0.6169,
-            "expectedScore": 0.7897
+            "expectedScore": 0.7753
           },
           {
             "move": "d5",
-            "visits": 33,
+            "visits": 371,
             "prior": 0.0995,
-            "expectedScore": 0.7747
+            "expectedScore": 0.7718
           },
           {
             "move": "b2",
-            "visits": 12,
+            "visits": 209,
             "prior": 0.032,
-            "expectedScore": 0.7808
+            "expectedScore": 0.777
           },
           {
             "move": "a2",
-            "visits": 12,
+            "visits": 83,
             "prior": 0.0492,
-            "expectedScore": 0.7575
+            "expectedScore": 0.7576
           },
           {
             "move": "e2",
-            "visits": 8,
+            "visits": 49,
             "prior": 0.054,
-            "expectedScore": 0.73
+            "expectedScore": 0.7355
           }
         ]
       },
@@ -851,52 +867,54 @@
       "visible_thought": null,
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "a1",
         "az400_best_move": "a1",
         "az1_top_prior_move": "d6",
         "chosen_move": "a1",
         "chosen_prior": 0.1612,
-        "chosen_visits_400": 170,
-        "chosen_expected_score": 0.2339,
+        "chosen_visits_4000": 3238,
+        "chosen_visits_400": 3238,
+        "chosen_expected_score": 0.2349,
         "policy_rank": 2,
         "search_rank": 1,
         "num_legal": 9,
-        "win_prob_before": 0.2339,
-        "win_prob_after": 0.224,
-        "delta_win_prob": -0.0099,
-        "win_prob_loss": 0.0099,
-        "red_win_prob_before": 0.2339,
-        "red_win_prob_after": 0.224,
+        "win_prob_before": 0.2349,
+        "win_prob_after": 0.229,
+        "delta_win_prob": -0.0059,
+        "win_prob_loss": 0.0059,
+        "red_win_prob_before": 0.2349,
+        "red_win_prob_after": 0.229,
         "network_value_before": -0.5427,
         "top_candidates": [
           {
             "move": "a1",
-            "visits": 170,
+            "visits": 3238,
             "prior": 0.1612,
-            "expectedScore": 0.2339
+            "expectedScore": 0.2349
           },
           {
             "move": "d6",
-            "visits": 86,
+            "visits": 214,
             "prior": 0.222,
-            "expectedScore": 0.2108
+            "expectedScore": 0.1902
           },
           {
             "move": "d7",
-            "visits": 62,
+            "visits": 208,
             "prior": 0.1505,
-            "expectedScore": 0.213
+            "expectedScore": 0.2047
           },
           {
             "move": "f1",
-            "visits": 29,
+            "visits": 113,
             "prior": 0.101,
-            "expectedScore": 0.1991
+            "expectedScore": 0.1974
           },
           {
             "move": "g1",
-            "visits": 17,
+            "visits": 83,
             "prior": 0.0684,
-            "expectedScore": 0.1925
+            "expectedScore": 0.2004
           }
         ]
       },
@@ -946,52 +964,54 @@
       "visible_thought": "## Evaluation\n\n**c1** \u2014 Connects directly to d1 (Blue), extending the chain: c1\u2013d1\u2013d2\u2013d3\u2013d4\u2013e4\u2013f4\u2013g4 (reaches right edge). No flips occur. Routes opponent to Row 1 or Column c. This is the most direct path toward eventually reaching column a (need b1 next, then deal with a1 being Red).\n\n**a2** \u2014 Touches the left edge immediately but is isolated from the Blue chain (a1 is Red, a3 empty, b2 empty). No flips. Routes opponent to Row 2 or Column a. Premature; doesn't connect to anything useful yet.\n\n**b1** \u2014 On row 1 but not adjacent to any Blue stone (a1 is Red, c1 empty). No flips. Routes opponent to Row 1 or Column b. Slightly better than a2 since it's closer to d1, but still doesn't connect.\n\n**c1** is clearly strongest: it grows the connected component leftward while maintaining the right-edge connection. The plan is to follow up with b1, then find a way to neutralize a1 or route around it.",
       "reasoning_trace": "Let me analyze the current board state and evaluate candidate moves for Blue.\n\nCurrent board:\n- Blue has a strong horizontal chain on row 4: d4, e4, f4, g4 (already connected to the RIGHT edge at g4)\n- Blue also has d1, d2, d3, e3 forming a vertical chain\n- Blue needs to connect LEFT edge (col a) to RIGHT edge (col g)\n\nSo Blue already touches the right edge via g4. Blue needs to reach column a.\n\nThe crosshair constraint says I must play in Row 1 or Column a.\n\nLegal moves: b1, c1, e1, f1, g1, a2, a3, a5, a6, a7\n\nLet me think about key moves:\n\n1. **a4 is already Red** - so I can't play there.\n\n2. **a2, a3, a5, a6, a7** - these are in column a (left edge). If I place on column a, I'd touch the left edge. But I need to connect it to the right edge.\n\nLet me check: if I play a3, is it adjacent to any blue? a3 is adjacent to a2, a4, b3. a4 is Red, a2 is empty, b3 is empty. So a3 alone wouldn't connect to my existing chain.\n\nIf I play a5, adjacent to a4 (Red), a6, b5. No connection to blue.\n\nWhat about connecting through row 4? Blue has d4, e4, f4, g4. If I could get c4... but c4 is Red. b4 is not a legal move (not in row 1 or col a).\n\nWait, let me reconsider. The legal moves are constrained to row 1 or column a.\n\n**a2**: Adjacent to a1 (Red), a3, b2. No immediate connection to blue chain. But it touches the left edge.\n\n**a3**: Adjacent to a2, a4 (Red), b3. No connection to blue.\n\n**b1**: Adjacent to a1 (Red), c1, b2. In row 1. d1 is blue but not adjacent to b1.\n\n**c1**: Adjacent to b1, d1 (Blue!), c2. This connects to d1! And d1 connects to d2, d3, d4, e4, f4, g4. So c1 would extend the chain toward the left edge. Then I'd need b1 and a1... but a1 is Red.\n\nWait, if I play c1: c1 is adjacent to d1 (Blue). So the chain would be c1-d1-d2-d3-d4-e4-f4-g4. That connects to the right edge. But c1 is not on the left edge (col a). I'd still need to reach col a.\n\nAfter c1, the crosshair would route opponent to row 1 or column c.\n\nLet me check flips for c1: \n- Linear sandwich: c1 is Blue. Check if c1 sandwiches any Red. c1's neighbors: b1 (empty), d1 (Blue), c2 (empty). No sandwich.\n- 2x2 crosscut: Check 2x2 blocks containing c1: (b1,c1,b2,c2) - b1 empty, c2 empty. (c1,d1,c2,d2) - c1=B, d1=B, c2=empty, d2=B. Not a crosscut pattern.\n\nSo c1 doesn't flip anything but extends the chain toward left.\n\n**b1**: If I play b1, it's adjacent to a1 (Red) and c1 (empty). No connection to blue yet. But it's on row 1, and d1 is blue but not adjacent.\n\nActually wait - let me reconsider. The best strategy is to build toward column a.\n\n**c1** seems strongest - it connects to the existing blue chain (via d1) and moves toward the left edge. After c1, I'd need b1 and then a1 (but a1 is Red). Hmm, a1 is Red so I can't use that path directly.\n\nAlternatively, could I flip a1? If I play b1: b1 is Blue, a1 is Red, and... I need another Blue on the other side of a1. There's nothing to the left of a1. So no sandwich flip of a1.\n\nWhat about a2? If I play a2, it's on the left edge. Adjacent to a1 (Red) and a3 (empty). No connection to blue chain. But it touches the left edge. Then I'd need to connect a2 to the blue chain somehow.\n\nActually, let me think about this differently. The most promising is **c1** because it directly extends the blue chain leftward. The chain would be c1-d1-d2-d3-d4-e4-f4-g4, reaching the right edge. I still need to reach column a, but this is progress.\n\nAfter c1, the crosshair routes opponent to row 1 or column c. \n\nLet me also consider **a5** or **a6** - these touch the left edge but are far from the blue chain.\n\nI think **c1** is the best move - it extends the connected chain toward the left edge.",
       "eval": {
+        "az4000_best_move": "c1",
         "az400_best_move": "c1",
         "az1_top_prior_move": "b1",
         "chosen_move": "c1",
         "chosen_prior": 0.1388,
-        "chosen_visits_400": 90,
-        "chosen_expected_score": 0.776,
+        "chosen_visits_4000": 1487,
+        "chosen_visits_400": 1487,
+        "chosen_expected_score": 0.771,
         "policy_rank": 3,
         "search_rank": 1,
         "num_legal": 10,
-        "win_prob_before": 0.776,
-        "win_prob_after": 0.7745,
-        "delta_win_prob": -0.0015,
-        "win_prob_loss": 0.0015,
-        "red_win_prob_before": 0.224,
-        "red_win_prob_after": 0.2255,
+        "win_prob_before": 0.771,
+        "win_prob_after": 0.763,
+        "delta_win_prob": -0.008,
+        "win_prob_loss": 0.008,
+        "red_win_prob_before": 0.229,
+        "red_win_prob_after": 0.237,
         "network_value_before": 0.5567,
         "top_candidates": [
           {
             "move": "c1",
-            "visits": 90,
+            "visits": 1487,
             "prior": 0.1388,
-            "expectedScore": 0.776
+            "expectedScore": 0.771
           },
           {
             "move": "f1",
-            "visits": 84,
+            "visits": 907,
             "prior": 0.1414,
-            "expectedScore": 0.7752
+            "expectedScore": 0.7683
+          },
+          {
+            "move": "a7",
+            "visits": 348,
+            "prior": 0.0568,
+            "expectedScore": 0.7679
           },
           {
             "move": "b1",
-            "visits": 69,
+            "visits": 331,
             "prior": 0.1753,
-            "expectedScore": 0.7637
-          },
-          {
-            "move": "g1",
-            "visits": 39,
-            "prior": 0.0982,
-            "expectedScore": 0.763
+            "expectedScore": 0.7514
           },
           {
             "move": "e1",
-            "visits": 30,
+            "visits": 309,
             "prior": 0.0877,
-            "expectedScore": 0.7589
+            "expectedScore": 0.7624
           }
         ]
       },
@@ -1039,52 +1059,54 @@
       "visible_thought": null,
       "reasoning_trace": null,
       "eval": {
-        "az400_best_move": "c5",
+        "az4000_best_move": "c6",
+        "az400_best_move": "c6",
         "az1_top_prior_move": "c5",
         "chosen_move": "g1",
         "chosen_prior": 0.0359,
-        "chosen_visits_400": 5,
-        "chosen_expected_score": 0.1664,
+        "chosen_visits_4000": 22,
+        "chosen_visits_400": 22,
+        "chosen_expected_score": 0.1681,
         "policy_rank": 7,
         "search_rank": 6,
         "num_legal": 9,
-        "win_prob_before": 0.2255,
-        "win_prob_after": 0.1621,
-        "delta_win_prob": -0.0634,
-        "win_prob_loss": 0.0634,
-        "red_win_prob_before": 0.2255,
-        "red_win_prob_after": 0.1621,
+        "win_prob_before": 0.237,
+        "win_prob_after": 0.1783,
+        "delta_win_prob": -0.0587,
+        "win_prob_loss": 0.0587,
+        "red_win_prob_before": 0.237,
+        "red_win_prob_after": 0.1783,
         "network_value_before": -0.5536,
         "top_candidates": [
           {
-            "move": "c5",
-            "visits": 194,
-            "prior": 0.3931,
-            "expectedScore": 0.2255
+            "move": "c6",
+            "visits": 2354,
+            "prior": 0.1871,
+            "expectedScore": 0.237
           },
           {
-            "move": "c6",
-            "visits": 128,
-            "prior": 0.1871,
-            "expectedScore": 0.2335
+            "move": "c5",
+            "visits": 1267,
+            "prior": 0.3931,
+            "expectedScore": 0.2266
           },
           {
             "move": "c7",
-            "visits": 45,
+            "visits": 248,
             "prior": 0.1341,
-            "expectedScore": 0.2124
-          },
-          {
-            "move": "b1",
-            "visits": 9,
-            "prior": 0.099,
-            "expectedScore": 0.1135
+            "expectedScore": 0.2164
           },
           {
             "move": "c3",
-            "visits": 6,
+            "visits": 29,
             "prior": 0.0567,
-            "expectedScore": 0.138
+            "expectedScore": 0.1543
+          },
+          {
+            "move": "b1",
+            "visits": 29,
+            "prior": 0.099,
+            "expectedScore": 0.0893
           }
         ]
       },
@@ -1134,52 +1156,54 @@
       "visible_thought": "## Analysis\n\n**Blue's chain status:** g4\u2013f4\u2013e4\u2013d4\u2013d3\u2013d2\u2013d1\u2013c1 already spans from the right edge to column c. Blue needs to reach column a.\n\n**Top candidates:**\n\n1. **b1** \u2014 Extends the chain to b1 (adjacent to c1). Now Blue spans b1\u2192g4. Only a1 (Red) blocks the left edge. After this move, opponent is routed to Row 1 or Column b. No flips occur (a1 is at the board edge, no sandwich possible). This is the most aggressive move toward winning.\n\n2. **g3** \u2014 Connects to g4, reinforcing the right side but doesn't advance toward column a. Routes opponent to Row 3 or Column g.\n\n3. **g2** \u2014 Similar to g3, purely defensive/reinforcing. No progress toward left edge.\n\n**Conclusion:** b1 is clearly best. It brings Blue one square away from completing the left-edge connection. The opponent will be forced into Row 1 or Column b, and even if they play a1-adjacent squares, Blue's chain is already dominant and can likely secure a1 via a future flip or direct placement.",
       "reasoning_trace": "Let me analyze the current board state and find the best move for Blue.\n\nBlue needs to connect LEFT (col a) to RIGHT (col g) with orthogonal connections.\n\nCurrent Blue stones: c1, d1, d2, d3, e3, d4, e4, f4, g4\n\nBlue already has a chain from g4 (right edge) going left: g4-f4-e4-d4, and d4 connects up to d3-d2-d1, and d1 connects left to c1. So Blue has a strong chain from g4 to c1. Blue needs to reach col a.\n\nThe crosshair constraint says I must play in Row 1 or Column g.\n\nLegal moves: b1, e1, f1, g2, g3, g5, g6, g7\n\nLet me evaluate top candidates:\n\n1. **b1**: This is in row 1. Placing Blue at b1 would connect to c1 (already Blue), extending the chain toward col a. b1 is adjacent to a1 (Red) and c1 (Blue). This would extend Blue's chain to b1, one step from a1. But a1 is Red, so it doesn't complete the connection yet. However, it puts pressure on a1.\n\nLet me check flips: b1 is Blue. Adjacent to a1 (Red) and c1 (Blue). Linear sandwich: c1 [a1] b1? No, a1 is not between b1 and c1 - a1 is to the left of b1. So the pattern would need Blue on both sides of Red. a1 is at the edge, so no sandwich possible there.\n\nAfter placing b1, the opponent must play in row 1 or column b. This routes Red to row 1 or column b.\n\n2. **g2**: Column g. g2 is adjacent to g1 (Red) and g3 (empty). No immediate flips. Routes opponent to row 2 or column g.\n\n3. **g3**: Column g. g3 is adjacent to g4 (Blue). No flips. Routes opponent to row 3 or column g.\n\nLet me think about b1 more carefully. If I play b1:\n- Blue chain: b1-c1-d1-d2-d3-d4-e4-f4-g4. That's from b1 to g4 (right edge).\n- Blue needs to reach col a. a1 is Red, a4 is Red.\n- After b1, opponent must play in row 1 or column b.\n\nIf I play b1, the chain is very strong. The opponent is forced to row 1 or column b. In row 1, the empty squares are e1, f1. In column b, all are empty except b1.\n\nThis seems like the strongest move - it extends the chain toward the left edge and puts pressure on a1.\n\nLet me also consider e1 or f1. These extend along row 1 but don't help reach col a.\n\nb1 is clearly the best move - it extends Blue's chain one step closer to the left edge (col a).",
       "eval": {
+        "az4000_best_move": "b1",
         "az400_best_move": "b1",
         "az1_top_prior_move": "b1",
         "chosen_move": "b1",
         "chosen_prior": 0.4033,
-        "chosen_visits_400": 270,
-        "chosen_expected_score": 0.8379,
+        "chosen_visits_4000": 3110,
+        "chosen_visits_400": 3110,
+        "chosen_expected_score": 0.8217,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 8,
-        "win_prob_before": 0.8379,
-        "win_prob_after": 0.8197,
-        "delta_win_prob": -0.0182,
-        "win_prob_loss": 0.0182,
-        "red_win_prob_before": 0.1621,
-        "red_win_prob_after": 0.1803,
+        "win_prob_before": 0.8217,
+        "win_prob_after": 0.8134,
+        "delta_win_prob": -0.0083,
+        "win_prob_loss": 0.0083,
+        "red_win_prob_before": 0.1783,
+        "red_win_prob_after": 0.1866,
         "network_value_before": 0.6279,
         "top_candidates": [
           {
             "move": "b1",
-            "visits": 270,
+            "visits": 3110,
             "prior": 0.4033,
-            "expectedScore": 0.8379
+            "expectedScore": 0.8217
           },
           {
             "move": "e1",
-            "visits": 42,
+            "visits": 315,
             "prior": 0.1713,
-            "expectedScore": 0.8026
+            "expectedScore": 0.8032
           },
           {
             "move": "f1",
-            "visits": 28,
+            "visits": 248,
             "prior": 0.0949,
-            "expectedScore": 0.8119
+            "expectedScore": 0.8104
           },
           {
             "move": "g3",
-            "visits": 13,
+            "visits": 90,
             "prior": 0.0638,
-            "expectedScore": 0.7938
+            "expectedScore": 0.7949
           },
           {
             "move": "g6",
-            "visits": 13,
+            "visits": 70,
             "prior": 0.0796,
-            "expectedScore": 0.774
+            "expectedScore": 0.7766
           }
         ]
       },
@@ -1227,52 +1251,54 @@
       "visible_thought": null,
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "b4",
         "az400_best_move": "b4",
         "az1_top_prior_move": "b4",
         "chosen_move": "e1",
         "chosen_prior": 0.0516,
-        "chosen_visits_400": 13,
-        "chosen_expected_score": 0.1416,
+        "chosen_visits_4000": 47,
+        "chosen_visits_400": 47,
+        "chosen_expected_score": 0.1424,
         "policy_rank": 7,
         "search_rank": 6,
         "num_legal": 8,
-        "win_prob_before": 0.1803,
-        "win_prob_after": 0.1237,
-        "delta_win_prob": -0.0566,
-        "win_prob_loss": 0.0566,
-        "red_win_prob_before": 0.1803,
-        "red_win_prob_after": 0.1237,
+        "win_prob_before": 0.1866,
+        "win_prob_after": 0.1281,
+        "delta_win_prob": -0.0585,
+        "win_prob_loss": 0.0585,
+        "red_win_prob_before": 0.1866,
+        "red_win_prob_after": 0.1281,
         "network_value_before": -0.6466,
         "top_candidates": [
           {
             "move": "b4",
-            "visits": 227,
+            "visits": 3202,
             "prior": 0.2947,
-            "expectedScore": 0.1803
+            "expectedScore": 0.1866
           },
           {
             "move": "b3",
-            "visits": 68,
+            "visits": 345,
             "prior": 0.1931,
-            "expectedScore": 0.1584
+            "expectedScore": 0.1656
           },
           {
             "move": "b5",
-            "visits": 36,
+            "visits": 187,
             "prior": 0.1315,
-            "expectedScore": 0.1471
+            "expectedScore": 0.159
           },
           {
             "move": "f1",
-            "visits": 22,
+            "visits": 96,
             "prior": 0.0673,
-            "expectedScore": 0.1568
+            "expectedScore": 0.1591
           },
           {
             "move": "b7",
-            "visits": 16,
+            "visits": 63,
             "prior": 0.1405,
-            "expectedScore": 0.0756
+            "expectedScore": 0.0912
           }
         ]
       },
@@ -1324,52 +1350,54 @@
       "visible_thought": "## Analysis\n\n**f1** \u2014 Best candidate. Creates a Linear Sandwich: d1(B)-e1(R)-f1(B) \u2192 e1 flips to Blue. This extends Blue's row 1 chain to b1\u2013f1, already connected down through d2\u2013d3\u2013d4\u2013e4\u2013f4\u2013g4 (right edge). Blue now only needs to reach col a. After the flip, row 1 is fully occupied, so opponent is routed to column f only (f2, f3, f5, f6, f7) \u2014 very restrictive.\n\n**e2** \u2014 No flips. Connects to d2 and e3 but doesn't advance toward col a. Routes opponent to row 2 or column e \u2014 too many options for Red.\n\n**e5** \u2014 No flips. Extends downward but irrelevant to the left-edge goal. Routes opponent to row 5 or column e.\n\n**Conclusion:** f1 is dominant \u2014 it gains a flip, nearly completes the connection, and severely constrains Red's next move.",
       "reasoning_trace": "Let me analyze the current board state and the legal moves for Blue.\n\nBlue needs to connect LEFT (col a) to RIGHT (col g) with orthogonal connections.\n\nCurrent Blue stones: b1, c1, d1, d2, d3, e3, d4, e4, f4, g4\n\nBlue already has a connection from d4-e4-f4-g4, reaching the right edge (g4). Now Blue needs to reach the left edge (col a).\n\nThe leftmost Blue stone is b1. Blue needs to connect to col a.\n\nLegal moves: f1, e2, e5, e6, e7\n\nLet me check each:\n\n**f1**: Places Blue at f1. This is in row 1. Blue already has b1, c1, d1 in row 1. f1 would extend the chain but doesn't help reach col a. Also, f1 is between e1 (R) and g1 (R), so it would create R B R - no sandwich for Blue. Wait, d1 is B and f1 would be B with e1 (R) between them: d1-e1-f1 = B R B \u2192 Linear Sandwich flips e1 to B! That's huge!\n\nAfter flip: e1 becomes B. Then Blue has b1, c1, d1, e1, f1 in row 1. That connects b1 through f1. But we still need col a. a1 is R.\n\nWait, after e1 flips to B, do we get more cascades? Let's check 2x2 crosscut with e1 now B:\n- e1(B), f1(B), e2(?), f2(?) - e2 and f2 are empty, no.\n- d1(B), e1(B), d2(B), e2(?) - e2 is empty, no.\n\nSo f1 gives us a flip of e1, extending our row 1 chain to b1-f1. Still need a1.\n\nAfter f1, opponent must play in row 1 or column f. Row 1 remaining empty squares: none (a1=R, b1=B, c1=B, d1=B, e1=B after flip, f1=B, g1=R). Column f: f2, f3, f4(B), f5, f6, f7. So opponent plays in column f (f2, f3, f5, f6, f7).\n\n**e2**: Places Blue at e2. Check sandwiches: d2(B), e2(B) - no sandwich. e2 with e3(B) and e1(R): e1-e2-e3 = R B B, no sandwich. Check 2x2: d1(B), e1(R), d2(B), e2(B) - that's B R / B B - not a crosscut pattern. e2(B), f2(?), e3(B), f3(?) - f2 and f3 empty.\n\nNo flips. After e2, opponent plays in row 2 or column e. This routes opponent to many options.\n\n**e5**: Places Blue at e5. Check sandwiches: e4(B), e5(B) - no. d5(?), e5, f5(?) - empty. 2x2: d4(B), e4(B), d5(?), e5(B) - not crosscut. No flips. Routes opponent to row 5 or column e.\n\nSo f1 is clearly the best move - it flips e1, extending Blue's row 1 chain significantly toward the left edge. Blue then has b1-f1 connected, only needing a1 to complete the left-right connection.\n\nActually wait - Blue needs to connect col a to col g. Blue already has g4 on the right edge. The chain g4-f4-e4-d4 connects to d3-d2-d1-c1-b1. So Blue already connects from b1 to g4! Blue just needs to reach col a (a1 or any a-column square connected to the chain).\n\na1 is Red. If Blue can flip a1... After f1 flips e1 to B, Blue has b1 adjacent to a1(R). Is there a way to flip a1? a1 is at the edge. For a sandwich, we'd need B-a1-B pattern, but there's nothing to the left of a1. For 2x2 crosscut: a1(R), b1(B), a2(?), b2(?) - a2 and b2 are empty. So no immediate flip of a1.\n\nBut f1 is still the best move as it strengthens the chain and limits opponent's options.",
       "eval": {
+        "az4000_best_move": "f1",
         "az400_best_move": "f1",
         "az1_top_prior_move": "f1",
         "chosen_move": "f1",
         "chosen_prior": 0.3299,
-        "chosen_visits_400": 222,
-        "chosen_expected_score": 0.8763,
+        "chosen_visits_4000": 3093,
+        "chosen_visits_400": 3093,
+        "chosen_expected_score": 0.8719,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 5,
-        "win_prob_before": 0.8763,
-        "win_prob_after": 0.8713,
-        "delta_win_prob": -0.005,
-        "win_prob_loss": 0.005,
-        "red_win_prob_before": 0.1237,
-        "red_win_prob_after": 0.1287,
+        "win_prob_before": 0.8719,
+        "win_prob_after": 0.8648,
+        "delta_win_prob": -0.0071,
+        "win_prob_loss": 0.0071,
+        "red_win_prob_before": 0.1281,
+        "red_win_prob_after": 0.1352,
         "network_value_before": 0.7177,
         "top_candidates": [
           {
             "move": "f1",
-            "visits": 222,
+            "visits": 3093,
             "prior": 0.3299,
-            "expectedScore": 0.8763
+            "expectedScore": 0.8719
           },
           {
             "move": "e5",
-            "visits": 88,
+            "visits": 492,
             "prior": 0.2423,
-            "expectedScore": 0.8587
+            "expectedScore": 0.8547
           },
           {
             "move": "e2",
-            "visits": 60,
+            "visits": 261,
             "prior": 0.2663,
-            "expectedScore": 0.8352
+            "expectedScore": 0.8311
           },
           {
             "move": "e6",
-            "visits": 18,
+            "visits": 80,
             "prior": 0.1001,
-            "expectedScore": 0.8224
+            "expectedScore": 0.8214
           },
           {
             "move": "e7",
-            "visits": 12,
+            "visits": 74,
             "prior": 0.0614,
-            "expectedScore": 0.8302
+            "expectedScore": 0.8401
           }
         ]
       },
@@ -1417,52 +1445,54 @@
       "visible_thought": null,
       "reasoning_trace": null,
       "eval": {
-        "az400_best_move": "f7",
+        "az4000_best_move": "f6",
+        "az400_best_move": "f6",
         "az1_top_prior_move": "f7",
         "chosen_move": "f5",
         "chosen_prior": 0.2121,
-        "chosen_visits_400": 68,
-        "chosen_expected_score": 0.1171,
+        "chosen_visits_4000": 468,
+        "chosen_visits_400": 468,
+        "chosen_expected_score": 0.1193,
         "policy_rank": 2,
         "search_rank": 3,
         "num_legal": 5,
-        "win_prob_before": 0.1287,
-        "win_prob_after": 0.1083,
-        "delta_win_prob": -0.0204,
-        "win_prob_loss": 0.0204,
-        "red_win_prob_before": 0.1287,
-        "red_win_prob_after": 0.1083,
+        "win_prob_before": 0.1352,
+        "win_prob_after": 0.109,
+        "delta_win_prob": -0.0262,
+        "win_prob_loss": 0.0262,
+        "red_win_prob_before": 0.1352,
+        "red_win_prob_after": 0.109,
         "network_value_before": -0.7151,
         "top_candidates": [
           {
-            "move": "f7",
-            "visits": 148,
-            "prior": 0.3347,
-            "expectedScore": 0.1287
+            "move": "f6",
+            "visits": 2114,
+            "prior": 0.2091,
+            "expectedScore": 0.1352
           },
           {
-            "move": "f6",
-            "visits": 130,
-            "prior": 0.2091,
-            "expectedScore": 0.1379
+            "move": "f7",
+            "visits": 1142,
+            "prior": 0.3347,
+            "expectedScore": 0.1265
           },
           {
             "move": "f5",
-            "visits": 68,
+            "visits": 468,
             "prior": 0.2121,
-            "expectedScore": 0.1171
+            "expectedScore": 0.1193
           },
           {
             "move": "f3",
-            "visits": 28,
+            "visits": 143,
             "prior": 0.1179,
-            "expectedScore": 0.1028
+            "expectedScore": 0.1029
           },
           {
             "move": "f2",
-            "visits": 26,
+            "visits": 133,
             "prior": 0.1262,
-            "expectedScore": 0.0944
+            "expectedScore": 0.0971
           }
         ]
       },
@@ -1512,52 +1542,54 @@
       "visible_thought": "## Analysis\n\n**a5** \u2014 Immediately claims the LEFT edge (col a), the missing piece for Blue's win. Routes opponent to Row 5 or Col a, both favorable zones for Blue's expansion. No flips occur, but the strategic value is high: a future path a5\u2192b5\u2192c5\u2192d5\u2192d4\u2192e4\u2192f4\u2192g4 would complete the connection.\n\n**d5** \u2014 Connects to d4, extending the chain downward. Routes opponent to Row 5 or Col d. Solid but doesn't directly advance toward col a.\n\n**b5** \u2014 A stepping stone toward the left edge, adjacent to both a5 and the d4 chain. Routes opponent to Row 5 or Col b. Less urgent than directly claiming the edge.\n\n**Key reasoning:** Blue already has a strong right-edge anchor (g4) and a central chain (d4\u2013g4). The critical gap is reaching col a. Playing a5 now forces the opponent to respond in a zone where Blue wants to build, and creates immediate winning potential if the bridge can be completed.",
       "reasoning_trace": "Let me analyze the current board state and find the best move for Blue.\n\nBlue needs to connect LEFT (col a) to RIGHT (col g). Let me look at the current Blue stones:\n\nRow 1: b1, c1, d1, e1, f1 (Blue) - this is a strong horizontal chain but it's on row 1, not connecting to col a or col g directly... wait, b1 is in col b, not col a. And f1 is in col f, not col g.\n\nRow 4: d4, e4, f4, g4 (Blue) - g4 is on the RIGHT edge! So Blue already touches the right edge.\n\nBlue needs to reach col a (LEFT edge). The closest Blue stones to col a are b1 and d2/d3/d4.\n\nLet me think about the crosshair constraint: opponent played f5, so I must play in Row 5 or Column f.\n\nLegal moves: f2, f3, a5, b5, c5, d5, e5, g5, f6, f7\n\nKey candidates:\n\n1. **a5** - This places Blue on the LEFT edge! Then Blue would need to connect a5 to the existing chain. a5 is isolated though. But it touches col a. If I can connect a5 to b1 via... a5 to b5 to b1? No, b5 to b1 needs b2, b3, b4. That's too far. What about a5 connecting to d4? a5-b5-c5-d5-d4? That's possible but needs multiple moves.\n\n2. **b5** - Places Blue adjacent to a5 (potential left edge reach) and could connect toward d4 chain.\n\n3. **d5** - Connects to d4 (Blue), extending the chain downward. Routes opponent to row 5 or col d.\n\n4. **e5** - Adjacent to e4 (Blue) and f5 (Red). Could create a sandwich if... e5 with e4 and f5? No, sandwich needs C [E] C pattern.\n\n5. **g5** - Places Blue on the RIGHT edge, adjacent to g4. This strengthens the right edge connection. Routes opponent to row 5 or col g.\n\nWait, let me reconsider. Blue already has g4 on the right edge. The goal is to connect left to right. So Blue needs to reach col a.\n\nThe chain d4-e4-f4-g4 connects to the right edge. I need to extend leftward from d4 toward col a.\n\n**d5**: Extends from d4 downward. Routes opponent to row 5 or col d. Doesn't directly help reach col a.\n\n**a5**: Reaches col a immediately! But it's isolated. However, if I can later connect a5 to b5, c5, d5, d4... that's a path. But opponent gets to respond.\n\nActually wait - let me check if a5 creates any flips. a5 is Blue. Looking at row 5: all empty except f5 (Red). No sandwich possible. Column a: a1 (Red), a4 (Red), a5 (Blue). a4 and a5 are adjacent, no sandwich. No 2x2 crosscut with a5.\n\n**b5**: Blue at b5. Row 5: b5 and f5 (Red) - no sandwich. Column b: b1 (Blue), b5 (Blue) - no sandwich (not adjacent, and no enemy between). No flips. Routes opponent to row 5 or col b.\n\nLet me think about what's most strategic. The key insight is that Blue needs to reach col a. The most direct path from the existing chain (d4) toward col a would be through c4... but c4 is Red. \n\nPath options:\n- d4 \u2192 d3 \u2192 d2 \u2192 d1 \u2192 c1 \u2192 b1 \u2192 need a1 (but a1 is Red)\n- d4 \u2192 c4 (Red, blocked) \n- d4 \u2192 d5 \u2192 c5 \u2192 b5 \u2192 a5 (this reaches col a!)\n\nSo d5, c5, b5, a5 is a path of 4 moves to reach col a. That's too many moves.\n\nAlternatively: b1 \u2192 a1 (Red, blocked). \n\nHmm, what about flipping? If I play b5, and later play a5, can I flip something?\n\nActually, let me reconsider. The most urgent thing is to reach col a. Let me think about which move best advances that goal while also being safe.\n\n**a5** immediately claims the left edge. Even though it's isolated now, it forces the issue. The opponent must respond in row 5 or col a. If they play in row 5, I might get another chance to build toward it. If they play in col a (a2, a3, a6, a7), they're trying to block.\n\nActually, a5 is very strong because:\n1. It claims the left edge immediately\n2. It routes opponent to row 5 or col a - both are areas where I want to play\n3. If opponent plays in row 5, I can continue building the bridge (b5, c5, d5 connecting to d4)\n4. If opponent plays in col a, they're spending moves on defense\n\nLet me check: after a5, opponent must play in row 5 or col a. Empty squares in row 5: b5, c5, d5, e5, g5. Empty squares in col a: a2, a3, a6, a7. So opponent has 9 choices.\n\nIf opponent plays b5 (blocking my path), I'd need to route around. But I get to play in row 5 or col b next.\n\n**g5** is also interesting - it reinforces the right edge connection (g4-g5), making the right side more secure, and routes opponent to row 5 or col g.\n\nI think **a5** is the strongest move because it immediately establishes a presence on the left edge, which is the missing piece for Blue's win condition. The path a5-b5-c5-d5-d4-e4-f4-g4 would be a winning chain if completed.\n\nLet me also consider **d5**: it connects to d4 and extends toward row 5. Routes opponent to row 5 or col d. This is more about strengthening the middle but doesn't directly advance toward col a.\n\nMy top picks:\n1. **a5** - Claims left edge, critical for winning\n2. **d5** - Strengthens chain, routes opponent favorably  \n3. **b5** - Steps toward left edge, adjacent to potential a5\n\nI'll go with **a5**.",
       "eval": {
+        "az4000_best_move": "f6",
         "az400_best_move": "f6",
         "az1_top_prior_move": "f6",
         "chosen_move": "a5",
         "chosen_prior": 0.0753,
-        "chosen_visits_400": 29,
-        "chosen_expected_score": 0.8796,
+        "chosen_visits_4000": 95,
+        "chosen_visits_400": 95,
+        "chosen_expected_score": 0.8613,
         "policy_rank": 4,
-        "search_rank": 3,
+        "search_rank": 7,
         "num_legal": 10,
-        "win_prob_before": 0.8917,
-        "win_prob_after": 0.8099,
-        "delta_win_prob": -0.0818,
-        "win_prob_loss": 0.0818,
-        "red_win_prob_before": 0.1083,
-        "red_win_prob_after": 0.1901,
+        "win_prob_before": 0.891,
+        "win_prob_after": 0.809,
+        "delta_win_prob": -0.082,
+        "win_prob_loss": 0.082,
+        "red_win_prob_before": 0.109,
+        "red_win_prob_after": 0.191,
         "network_value_before": 0.7588,
         "top_candidates": [
           {
             "move": "f6",
-            "visits": 207,
+            "visits": 2784,
             "prior": 0.35,
-            "expectedScore": 0.8917
+            "expectedScore": 0.891
+          },
+          {
+            "move": "d5",
+            "visits": 245,
+            "prior": 0.047,
+            "expectedScore": 0.8879
           },
           {
             "move": "f3",
-            "visits": 34,
+            "visits": 223,
             "prior": 0.1504,
-            "expectedScore": 0.8536
-          },
-          {
-            "move": "a5",
-            "visits": 29,
-            "prior": 0.0753,
-            "expectedScore": 0.8796
+            "expectedScore": 0.8665
           },
           {
             "move": "e5",
-            "visits": 25,
+            "visits": 222,
             "prior": 0.0613,
-            "expectedScore": 0.8816
+            "expectedScore": 0.8842
           },
           {
             "move": "g5",
-            "visits": 24,
+            "visits": 139,
             "prior": 0.0853,
-            "expectedScore": 0.8674
+            "expectedScore": 0.8692
           }
         ]
       },
@@ -1605,52 +1637,54 @@
       "visible_thought": null,
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "a6",
         "az400_best_move": "a6",
         "az1_top_prior_move": "a3",
         "chosen_move": "c5",
         "chosen_prior": 0.0911,
-        "chosen_visits_400": 14,
-        "chosen_expected_score": 0.1103,
+        "chosen_visits_4000": 46,
+        "chosen_visits_400": 46,
+        "chosen_expected_score": 0.1043,
         "policy_rank": 5,
         "search_rank": 5,
         "num_legal": 9,
-        "win_prob_before": 0.1901,
-        "win_prob_after": 0.0614,
-        "delta_win_prob": -0.1287,
-        "win_prob_loss": 0.1287,
-        "red_win_prob_before": 0.1901,
-        "red_win_prob_after": 0.0614,
+        "win_prob_before": 0.191,
+        "win_prob_after": 0.1046,
+        "delta_win_prob": -0.0864,
+        "win_prob_loss": 0.0864,
+        "red_win_prob_before": 0.191,
+        "red_win_prob_after": 0.1046,
         "network_value_before": -0.7488,
         "top_candidates": [
           {
             "move": "a6",
-            "visits": 272,
+            "visits": 3546,
             "prior": 0.1749,
-            "expectedScore": 0.1901
+            "expectedScore": 0.191
           },
           {
             "move": "a3",
-            "visits": 51,
+            "visits": 175,
             "prior": 0.2519,
-            "expectedScore": 0.1305
+            "expectedScore": 0.129
           },
           {
             "move": "a2",
-            "visits": 29,
+            "visits": 105,
             "prior": 0.1946,
-            "expectedScore": 0.1074
+            "expectedScore": 0.111
           },
           {
             "move": "a7",
-            "visits": 17,
+            "visits": 66,
             "prior": 0.1406,
-            "expectedScore": 0.0884
+            "expectedScore": 0.098
           },
           {
             "move": "c5",
-            "visits": 14,
+            "visits": 46,
             "prior": 0.0911,
-            "expectedScore": 0.1103
+            "expectedScore": 0.1043
           }
         ]
       },
@@ -1700,52 +1734,54 @@
       "visible_thought": "## Analysis\n\n**b5** \u2014 Directly connects a5 (left edge) to b5, advancing Blue's left-side bridge toward the main group. No flips occur. Routes opponent to Row 5 or Column b (sparse for Red), limiting their counterplay. This is the most direct path toward completing the a-to-g connection.\n\n**d5** \u2014 Extends the main group downward from d4. Connects to the large cluster but doesn't help bridge the gap to a5. Routes opponent to Row 5 or Column d (mostly Blue-filled, so restrictive for them too). Solid but less urgent.\n\n**e5** \u2014 Similar to d5; extends main group but doesn't address the a5 gap. Routes opponent to Row 5 or Column e.\n\n**Key insight:** Blue's main group already touches the right edge (g4). The missing link is connecting a5 to that group. b5 is the critical first step in that bridge (a5\u2192b5\u2192...\u2192d4 cluster). It also constrains the opponent to a row/column where Red has limited presence.",
       "reasoning_trace": "Let me analyze the board state and the candidate moves for Blue.\n\nBlue needs to connect LEFT (col a) to RIGHT (col g). Let me check the current Blue connections.\n\nBlue stones: b1, c1, d1, e1, f1, d2, d3, e3, d4, e4, f4, g4, a5\n\nBlue already has a connection from a5... let me trace:\n- a5 is on the left edge\n- g4 is on the right edge\n\nCan Blue connect a5 to g4? Let me check orthogonal connections:\n- a5 connects to... nothing adjacent that's Blue (b5 is empty, a4 is Red, a6 is empty)\n- g4 connects to f4 (Blue), f4 connects to e4 (Blue), e4 connects to d4 (Blue) and e3 (Blue), d4 connects to d3 (Blue), d3 connects to d2 (Blue), d2 connects to d1 (Blue), d1 connects to c1 and e1 (Blue), c1 connects to b1 (Blue), e1 connects to f1 (Blue), f1 connects to... f2 is empty.\n\nSo Blue has a big connected group: b1-c1-d1-e1-f1-d2-d3-e3-d4-e4-f4-g4. This touches the right edge (g4). But does it touch the left edge? No, b1 is col b, not col a.\n\na5 is isolated on the left edge.\n\nSo Blue needs to connect a5 to the main group, or find another path.\n\nThe crosshair constraint says I must play in Row 5 or Column c.\n\nLegal moves: c2, c3, b5, d5, e5, g5, c6, c7\n\nLet me evaluate the top candidates:\n\n1. **b5**: Places Blue at b5. This connects a5 to b5 orthogonally. Then b5 connects to... c5 is Red, b4 is empty, b6 is empty. So a5-b5 is a start but doesn't connect to the main group yet. After placing at b5, opponent must play in Row 5 or Column b. Let me check flips: b5 with a5 (Blue) - is there a sandwich? a5 B, b5 B - no sandwich pattern. No 2x2 crosscut obvious. No flips. This routes opponent to Row 5 or Col b.\n\n2. **d5**: Places Blue at d5. Adjacent to d4 (Blue above). So d5 connects to the main group! Also d5 is adjacent to c5 (Red) and e5 (empty). Does this help connect to a5? Not directly. But it extends the main group downward. After placing at d5, opponent must play in Row 5 or Column d. Check flips: d5 with d4 (Blue above), is there a sandwich? c5 is Red, d5 is Blue, e5 is empty - no sandwich. What about d4(B), d5(B) - no sandwich vertically since d3 is Blue above d4. No 2x2 crosscut obvious. No flips likely.\n\n3. **e5**: Places Blue at e5. Adjacent to e4 (Blue above). Connects to main group. Also adjacent to f5 (Red) and d5 (empty). After placing, opponent plays in Row 5 or Column e. Check flips: e5 with e4 (Blue). f5 is Red. e5(B), f5(R) - need another Blue on the other side of f5... g5 is empty. No sandwich. 2x2: d4(B), e4(B), d5(empty), e5(B) - not a crosscut pattern. e4(B), f4(B), e5(B), f5(R) - three Blue and one Red, not a crosscut. No flips.\n\nNow, the key strategic question: Blue needs to connect a5 to the main group. The main group reaches d4. a5 needs to connect through b5, c5 (Red), or down.\n\nIf I play b5, I get a5-b5 connected. Then I need b5 to connect to c5 or somewhere toward the main group. c5 is Red. So I'd need to flip c5 or go around.\n\nIf I play d5, I extend the main group but don't help connect to a5 directly.\n\nActually, let me reconsider. The most urgent thing is connecting a5 to the main group. b5 is the most direct step toward that.\n\nLet me think about b5 more carefully. After b5, Blue has a5-b5 connected (left edge touched). Now need to connect b5 to the main group. The main group has d4. Path could be b5-c5-d5-d4 but c5 is Red. Or b5-b4-c4 but c4 is Red. Or b5-b6-c6-c7... going down and around.\n\nActually, if I play b5, the opponent is constrained to Row 5 or Column b. That's good because it limits their options.\n\nLet me think about d5. It extends the main group down. Opponent goes to Row 5 or Column d. Column d has d1(B), d2(B), d3(B), d4(B), d5(B if played) - all filled except d6, d7. Row 5 has a5(B), c5(R), d5(B), f5(R) - empties are b5, e5, g5.\n\nI think b5 is the strongest move because it directly works on connecting the left edge piece (a5) toward the main group, and it constrains the opponent to Row 5 or Column b (which has very few Blue stones, limiting their useful moves).\n\nLet me go with b5.",
       "eval": {
+        "az4000_best_move": "b5",
         "az400_best_move": "b5",
         "az1_top_prior_move": "e5",
         "chosen_move": "b5",
         "chosen_prior": 0.139,
-        "chosen_visits_400": 185,
-        "chosen_expected_score": 0.9386,
+        "chosen_visits_4000": 1889,
+        "chosen_visits_400": 1889,
+        "chosen_expected_score": 0.8954,
         "policy_rank": 3,
         "search_rank": 1,
         "num_legal": 8,
-        "win_prob_before": 0.9386,
-        "win_prob_after": 0.8921,
-        "delta_win_prob": -0.0465,
-        "win_prob_loss": 0.0465,
-        "red_win_prob_before": 0.0614,
-        "red_win_prob_after": 0.1079,
+        "win_prob_before": 0.8954,
+        "win_prob_after": 0.8796,
+        "delta_win_prob": -0.0158,
+        "win_prob_loss": 0.0158,
+        "red_win_prob_before": 0.1046,
+        "red_win_prob_after": 0.1204,
         "network_value_before": 0.7934,
         "top_candidates": [
           {
             "move": "b5",
-            "visits": 185,
+            "visits": 1889,
             "prior": 0.139,
-            "expectedScore": 0.9386
+            "expectedScore": 0.8954
           },
           {
             "move": "e5",
-            "visits": 66,
+            "visits": 637,
             "prior": 0.246,
-            "expectedScore": 0.8952
+            "expectedScore": 0.8814
           },
           {
             "move": "g5",
-            "visits": 46,
+            "visits": 508,
             "prior": 0.1572,
-            "expectedScore": 0.9
+            "expectedScore": 0.8848
           },
           {
             "move": "c2",
-            "visits": 30,
+            "visits": 336,
             "prior": 0.1159,
-            "expectedScore": 0.8952
+            "expectedScore": 0.8833
           },
           {
             "move": "d5",
-            "visits": 28,
+            "visits": 302,
             "prior": 0.1164,
-            "expectedScore": 0.8902
+            "expectedScore": 0.8815
           }
         ]
       },
@@ -1793,52 +1829,54 @@
       "visible_thought": null,
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "d5",
         "az400_best_move": "d5",
         "az1_top_prior_move": "g5",
         "chosen_move": "b2",
         "chosen_prior": 0.0566,
-        "chosen_visits_400": 7,
-        "chosen_expected_score": 0.012,
+        "chosen_visits_4000": 21,
+        "chosen_visits_400": 21,
+        "chosen_expected_score": 0.004,
         "policy_rank": 6,
         "search_rank": 7,
         "num_legal": 8,
-        "win_prob_before": 0.1079,
+        "win_prob_before": 0.1204,
         "win_prob_after": 0.0,
-        "delta_win_prob": -0.1079,
-        "win_prob_loss": 0.1079,
-        "red_win_prob_before": 0.1079,
+        "delta_win_prob": -0.1204,
+        "win_prob_loss": 0.1204,
+        "red_win_prob_before": 0.1204,
         "red_win_prob_after": 0.0,
         "network_value_before": -0.7578,
         "top_candidates": [
           {
             "move": "d5",
-            "visits": 185,
+            "visits": 3448,
             "prior": 0.0556,
-            "expectedScore": 0.1079
+            "expectedScore": 0.1204
           },
           {
             "move": "b4",
-            "visits": 86,
+            "visits": 206,
             "prior": 0.1946,
-            "expectedScore": 0.0791
+            "expectedScore": 0.0786
           },
           {
             "move": "g5",
-            "visits": 47,
+            "visits": 125,
             "prior": 0.2492,
-            "expectedScore": 0.0388
+            "expectedScore": 0.0325
           },
           {
             "move": "b3",
-            "visits": 27,
+            "visits": 79,
             "prior": 0.1816,
-            "expectedScore": 0.0202
+            "expectedScore": 0.0184
           },
           {
-            "move": "e5",
-            "visits": 23,
-            "prior": 0.0659,
-            "expectedScore": 0.0731
+            "move": "b7",
+            "visits": 59,
+            "prior": 0.1485,
+            "expectedScore": 0.0092
           }
         ]
       },
@@ -1891,11 +1929,13 @@
       "visible_thought": "Looking at the position, I need to find a move that connects Blue's left-edge presence to the right-edge chain.\n\n**Key candidate: a2**\n- Placing at a2 creates a 2\u00d72 crosscut with a1(R), a2(B), b1(B), b2(R) \u2192 both a1 and b2 flip to Blue!\n- After flips: a1 becomes Blue, connecting to b1-c1-d1-e1-f1 and down through d2-d3-d4-e4-f4-g4.\n- **This completes a chain from col a (a1) to col g (g4) \u2014 Blue wins immediately!**\n\n**Other candidates:**\n- b3: flips b2 via linear sandwich, extends column b but doesn't reach col a.\n- b4: flips b2, connects toward b5-a5 but doesn't complete the win.\n\na2 is the clear winning move.",
       "reasoning_trace": "Let me analyze the board state and find the best move for Blue.\n\nBlue needs to connect LEFT (col a) to RIGHT (col g) with orthogonal connections.\n\nCurrent Blue stones: b1, c1, d1, e1, f1, d2, d3, e3, d4, e4, f4, g4, a5, b5\n\nBlue already has a strong chain: b1-c1-d1-e1-f1 across the top, and d4-e4-f4-g4 connecting to the right edge. Also d2-d3-d4 connects vertically, and e3-e4 connects.\n\nSo Blue has: b1-c1-d1-e1-f1 (top row), d2-d3-d4-e4-f4-g4 (connecting to right edge). \n\nBlue needs to connect to the LEFT edge (col a). Blue has a5, b5. If Blue can get a4... wait, a4 is Red. \n\nLet me look at the crosshair constraint: Row 2 or Column b.\nLegal moves: a2, c2, e2, f2, g2, b3, b4, b6, b7\n\nLet me think about what connects Blue to the left edge:\n- a5 is Blue. b5 is Blue. If Blue plays a2, that doesn't help much immediately.\n- Blue needs to reach col a. a5 is already there but not connected to the main group.\n\nWait, let me check connectivity. b5 is Blue. Is b5 connected to the main Blue group? b5 is adjacent to... b4 (empty), a5 (Blue), c5 (Red). So a5-b5 is a pair but not connected to the main group yet.\n\nThe main Blue group: b1-c1-d1-e1-f1-d2-d3-d4-e4-f4-g4-e3. This connects to the RIGHT edge (g4). Blue needs to connect this to the LEFT edge.\n\nIf Blue plays b4: b4 is in column b. b4 is adjacent to b5 (Blue). So b4-b5-a5 would extend toward the left. But is b4 connected to the main group? b4 is adjacent to b3 (empty), a4 (Red), c4 (Red), b5 (Blue). So b4 connects to b5-a5 but not yet to the main group.\n\nWhat about b3? b3 is adjacent to b2 (Red), b4 (empty), a3 (empty), c3 (empty). Not immediately helpful.\n\nWhat about a2? a2 is adjacent to a1 (Red), a3 (empty), b2 (Red). Not great.\n\nLet me think about flips. If Blue plays b4:\n- Linear sandwich: b4 is Blue. Check row 4: a4(R), b4(B), c4(R) - no sandwich for Blue. Check column b: b1(B), b2(R), b3(empty), b4(B) - b2 is sandwiched between b1 and b4! So b2 flips to Blue!\n- After b2 flips: check cascades. b2 is now Blue. Row 2: a2(empty), b2(B), c2(empty), d2(B) - no sandwich. Column b: b1(B), b2(B), b3(empty), b4(B) - no sandwich.\n- 2x2 crosscut with b4: check 2x2 blocks containing b4. \n  - a3-a4-b3-b4: a3(empty), a4(R), b3(empty), b4(B) - no.\n  - b3-b4-c3-c4: b3(empty), b4(B), c3(empty), c4(R) - no.\n  - a4-a5-b4-b5: a4(R), a5(B), b4(B), b5(B) - not a crosscut pattern.\n  - b4-b5-c4-c5: b4(B), b5(B), c4(R), c5(R) - not a crosscut (need diagonal).\n\nSo playing b4 flips b2 to Blue. That's good! Then Blue has b1-b2-b4-b5-a5 and b1-c1-d1-e1-f1-d2-d3-d4-e4-f4-g4.\n\nWait, b2 flips to Blue. Then b1-b2 are connected. b2 is adjacent to b3 (empty), not b4 directly (b3 is between them). So b1-b2 is connected, and b4-b5-a5 is a separate group. Not yet connected to main.\n\nHmm, but b2 being Blue is still useful for future connections.\n\nWhat about playing b3? b3 is adjacent to b2(R), b4(empty). If b3 is placed:\n- Column b: b1(B), b2(R), b3(B) - b2 is sandwiched between b1 and b3! b2 flips to Blue!\n- After flip: b1-b2-b3 are all Blue. b3 adjacent to b4 (empty). \n- Cascades from b2 flipping: Row 2: a2(empty), b2(B), c2(empty), d2(B) - no sandwich. \n- 2x2 crosscut with b3: blocks containing b3:\n  - a2-a3-b2-b3: a2(empty), a3(empty), b2(B), b3(B) - no.\n  - b2-b3-c2-c3: b2(B), b3(B), c2(empty), c3(empty) - no.\n  - a3-a4-b3-b4: a3(empty), a4(R), b3(B), b4(empty) - no.\n  - b3-b4-c3-c4: b3(B), b4(empty), c3(empty), c4(R) - no.\n\nSo b3 flips b2, giving Blue b1-b2-b3. This extends the column b chain downward. b3 is adjacent to b4 (empty), so next Blue could play b4 to connect to b5-a5.\n\nNow, after Blue plays b3, the crosshair routes Red to Row 3 or Column b.\n\nAfter Blue plays b4, the crosshair routes Red to Row 4 or Column b.\n\nLet me think about which is better strategically.\n\nIf Blue plays b3: Blue gets b1-b2-b3, and the crosshair sends Red to row 3 or column b. Red's options would be limited. Column b has b1(B), b2(B), b3(B), b4(empty), b5(B), b6(empty), b7(empty). Row 3 has d3(B), e3(B) occupied. So Red could play b4, b6, b7, a3, c3, f3, g3.\n\nIf Blue plays b4: Blue gets b4 and flips b2. Crosshair sends Red to row 4 or column b. Row 4 has a4(R), c4(R), d4(B), e4(B), f4(B), g4(B). Empty in row 4: b4 is now Blue, so no empty in row 4! Column b: b1(B), b2(B), b3(empty), b4(B), b5(B), b6(empty), b7(empty). So Red can play b3, b6, b7. That's very restrictive for Red!\n\nWait, let me recheck row 4 after b4 is placed: a4(R), b4(B), c4(R), d4(B), e4(B), f4(B), g4(B). All squares in row 4 are occupied! So the wildcard applies - Red can play anywhere empty.\n\nHmm, that's actually bad because it gives Red freedom. Let me reconsider.\n\nActually wait - the rule says \"If every square in that row and column is already occupied\" - it's the row AND column of the placed stone. So for b4: row 4 is full, but column b has b3, b6, b7 empty. So the constraint is column b (since row 4 is full but column b isn't). Red must play in column b: b3, b6, or b7.\n\nThat's very restrictive! Red can only play b3, b6, or b7.\n\nIf Red plays b3, then Blue's b4-b5-a5 group is still separate from b1-b2. But Red playing b3 doesn't help Red much.\n\nActually, let me reconsider. After b4 flips b2:\n- Blue has b1, b2, b4, b5, a5 in column b area.\n- b1-b2 are connected (adjacent).\n- b4-b5 are connected, b5-a5 connected.\n- b2 and b4 are NOT connected (b3 is between them, empty).\n\nSo Blue still needs b3 to connect these groups. But Red is forced to play in column b (b3, b6, b7). If Red plays b3, that blocks Blue's connection! That's bad.\n\nHmm, so maybe b3 is better for Blue to play now.\n\nIf Blue plays b3:\n- b2 flips (sandwiched by b1 and b3).\n- Blue has b1-b2-b3 connected.\n- Crosshair: row 3 or column b.\n- Row 3: d3(B), e3(B) occupied. Empty: a3, b3(now Blue), c3, f3, g3. So empty in row 3: a3, c3, f3, g3.\n- Column b: b1(B), b2(B), b3(B), b4(empty), b5(B), b6(empty), b7(empty). Empty: b4, b6, b7.\n- Red must play in row 3 or column b: a3, c3, f3, g3, b4, b6, b7.\n\nIf Red plays b4, that blocks Blue from connecting b3 to b5. That's bad for Blue.\n\nSo either way, Red can potentially block the b-column connection.\n\nLet me think differently. Maybe Blue should focus on a different path to the left edge.\n\nBlue's main group connects to the right edge (g4). Blue needs to reach col a. \n\nWhat about playing a2? a2 is adjacent to a1(R), b2(R). If Blue plays a2:\n- Row 2: a2(B), b2(R), c2(empty), d2(B), e2(empty), f2(empty), g2(empty). No sandwich.\n- Column a: a1(R), a2(B), a3(empty), a4(R), a5(B). No sandwich (a2 is between a1 and a3, but a3 is empty).\n- 2x2 crosscut: blocks with a2:\n  - a1-a2-b1-b2: a1(R), a2(B), b1(B), b2(R). This is R B / B R - a crosscut! Both enemy stones flip! a1 flips to Blue, b2 flips to Blue!\n  \nWow! That's a big flip! Let me verify: a1(R), a2(B), b1(B), b2(R). The diagonal pattern is a1(R)-b2(R) and a2(B)-b1(B). Yes, this is a 2x2 crosscut with Blue on one diagonal and Red on the other. Both Red stones (a1, b2) flip to Blue!\n\nAfter flips: a1 becomes Blue, b2 becomes Blue.\n- Cascade check: a1 is now Blue. Row 1: a1(B), b1(B), c1(B), d1(B), e1(B), f1(B), g1(R). No sandwich (g1 is at the end).\n- Column a: a1(B), a2(B), a3(empty), a4(R), a5(B). No sandwich.\n- b2 is now Blue. Row 2: a2(B), b2(B), c2(empty), d2(B). No sandwich (c2 is empty between b2 and d2).\n- Column b: b1(B), b2(B), b3(empty), b4(empty), b5(B). No sandwich.\n- 2x2 crosscascades: Check blocks with a1: a1-a2-b1-b2 is now all Blue. No more flips there.\n- Check blocks with b2: a2-a3-b2-b3: a2(B), a3(empty), b2(B), b3(empty) - no. b2-b3-c2-c3: all empty except b2 - no.\n\nSo after a2: Blue has a1, a2, b1, b2, c1, d1, e1, f1, d2, d3, e3, d4, e4, f4, g4, a5, b5.\n\nNow Blue has a1-a2 connected, a1-b1-c1-d1-e1-f1 connected, and d1-d2-d3-d4-e4-f4-g4 connected. Also a5-b5.\n\nIs a1 connected to the main group? a1-b1-c1-d1-e1-f1-d2-d3-d4-e4-f4-g4. YES! a1 is connected to b1 which is connected to the main group which reaches g4 (right edge).\n\nDoes Blue reach the left edge? a1 is in column a (left edge), and a2 is in column a. So Blue has stones on the left edge!\n\nBlue's chain: a1 (left edge) - b1 - c1 - d1 - e1 - f1 - and also d1-d2-d3-d4-e4-f4-g4 (right edge).\n\nWait, is this a winning connection? Blue connects LEFT edge (a1 or a2) to RIGHT edge (g4) through: a1-b1-c1-d1-d2-d3-d4-e4-f4-g4. That's a continuous orthogonal chain from col a to col g!\n\nBLUE WINS!\n\nLet me double-check: a1(B) \u2192 b1(B) \u2192 c1(B) \u2192 d1(B) \u2192 d2(B) \u2192 d3(B) \u2192 d4(B) \u2192 e4(B) \u2192 f4(B) \u2192 g4(B). All Blue, all orthogonally connected. a1 is on the left edge (col a), g4 is on the right edge (col g). YES, Blue wins!\n\nSo a2 is the winning move!",
       "eval": {
+        "az4000_best_move": "b4",
         "az400_best_move": "b4",
         "az1_top_prior_move": "b4",
         "chosen_move": "a2",
         "chosen_prior": 0.1709,
-        "chosen_visits_400": 129,
+        "chosen_visits_4000": 1407,
+        "chosen_visits_400": 1407,
         "chosen_expected_score": 1.0,
         "policy_rank": 2,
         "search_rank": 2,
@@ -1910,33 +1950,33 @@
         "top_candidates": [
           {
             "move": "b4",
-            "visits": 217,
+            "visits": 2355,
             "prior": 0.286,
             "expectedScore": 1.0
           },
           {
             "move": "a2",
-            "visits": 129,
+            "visits": 1407,
             "prior": 0.1709,
             "expectedScore": 1.0
           },
           {
             "move": "b3",
-            "visits": 24,
+            "visits": 99,
             "prior": 0.1676,
-            "expectedScore": 0.9201
+            "expectedScore": 0.9294
           },
           {
             "move": "c2",
-            "visits": 14,
+            "visits": 53,
             "prior": 0.1328,
-            "expectedScore": 0.8839
+            "expectedScore": 0.8947
           },
           {
             "move": "e2",
-            "visits": 7,
+            "visits": 30,
             "prior": 0.0694,
-            "expectedScore": 0.8933
+            "expectedScore": 0.9003
           }
         ]
       },

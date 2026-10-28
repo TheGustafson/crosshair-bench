@@ -5,7 +5,7 @@
   "match_type": "llm_vs_llm",
   "created_at": "2026-10-28T04:59:11.861869+00:00",
   "seed": 45100,
-  "oracle_sims": 400,
+  "oracle_sims": 4000,
   "opening": [
     "d4",
     "f4"
@@ -100,52 +100,54 @@
       "visible_thought": "The active constraint requires playing in Row 4 or Column f.\n\n**Candidate 1: e4**\nPlacing Red at e4 creates a strong central presence. It blocks Blue's potential horizontal expansion on row 4. The crosshair routes Blue to either Row 4 (a,b,c,g) or Column e (e1-e7). This gives Red good control over the center and limits Blue's options for connecting left-to-right immediately. No flips occur as there are no sandwiched stones or 2x2 patterns.\n\n**Candidate 2: f5**\nPlaying f5 extends vertically down column f. However, this keeps the stone adjacent to Blue's f4. If Blue plays f6 next, they start building a vertical chain. More importantly, it doesn't block Blue's lateral movement as effectively as e4. The crosshair routes Blue to Row 5 or Column f.\n\n**Candidate 3: d5**\nThis is illegal because d5 is not in Row 4 or Column f. Wait, d5 is in Column d? No, last move was f4. Constraint is Row 4 or Col f. d5 is neither. So d5 is invalid.\n\nLet's re-evaluate **f3**. Playing f3 puts a stone above the opponent. It connects vertically if Blue plays f2 later, but currently isolates Red from the top edge connection path slightly compared to a central play.\n\n**Best Move Analysis:**\n**e4** is superior. It occupies a critical square between Red's d4 and Blue's f4, preventing Blue from easily bridging across row 4. It forces Blue to respond in Row 4 (far away from center columns like c/d/e/g potentially) or Column e (which is neutral). It maintains Red's momentum toward the center-bottom while restricting Blue.",
       "reasoning_trace": null,
       "eval": {
-        "az400_best_move": "c4",
+        "az4000_best_move": "e4",
+        "az400_best_move": "e4",
         "az1_top_prior_move": "c4",
         "chosen_move": "e4",
         "chosen_prior": 0.0824,
-        "chosen_visits_400": 41,
-        "chosen_expected_score": 0.565,
+        "chosen_visits_4000": 2029,
+        "chosen_visits_400": 2029,
+        "chosen_expected_score": 0.5844,
         "policy_rank": 6,
-        "search_rank": 5,
+        "search_rank": 1,
         "num_legal": 11,
-        "win_prob_before": 0.5614,
-        "win_prob_after": 0.5687,
-        "delta_win_prob": 0.0073,
+        "win_prob_before": 0.5844,
+        "win_prob_after": 0.5869,
+        "delta_win_prob": 0.0025,
         "win_prob_loss": 0.0,
-        "red_win_prob_before": 0.5614,
-        "red_win_prob_after": 0.5687,
+        "red_win_prob_before": 0.5844,
+        "red_win_prob_after": 0.5869,
         "network_value_before": 0.1286,
         "top_candidates": [
           {
-            "move": "c4",
-            "visits": 77,
-            "prior": 0.1755,
-            "expectedScore": 0.5614
+            "move": "e4",
+            "visits": 2029,
+            "prior": 0.0824,
+            "expectedScore": 0.5844
           },
           {
             "move": "f2",
-            "visits": 55,
+            "visits": 517,
             "prior": 0.0726,
-            "expectedScore": 0.5751
+            "expectedScore": 0.5749
+          },
+          {
+            "move": "c4",
+            "visits": 510,
+            "prior": 0.1755,
+            "expectedScore": 0.5678
           },
           {
             "move": "f6",
-            "visits": 50,
+            "visits": 274,
             "prior": 0.0729,
-            "expectedScore": 0.5733
+            "expectedScore": 0.5706
           },
           {
             "move": "f7",
-            "visits": 43,
+            "visits": 167,
             "prior": 0.1288,
-            "expectedScore": 0.5524
-          },
-          {
-            "move": "e4",
-            "visits": 41,
-            "prior": 0.0824,
-            "expectedScore": 0.565
+            "expectedScore": 0.5515
           }
         ]
       },
@@ -193,52 +195,54 @@
       "visible_thought": "**Top candidates:**\n\n**a4** \u2013 Anchors the left edge immediately, critical for my connection goal. No flips possible (Red d4,e4 sit between a4 and f4, breaking any sandwich). Routes Red to row 4 or column a \u2014 they can play b4/c4/g4 or e-column, keeping pressure manageable.\n\n**g4** \u2013 Anchors the right edge, same row as f4 (adjacent, strengthens my right side). No flips. Routes Red to row 4 or column g. Less urgent than securing the left edge since f4 already touches the right side area.\n\n**c4** \u2013 Gets closer to connecting a\u2192f but no flips (d4,e4 are both Red, no sandwich/2x2 works). Routes Red to row 4 or column c.\n\n**Verdict:** a4 is strongest. I must claim both edges; left is unclaimed and more urgent (f4 already gives me a foothold on the right). a4 forces Red into row 4/column a, where I can respond flexibly.",
       "reasoning_trace": "Let me analyze the position. Blue has f4, Red has d4 and e4. I need to connect left (col a) to right (col g). The crosshair constraint says I must play in row 4 or column e.\n\nKey considerations:\n- I need to build a left-right connection. Currently f4 is my only stone.\n- The opponent's last move was e4, so I must play in row 4 or column e.\n\nLet me evaluate the top candidates:\n\n1. **a4**: This is on the left edge! Placing at a4 gives me a strong anchor on the left edge. In row 4, my stone at a4 and f4 - Red has d4 and e4 between them. No sandwich pattern works here (a4 and f4 with e4,d4 in between - that's two enemy stones, not one). No 2x2 patterns possible. Then Red must play in row 4 or column a. Red could play b4, c4, g4, or any e-column square. This keeps my options open.\n\n2. **e3**: Places me in column e, row 3. No flips (e4 is Red, but no sandwich or 2x2 pattern). Then Red must play in row 3 or column e. This doesn't help my connection much.\n\n3. **g4**: Right edge anchor. Same row as my f4. No flips. Red must play row 4 or column g. This gives me both edges but nothing in between, and Red controls d4,e4 in the middle.\n\n4. **c4**: Between d4(Red) and... f4(Blue). Not adjacent to f4. d4 is Red, e4 is Red, f4 is Blue. c4 with f4 - sandwich? No, need C [E] C pattern. c4 and e4 with d4 between? d4 is Red, e4 is Red - no. Actually wait: if I place at c4, then d4(Red) is sandwiched between c4(Blue) and... e4 is Red not Blue. So no sandwich. What about 2x2? c4,d4 in row 4 and c3,d3 - all empty. No.\n\nLet me reconsider a4. It's the left edge, which is crucial for my connection goal. No flips. After a4, Red plays row 4 or column a. This seems best for building toward a left-right connection.\n\nActually, let me reconsider: a4 is very strong because it anchors the left edge. Then I need to connect a4 to f4 somehow. The gap is b4,c4,d4,e4 where d4,e4 are Red. I'll need to either go around (row 3 or 5) or flip those Red stones.\n\nI think a4 is the best move - it's on the left edge, no flips occur, and it forces Red into row 4 or column a, which is manageable.",
       "eval": {
+        "az4000_best_move": "g4",
         "az400_best_move": "g4",
         "az1_top_prior_move": "g4",
         "chosen_move": "a4",
         "chosen_prior": 0.1472,
-        "chosen_visits_400": 54,
-        "chosen_expected_score": 0.4244,
+        "chosen_visits_4000": 511,
+        "chosen_visits_400": 511,
+        "chosen_expected_score": 0.4104,
         "policy_rank": 2,
-        "search_rank": 3,
+        "search_rank": 4,
         "num_legal": 10,
-        "win_prob_before": 0.4313,
-        "win_prob_after": 0.3976,
-        "delta_win_prob": -0.0337,
-        "win_prob_loss": 0.0337,
-        "red_win_prob_before": 0.5687,
-        "red_win_prob_after": 0.6024,
+        "win_prob_before": 0.4131,
+        "win_prob_after": 0.3718,
+        "delta_win_prob": -0.0413,
+        "win_prob_loss": 0.0413,
+        "red_win_prob_before": 0.5869,
+        "red_win_prob_after": 0.6282,
         "network_value_before": -0.1126,
         "top_candidates": [
           {
             "move": "g4",
-            "visits": 125,
+            "visits": 1209,
             "prior": 0.2727,
-            "expectedScore": 0.4313
-          },
-          {
-            "move": "b4",
-            "visits": 68,
-            "prior": 0.142,
-            "expectedScore": 0.4324
-          },
-          {
-            "move": "a4",
-            "visits": 54,
-            "prior": 0.1472,
-            "expectedScore": 0.4244
+            "expectedScore": 0.4131
           },
           {
             "move": "e7",
-            "visits": 41,
+            "visits": 627,
             "prior": 0.0993,
-            "expectedScore": 0.428
+            "expectedScore": 0.4161
+          },
+          {
+            "move": "b4",
+            "visits": 567,
+            "prior": 0.142,
+            "expectedScore": 0.412
+          },
+          {
+            "move": "a4",
+            "visits": 511,
+            "prior": 0.1472,
+            "expectedScore": 0.4104
           },
           {
             "move": "e1",
-            "visits": 30,
+            "visits": 427,
             "prior": 0.0933,
-            "expectedScore": 0.4182
+            "expectedScore": 0.4134
           }
         ]
       },
@@ -286,52 +290,54 @@
       "visible_thought": "Here is the evaluation of top candidates:\n\n1.  **e4**: Illegal (occupied).\n2.  **c4**: Placing here creates a linear sandwich `B . R`? No, it's `B . . R`. It places Red at c4. The opponent must play in Row 4 or Col c. This keeps pressure on the central row but doesn't immediately threaten flips.\n3.  **a5/a6/a7**: These extend Blue's column a threat if Blue plays there, but we are Red. Playing in Column a forces Blue to stay in Column a or Row 5/6/7. If I play **a5**, Blue can play **a6** or **a7** or **b5/c5...**. It blocks Blue's vertical potential but gives Blue flexibility.\n4.  **g4**: Forces Blue to play in Row 4 or Column g. Column g is empty. This spreads the game wide.\n5.  **b4**: Adjacent to Blue at a4 and Red at d4. No immediate flip. Forces Blue to Row 4 or Col b.\n\nBest strategic move is **c4**. It occupies a key central square in Row 4, preventing Blue from easily connecting left-to-right via the center later. It forces Blue to respond in Row 4 or Column c. Since Column c is mostly empty, Blue has many options, but keeping stones clustered in Row 4 helps my eventual connection strategy while denying space. However, looking at the \"Crosshair\" rule, playing **a5** might be safer defensively against Blue's column a start, but **c4** is more aggressive for board control. Let's look at flips. None obvious.\n\nActually, **e4** is occupied. **d4** is occupied.\nLet's consider **g4**. It pushes Blue to the edge.\nLet's consider **c4**. It sits between Blue a4 and Red d4.\n\nI will choose **c4** to maintain central presence and restrict Blue's horizontal expansion in the critical row.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "g4",
         "az400_best_move": "g4",
         "az1_top_prior_move": "a2",
         "chosen_move": "c4",
         "chosen_prior": 0.1217,
-        "chosen_visits_400": 28,
-        "chosen_expected_score": 0.5638,
+        "chosen_visits_4000": 115,
+        "chosen_visits_400": 115,
+        "chosen_expected_score": 0.5838,
         "policy_rank": 4,
-        "search_rank": 5,
+        "search_rank": 4,
         "num_legal": 9,
-        "win_prob_before": 0.6024,
-        "win_prob_after": 0.5845,
-        "delta_win_prob": -0.0179,
-        "win_prob_loss": 0.0179,
-        "red_win_prob_before": 0.6024,
-        "red_win_prob_after": 0.5845,
+        "win_prob_before": 0.6282,
+        "win_prob_after": 0.5974,
+        "delta_win_prob": -0.0308,
+        "win_prob_loss": 0.0308,
+        "red_win_prob_before": 0.6282,
+        "red_win_prob_after": 0.5974,
         "network_value_before": 0.1414,
         "top_candidates": [
           {
             "move": "g4",
-            "visits": 124,
+            "visits": 3104,
             "prior": 0.1911,
-            "expectedScore": 0.6024
+            "expectedScore": 0.6282
           },
           {
             "move": "a2",
-            "visits": 90,
+            "visits": 313,
             "prior": 0.1983,
-            "expectedScore": 0.5932
+            "expectedScore": 0.599
           },
           {
             "move": "a6",
-            "visits": 59,
+            "visits": 190,
             "prior": 0.1442,
-            "expectedScore": 0.5894
-          },
-          {
-            "move": "a1",
-            "visits": 29,
-            "prior": 0.0778,
-            "expectedScore": 0.5871
+            "expectedScore": 0.5949
           },
           {
             "move": "c4",
-            "visits": 28,
+            "visits": 115,
             "prior": 0.1217,
-            "expectedScore": 0.5638
+            "expectedScore": 0.5838
+          },
+          {
+            "move": "a5",
+            "visits": 77,
+            "prior": 0.0928,
+            "expectedScore": 0.5776
           }
         ]
       },
@@ -379,52 +385,54 @@
       "visible_thought": "**Analysis:**\n\n- **g4**: Connects to f4(B), giving a right-side foothold on col g. No flips (no sandwich/2x2 pattern). Routes opponent to row 4 or col g \u2014 row 4 is nearly empty (only b4 left), col g has many open squares. Good long-term connection toward goal.\n\n- **b4**: Adjacent to a4(B), extends left edge. Routes to row 4 or col b (very open column). Safer but less progress toward the right side.\n\n- **c5**: In column c, adjacent to c4(R). No flips. Routes to row 5 or col c. Helps go \"around\" the red wall but doesn't immediately advance the connection chain.\n\n**Decision:** g4 is the strongest \u2014 it anchors the right edge and builds toward the a\u2192g connection. Opponent's routing into col g or the lone empty b4 gives them limited threatening options.",
       "reasoning_trace": "Let me analyze this position. Blue needs to connect col a to col g. Current blue stones: a4, f4. Red stones: c4, d4, e4.\n\nCrosshair constraint: Row 4 or Column c. Legal moves: c1, c2, c3, b4, g4, c5, c6, c7.\n\nKey observations:\n- Row 4 has: a4(B), c4(R), d4(R), e4(R), f4(B). Red has blocked the center of row 4 with c4-d4-e4.\n- Blue needs to find a path from a to g. With row 4 blocked by red, I need to go around.\n\nLet me evaluate candidates:\n\n**g4**: If I play g4, I check for flips. Pattern: c4(R), d4(R), e4(R), f4(B), g4(B). No sandwich pattern here (need C [E] C). No 2x2 pattern. This routes opponent to row 4 or column g. Column g is mostly empty, so they'd likely play elsewhere in row 4 or column g. But this connects to f4(B) giving me a4-f4-g4 on row 4... wait, red blocks c4-d4-e4 so that's not a chain. a4 is isolated from f4-g4 by the red wall.\n\n**b4**: Routes opponent to row 4 or column b. Column b is wide open. b4 is adjacent to a4(B), extending blue left edge presence. No flips (no sandwich possible with just b4 and a4). This keeps me on the left side.\n\n**c5/c6/c7**: These are in column c. If I play c5, it's adjacent to c4(R). Routes opponent to row 5 or column c. This might help me go around the red wall by moving downward.\n\nLet me think about the strategy. I need to go a\u2192g. The red wall on row 4 (c4-d4-e4) blocks that row. I need to find an alternate path, likely going around via rows above or below.\n\nPlaying **g4** gives me a foothold on the right edge (column g) and connects to f4(B). This is important - I already have f4, and g4 connects to it. But the problem is a4 is disconnected from f4-g4 by the red wall. I'd need a path going around.\n\nActually, let me reconsider. The goal is a connected chain from col a to col g. With a4 on col a and f4-g4 on col g, I need to bridge around the red wall at c4-d4-e4. I could go: a4 \u2192 b4 \u2192 b5 \u2192 c5 \u2192 ... hmm but column c is constrained.\n\nWait - after my move, the opponent must play in the same row or column as my move. So if I play g4, opponent must play row 4 or column g. Column g has g1-g7 (all empty except g4). Row 4 has b4, g4 empty.\n\nIf I play b4, opponent plays row 4 or column b. This is more open.\n\nLet me think about **g4** more carefully. It connects to f4(B) giving me two right-side stones. It routes to row 4 or col g. Row 4 still has b4 and g4 as empties (after I place g4, empties in row 4 are b4 only... wait no, I just placed g4 so it's occupied. Row 4 empties: b4, g4\u2192now occupied). So row 4 empties after g4: b4 only. Column g empties: g1-g3, g5-g7. Opponent would likely play in column g (many choices) or b4.\n\nI think **g4** is strong - it extends my right side and forces opponent into column g or b4. But let me also consider if there's a flip. g4(B), f4(B), e4(R), d4(R), c4(R). No sandwich. No 2x2 pattern involving g4.\n\nI'll go with **g4** - it secures right edge connectivity and the opponent's routing options are manageable.",
       "eval": {
+        "az4000_best_move": "g4",
         "az400_best_move": "g4",
         "az1_top_prior_move": "g4",
         "chosen_move": "g4",
         "chosen_prior": 0.326,
-        "chosen_visits_400": 166,
-        "chosen_expected_score": 0.4155,
+        "chosen_visits_4000": 2596,
+        "chosen_visits_400": 2596,
+        "chosen_expected_score": 0.4026,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 8,
-        "win_prob_before": 0.4155,
-        "win_prob_after": 0.4036,
-        "delta_win_prob": -0.0119,
-        "win_prob_loss": 0.0119,
-        "red_win_prob_before": 0.5845,
-        "red_win_prob_after": 0.5964,
+        "win_prob_before": 0.4026,
+        "win_prob_after": 0.3892,
+        "delta_win_prob": -0.0134,
+        "win_prob_loss": 0.0134,
+        "red_win_prob_before": 0.5974,
+        "red_win_prob_after": 0.6108,
         "network_value_before": -0.107,
         "top_candidates": [
           {
             "move": "g4",
-            "visits": 166,
+            "visits": 2596,
             "prior": 0.326,
-            "expectedScore": 0.4155
+            "expectedScore": 0.4026
           },
           {
             "move": "b4",
-            "visits": 105,
+            "visits": 496,
             "prior": 0.2694,
-            "expectedScore": 0.4073
+            "expectedScore": 0.3839
           },
           {
             "move": "c7",
-            "visits": 40,
+            "visits": 275,
             "prior": 0.1043,
-            "expectedScore": 0.4048
+            "expectedScore": 0.3913
           },
           {
             "move": "c1",
-            "visits": 30,
+            "visits": 231,
             "prior": 0.0813,
-            "expectedScore": 0.4053
+            "expectedScore": 0.3922
           },
           {
             "move": "c2",
-            "visits": 30,
+            "visits": 227,
             "prior": 0.101,
-            "expectedScore": 0.3966
+            "expectedScore": 0.3882
           }
         ]
       },
@@ -472,52 +480,54 @@
       "visible_thought": "**Analysis of Top Candidates:**\n\n1.  **g7**: This is the strongest strategic move. It places a Red stone on the bottom edge (Row 7). If Blue plays g6, g5, etc., to block column g, they are forced into Row 4 or Column g. More importantly, it threatens an immediate win if Blue cannot connect left-to-right quickly. However, the primary benefit here is routing: playing g7 forces Blue to play in Row 7 or Column g. Since Column g has empty squares (g1-g6), Blue will likely play there. This keeps the game vertical for Red's next turn, allowing Red to potentially bridge from c/d/e4 up to row 1 or down to row 7 via other columns if Blue doesn't block effectively.\n2.  **b4**: Placing a stone at b4 connects directly to the existing Red chain (c4-d4-e4) horizontally? No, b4 is adjacent to c4. So `b4` creates a chain `b4-c4-d4-e4`. This extends the horizontal reach towards the left edge. Flips: None immediately as neighbors are empty or B (a4 is B, but sandwich requires C-E-C; here we have B-E-R? No, `a4(B)-b4(R)` no sandwich). Routing: Forces Blue to Row 4 or Col b. Row 4 is crowded (`B . R R R B B`). Blue must play in Col b (empty squares b1-b3, b5-b7). This opens up the center-left board for Red.\n3.  **g1**: Symmetric to g7. Connects to top edge. Forces Blue to Row 1 or Col g. Row 1 is empty. Blue can play anywhere in Row 1, which might allow them to start a left-right connection early.\n\n**Comparison:**\n`b4` is risky because it gives Blue access to the entire column b, potentially letting them build a wall or start a connection. `g7` and `g1` are similar. `g7` is slightly better because Red already has stones in the middle rows (4). Extending downwards to the target row (7) aligns with the win condition (Top-Bottom). By playing `g7`, Red establishes a foothold on the bottom edge. Blue must respond in Col g or Row 7. If Blue plays Col g (e.g., g6), Red can then look to connect `g7` upwards or utilize the crosshair constraint again. Crucially, `g7` does not flip any pieces but secures a \"virtual\" piece on the goal line.\n\nHowever, let's re-evaluate **b4**. If I play **b4**, my stones are `b4, c4, d4, e4`. This is a solid horizontal base. The opponent *must* play in Row 4 or Col b. Row 4 is full except `b4` (now occupied by me) and `f4,g4` (Blue). Wait, `a4` is Blue. So Row 4 is `B . R R R B B`. After `b4`, it's `B R R R R B B`. All squares in Row 4 are occupied! Therefore, the wildcard rule triggers? No, the constraint is \"SAME ROW OR SAME COLUMN\". If every square in that row/column is occupied, you may play ANYWHERE. But here, only Row 4 is full. Column b is empty. So Blue MUST play in Column b. This restricts Blue significantly to one column. Red can then likely jump out from Column b or use the fact that Blue is trapped in Column b to build elsewhere? Actually, if Blue plays `b1`, Red must play Row 1 or Col b. If Red plays `d1` (illegal, must be same row/col as `b1` -> Row 1 or Col b). So Red would play `b2` or `a1`... wait.\nLet's look at **g7** again. Move `g7`. Constraint: Row 7 or Col g. Col g has `g4(B), g7(R)`. Empty: g1,g2,g3,g5,g6. Row 7 is all empty. Blue can play anywhere in Row 7 or Col g. This is very open for Blue.\n\nMove **b4** forces Blue into Column b. This seems more restrictive for Blue than g7/g1 which leave two large options (full row + partial col). Restricting the opponent is good. Also, `b4` connects to the main cluster.\n\nLet's check flips for **b4**: Neighbors of b4 are a4(B), c4(R), b3(.), b5(.). No linear sandwich. No 2x2 crosscut involving b4 (needs diagonal enemy). So no flips.\n\nIf Blue plays `b3` (forced by constraint after `b4`), Red can play `b2` or `a3`/`c3`? No, Red must play same row/col as `b3`. Row 3 or Col b. Red could play `d3`? No, must be same row/col. `b3` is Col b, Row 3. Red plays `b2`. Then Blue plays `b1` or `a3`...\nThis feels like a slow grind.\n\nWhat about **g5**? Moves to g5. Constraint Row 5 or Col g. Similar to g7.\n\nActually, **b4** is the best tactical choice because it fills the critical row 4 gap, forcing the opponent into a single file (Column b). While this allows them to move vertically, it prevents them from spreading horizontally across the board easily. Red retains the strong central mass `c4-d4-e4`. From `b4`, Red can later attempt to branch out from `b` column or use the crosshair to jump back to the center if the opportunity arises (though constraints make jumping hard).\n\nWait, if Blue plays `b1`, Red must play Row 1 or Col b. Red can play `d1`? No. `b1` is Col b, Row 1. Red plays `b2`. Blue plays `b3`. Red plays `b4` (occupied). Red plays `a3`? No, must be same row/col as `b3`. Row 3 or Col b. Red plays `c3`. Now Blue must play Row 3 or Col c. This allows Red to expand into the center (c3) while keeping Blue restricted to the side/bottom. This seems promising.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "g6",
         "az400_best_move": "g6",
         "az1_top_prior_move": "g6",
         "chosen_move": "b4",
         "chosen_prior": 0.113,
-        "chosen_visits_400": 15,
-        "chosen_expected_score": 0.5206,
+        "chosen_visits_4000": 56,
+        "chosen_visits_400": 56,
+        "chosen_expected_score": 0.525,
         "policy_rank": 5,
         "search_rank": 7,
         "num_legal": 7,
-        "win_prob_before": 0.5964,
-        "win_prob_after": 0.5548,
-        "delta_win_prob": -0.0416,
-        "win_prob_loss": 0.0416,
-        "red_win_prob_before": 0.5964,
-        "red_win_prob_after": 0.5548,
+        "win_prob_before": 0.6108,
+        "win_prob_after": 0.5805,
+        "delta_win_prob": -0.0303,
+        "win_prob_loss": 0.0303,
+        "red_win_prob_before": 0.6108,
+        "red_win_prob_after": 0.5805,
         "network_value_before": 0.1029,
         "top_candidates": [
           {
             "move": "g6",
-            "visits": 142,
+            "visits": 2821,
             "prior": 0.2427,
-            "expectedScore": 0.5964
+            "expectedScore": 0.6108
           },
           {
             "move": "g2",
-            "visits": 121,
+            "visits": 573,
             "prior": 0.2302,
-            "expectedScore": 0.5944
+            "expectedScore": 0.596
           },
           {
             "move": "g7",
-            "visits": 42,
+            "visits": 199,
             "prior": 0.1281,
-            "expectedScore": 0.5779
+            "expectedScore": 0.5857
           },
           {
             "move": "g1",
-            "visits": 36,
+            "visits": 175,
             "prior": 0.1307,
-            "expectedScore": 0.57
+            "expectedScore": 0.5813
           },
           {
             "move": "g5",
-            "visits": 24,
+            "visits": 95,
             "prior": 0.0815,
-            "expectedScore": 0.5703
+            "expectedScore": 0.5767
           }
         ]
       },
@@ -565,52 +575,54 @@
       "visible_thought": "**Analysis of top candidates:**\n\n**b3:** Places a stone adjacent to the Red wall (b4). If Red responds in row 3 (e.g., c3), I can follow with d3, building a bridge above the wall. Eventually I can aim to connect a4\u2192a3\u2192b3\u2192c3... creating a path over the Red barrier. Routes opponent to row 3 or column b, keeping me near the action.\n\n**b5:** Mirror idea below the wall. Similar strategic value but slightly worse because row 5+ is further from my existing a4 connection point.\n\n**b2:** Moves too far from row 4. Harder to connect to a4 (needs a3 first, which I can't force). Lower priority.\n\n**Flip check:** None of b3/b5/b2 trigger immediate flips (no sandwich or 2x2 crosscut pattern available).\n\n**Best choice: b3** \u2014 it's closest to my a4 anchor, positions me to build a northward bridge (a4\u2192a3\u2192b3\u2192c3\u2192d3\u2192e3\u2192f3\u2192f4), and constrains Red's routing into the row I want to exploit.",
       "reasoning_trace": "Let me analyze the position:\n\n- Blue stones: a4, f4, g4 (I need to connect left edge (col a) to right edge (col g))\n- Red stones: b4, c4, d4, e4\n- Last move was b4 (Red), so I must play in Row 4 or Column b.\n- Legal moves: b1, b2, b3, b5, b6, b7\n\nMy goal is to connect col a to col g. I have a4, f4, g4. The gap is b4-e4 which are all Red. I need to flip them or find another path.\n\nKey idea: If I play on column b (rows 1-3, 5-7), I can potentially create a sandwich or crosscut to flip Red stones.\n\nLet me check flip possibilities:\n\nIf I play b3: Row 3 has only b3. Column b has b3 and b4(R). No sandwich or crosscut possible immediately.\n\nIf I play b5: Row 5 has only b5. Column b has b4(R) and b5(B). No sandwich or crosscut.\n\nIf I play b1: Same situation.\n\nHmm, wait - let me think about crosscuts. A 2x2 block with two diagonal B stones and two diagonal R stones.\n\nCurrent state around row 4: a4(B), b4(R), c4(R), d4(R), e4(R), f4(B), g4(B)\n\nIf I play b3, then I have a 2x2 block: a3(.), b3(B), a4(B), b4(R). That's not a valid crosscut pattern (need diagonal C stones and diagonal E stones).\n\nWait, crosscut: 2x2 block with two diagonal C and two diagonal E.\n- a3, b3 / a4, b4 = ., B / B, R \u2014 only one B, one R, not valid.\n- b3, c3 / b4, c4 = B, . / R, R \u2014 one B, two R, not valid.\n\nIf I play b5: a4, b4 / a5, b5 = B, R / ., B \u2014 diagonal B and R, diagonal B and . \u2014 not valid.\nb4, c4 / b5, c5 = R, R / B, . \u2014 not valid.\n\nWhat about b3 and then considering if it could set up something? No immediate flips.\n\nLet me think strategically. I have a4, f4, g4. I need to bridge the gap from a4 to f4. The Red stones b4-e4 block row 4. I need to go around them via column b or other paths.\n\nIf I play b3, then opponent must play in row 3 or column b. If they play c3, I could potentially play d3 or something... but I need to think about what's achievable.\n\nActually, let me reconsider. If I play b3:\n- My stones: a4, b3, f4, g4\n- Opponent routes from row 3 or column b\n- This extends my path: a4 connects to b3? No - a4 and b3 are diagonal, not orthogonally connected.\n\nHmm, so b3 doesn't connect to a4 orthogonally.\n\nWhat if I play b5? b5 connects to a5? No, a5 is empty. b5 doesn't connect to a4 either.\n\nWait - I need orthogonal connections. a4 is connected to what? Only b4 (which is Red). So a4 is isolated unless I can flip b4 or connect via a3/a5.\n\nIf I could play a3 or a5, that would connect to a4. But a3 and a5 aren't legal moves (must be in row 4 or column b).\n\nSo my only real option is column b. Let me think about which square in column b is best.\n\nb3: Creates a stone that could connect upward. If Red later plays c3, I could try d3... but this is getting speculative.\n\nb5: Similar but downward.\n\nWhat about b1 or b2? b2 connects to b1 (if I play both) and potentially to a2 if I can get there.\n\nThe key question is: which column b move gives me the best routing advantage and potential for future flips?\n\nb3 seems solid - it's close to the row 4 battle. If I later get to play a3, I connect a3-a4. \n\nb5 similarly - if I later get to play a5, I connect a5-a4.\n\nLet me think about what Red will do. After my move at b3, Red must play in row 3 or column b. If Red plays c3, I might be able to play d3 (row 3 constraint), etc.\n\nActually, I think b3 is good because it positions me to potentially build a bridge above the Red wall. Let me go with b3.",
       "eval": {
+        "az4000_best_move": "b7",
         "az400_best_move": "b7",
         "az1_top_prior_move": "b7",
         "chosen_move": "b3",
         "chosen_prior": 0.0325,
-        "chosen_visits_400": 3,
-        "chosen_expected_score": 0.3627,
+        "chosen_visits_4000": 13,
+        "chosen_visits_400": 13,
+        "chosen_expected_score": 0.3219,
         "policy_rank": 6,
         "search_rank": 6,
         "num_legal": 6,
-        "win_prob_before": 0.4452,
-        "win_prob_after": 0.2684,
-        "delta_win_prob": -0.1768,
-        "win_prob_loss": 0.1768,
-        "red_win_prob_before": 0.5548,
-        "red_win_prob_after": 0.7316,
+        "win_prob_before": 0.4195,
+        "win_prob_after": 0.2474,
+        "delta_win_prob": -0.1721,
+        "win_prob_loss": 0.1721,
+        "red_win_prob_before": 0.5805,
+        "red_win_prob_after": 0.7526,
         "network_value_before": -0.0324,
         "top_candidates": [
           {
             "move": "b7",
-            "visits": 142,
+            "visits": 1467,
             "prior": 0.3769,
-            "expectedScore": 0.4452
+            "expectedScore": 0.4195
           },
           {
             "move": "b1",
-            "visits": 139,
+            "visits": 1362,
             "prior": 0.3575,
-            "expectedScore": 0.4467
+            "expectedScore": 0.4192
           },
           {
             "move": "b6",
-            "visits": 59,
+            "visits": 608,
             "prior": 0.1073,
-            "expectedScore": 0.4568
+            "expectedScore": 0.4228
           },
           {
             "move": "b2",
-            "visits": 53,
+            "visits": 534,
             "prior": 0.0848,
-            "expectedScore": 0.4605
+            "expectedScore": 0.4238
           },
           {
             "move": "b5",
-            "visits": 4,
+            "visits": 16,
             "prior": 0.041,
-            "expectedScore": 0.3438
+            "expectedScore": 0.3139
           }
         ]
       },
@@ -660,52 +672,54 @@
       "visible_thought": "The current board state is critical for Red. Row 4 is fully occupied, blocking the primary vertical path. The active constraint forces play to Row 3 or Column b.\n\n1.  **b2**: This is the strongest candidate. Placing R at b2 connects directly to the existing R stone at b4? No, b3 is Blue. So b2 does not connect vertically to b4 immediately due to the block at b3. However, it places a Red stone in Column b, threatening future connectivity if b3 flips. More importantly, let's look at **c3**.\n2.  **c3**: Placing R at c3 creates a potential bridge from the main Red cluster (b4-e4) upwards. It sits adjacent to d3/e3/f3/g3 and b3/a3. If we place R at c3, does it flip anything?\n    *   Check Linear Sandwich: Is there a pattern `R [B] R`?\n        *   Row 3: `. B . . . . .` -> No.\n        *   Col c: `. . R R . . .` (Wait, c4 is R). Above c4 is c3. If I play c3, below is c4(R), above is empty. No sandwich.\n        *   Wait, look at **d3**. If I play d3, it is between nothing vertically yet.\n    *   Let's re-evaluate **b2**. If I play b2, next move must be Row 2 or Col b.\n    *   Let's evaluate **a3**. If I play a3, it is next to b3(B). No immediate flip.\n    *   Let's evaluate **c3** again. It connects to c4(R). It creates a vertical threat. But the key is routing.\n\nActually, look at **e3**. Or **f3**? No, f4 is Blue.\n\nLet's look at **b2** vs **c3**.\nIf I play **c3**, the opponent must play Row 3 or Col c.\nIf I play **b2**, the opponent must play Row 2 or Col b.\n\nConsider **c3**. It establishes a foothold in the center-top. Does it force a flip? No.\nConsider **d3**. Same.\n\nIs there a move that flips stones?\nCheck **c3**: Neighbors are b3(B), d3(.), c2(.), c4(R). No sandwich.\nCheck **b2**: Neighbors are b1(.), b3(B), a2(.), c2(.). No sandwich.\n\nHowever, **b2** keeps pressure on column b. If Blue ignores column b, Red can eventually push through. But Blue controls b3. To break b3, Red needs to sandwich it. `R B R` in Col b requires stones at b2 and b4. We have b4. If we play **b2**, we create the threat of flipping b3 if we ever get another stone at... wait, b3 is already flanked by b2 and b4? No, b3 is between b2 and b4.\nCurrent Col b:\nb1: .\nb2: .\nb3: B\nb4: R\nb5: .\n\nIf I play **b2**, the configuration becomes `b2(R) - b3(B) - b4(R)`.\nThis forms a linear sandwich `R [B] R` along the column!\nRule: \"Your stone and another C stone orthogonally sandwich a single enemy stone... `C [E] C` -> `C C C`\".\nSo playing **b2** will flip **b3** to Red.\n\nAfter flipping b3 to Red:\nRed stones: b2, b3, b4, c4, d4, e4.\nBlue stones: a4, f4, g4.\nThe chain b2-b3-b4-c4-d4-e4 is connected.\nDoes this win? No, need to reach row 1 or 7.\nBut now Red has a massive connected group in rows 2-4.\nNext turn constraint: Last move was b2. Opponent plays Row 2 or Col b.\nCol b is now all Red (b2,b3,b4). Row 2 has b2(R).\nOpponent must play in Row 2 or Col b.\nIf they play in Col b, they must play b1, b5, b6, b7 (empty squares in col b).\nIf they play b1, they block my path to top edge via column b.\nIf they play b5, they block bottom.\n\nPlaying **b2** is clearly the best move as it converts an enemy stone to my color, expanding my territory and connectivity significantly.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "a3",
         "az400_best_move": "a3",
         "az1_top_prior_move": "a3",
         "chosen_move": "b2",
         "chosen_prior": 0.1321,
-        "chosen_visits_400": 24,
-        "chosen_expected_score": 0.6704,
+        "chosen_visits_4000": 78,
+        "chosen_visits_400": 78,
+        "chosen_expected_score": 0.682,
         "policy_rank": 2,
         "search_rank": 2,
         "num_legal": 11,
-        "win_prob_before": 0.7316,
-        "win_prob_after": 0.6836,
-        "delta_win_prob": -0.048,
-        "win_prob_loss": 0.048,
-        "red_win_prob_before": 0.7316,
-        "red_win_prob_after": 0.6836,
+        "win_prob_before": 0.7526,
+        "win_prob_after": 0.6994,
+        "delta_win_prob": -0.0532,
+        "win_prob_loss": 0.0532,
+        "red_win_prob_before": 0.7526,
+        "red_win_prob_after": 0.6994,
         "network_value_before": 0.1111,
         "top_candidates": [
           {
             "move": "a3",
-            "visits": 349,
+            "visits": 3820,
             "prior": 0.3622,
-            "expectedScore": 0.7316
+            "expectedScore": 0.7526
           },
           {
             "move": "b2",
-            "visits": 24,
+            "visits": 78,
             "prior": 0.1321,
-            "expectedScore": 0.6704
-          },
-          {
-            "move": "d3",
-            "visits": 4,
-            "prior": 0.063,
-            "expectedScore": 0.5625
+            "expectedScore": 0.682
           },
           {
             "move": "b6",
-            "visits": 4,
+            "visits": 16,
             "prior": 0.0731,
-            "expectedScore": 0.5298
+            "expectedScore": 0.5538
+          },
+          {
+            "move": "d3",
+            "visits": 15,
+            "prior": 0.063,
+            "expectedScore": 0.5716
           },
           {
             "move": "b1",
-            "visits": 4,
+            "visits": 15,
             "prior": 0.0773,
-            "expectedScore": 0.5214
+            "expectedScore": 0.5254
           }
         ]
       },
@@ -753,52 +767,54 @@
       "visible_thought": "Looking at my position, I need to bridge the gap between a4 and f4/g4 on row 4, but those squares are blocked by Red. I'll need to build a path via another row or use flips strategically.\n\n**f2**: Places a stone near my f4 anchor, creating a column-f presence. Routes opponent to row 2 or column f. No flips available. Keeps pressure near my right-side cluster.\n\n**e2**: Advances toward the center, creating a foothold closer to my right group. Routes opponent to row 2 or column e (where e4 is Red). Gives opponent moderate flexibility but positions me well for future row 3/5 connections.\n\n**b5**: Extends my column b presence. Routes opponent to row 5 (entirely empty \u2014 very flexible for opponent) or column b. This gives opponent too many options and doesn't directly help bridge a\u2192g.\n\nf2 and e2 are similar; e2 is slightly more central and creates a better stepping stone toward connecting left-right through rows 2-3. But f2 reinforces my f4/g4 group and limits opponent's useful column options (f4 is mine, so column f is somewhat constrained).\n\nI'll go with **f2** to strengthen my right flank and keep the opponent's routing somewhat restricted.",
       "reasoning_trace": "Let me analyze the board state and my options as Blue.\n\nCurrent board:\n- Red stones: b2, b3, b4, c4, d4, e4\n- Blue stones: a4, f4, g4\n- I need to connect left (col a) to right (col g) with orthogonal connections.\n\nMy last move was b2, which flipped b3 to Red. Wait, let me re-read the history.\n\nMove history: d4 f4 e4 a4 c4 g4 b4 b3 b2\n\nPly 1: Red plays d4\nPly 2: Blue plays f4\nPly 3: Red plays e4\nPly 4: Blue plays a4\nPly 5: Red plays c4\nPly 6: Blue plays g4\nPly 7: Red plays b4\nPly 8: Blue plays b3\nPly 9: Red plays b2 (flipped: b3)\n\nWait, the history says 9 plies but I count: d4, f4, e4, a4, c4, g4, b4, b3, b2 = 9 moves. Red moved 1st, so Red played plies 1,3,5,7,9 and Blue played plies 2,4,6,8. That's 5 Red moves and 4 Blue moves. But the board shows Red has 6 stones and Blue has 3. The flip caused b3 to become Red.\n\nSo now it's my turn (Blue). Active constraint: Row 2 or Column b (from opponent's move b2).\n\nLegal moves: b1, a2, c2, d2, e2, f2, g2, b5, b6, b7\n\nMy goal: connect a4 to g4 (or some left-to-right path). Currently I have a4, f4, g4. I need to bridge the gap between a4 and f4 on row 4, or create an alternate path.\n\nRow 4 has: B R R R R B B - so a4 is Blue, then c4,d4,e4 are Red, then f4,g4 are Blue. I can't place on row 4 since those squares are taken.\n\nLet me think about what moves help me:\n\n1. **f2** - On row 2, col f. Let me check flips. Neighbors of f2: e2, g2, f1, f3. f3 is empty, e2 is empty, g2 is empty, f1 is empty. No linear sandwich. 2x2 check: f2,e1,g1,f1 (all empty or not relevant), f2,e2,e1,f1, f2,g2,f1,g1, f2,g2,e3... wait, let me check 2x2 blocks containing f2.\n   - Block (e1,f1,e2,f2): all empty except f2 - no\n   - Block (e2,f2,e3,f3): all empty - no\n   - Block (f1,g1,f2,g2): all empty - no\n   - Block (f2,g2,f3,g3): all empty - no\n   So f2 just places a stone. Routes opponent to row 2 or column f.\n\n2. **g2** - On row 2, col g. Neighbors: f2, g1, g3. All empty. No flips. Routes opponent to row 2 or column g. Column g only has g4 occupied, so opponent gets g1,g2(taken),g3,g5,g6,g7. This gives opponent flexibility.\n\n3. **e2** - On row 2, col e. Neighbors: d2, f2, e1, e3. All empty. No flips. Routes opponent to row 2 or column e. Column e has e4 (Red). So opponent gets e1,e3,e5,e6,e7 and row 2 options.\n\n4. **d2** - Neighbors: c2, e2, d1, d3. All empty. No flips. Routes to row 2 or column d. Column d has d4 (Red).\n\n5. **b5** - Column b, row 5. Neighbors: b4 (Red), b6, a5, c5. Check linear sandwich: b5(B) ... b4(R) ... b3(R) ... b2(R) - no sandwich pattern. b5(B), b4(R), b3(R), b2(R) - looking for B_R_B pattern. b5 is B, b4 is R, need b3 to be B - it's R. No sandwich. What about other directions? a5 is empty, c5 is empty. No flips. Routes opponent to row 5 or column b. Row 5 is all empty - gives opponent lots of options.\n\n6. **c2** - Neighbors: b2(R), d2, c1, c3. Linear sandwich: c2(B), b2(R)... need a2 to be B - it's empty. So no sandwich from this placement. What about c2(B), b2(R), a2(empty) - no. 2x2 checks: block(b1,c1,b2,c2): b1 empty, c1 empty, b2(R), c2(B) - not a valid 2x2 crosscut. Block(b2,c2,b3,c3): b2(R), c2(B), b3(R), c3 empty - not complete. No flips. Routes opponent to row 2 or column c. Column c has c4(R).\n\nLet me think strategically. I need to connect left to right. Currently a4 and f4-g4 are my anchors on row 4. The gap is c4, d4, e4 (all Red). I can't place on row 4 directly (those squares are occupied).\n\nWhat if I try to build a connection via another row? If I could get stones on, say, row 3 or row 5 that connect a-side to g-side...\n\nActually, let me think about f2 more carefully. If I play f2, I have stones at a4, f2, f4, g4. That doesn't help much.\n\nWhat about trying to get stones on row 3? b3 is Red. If I play somewhere that could flip it...\n\nLet me reconsider. The key issue is I have 3 stones (a4, f4, g4) and need to bridge. \n\nWhat about **e2**? If I play e2, routes opponent to row 2 or column e. Column e has e4(R). If opponent plays on column e, say e3, then I'm constrained to row 3 or column e again.\n\nActually, let me think about what happens if I play **b1**. Column b, row 1. Neighbors: a1, c1, b2(R). Linear sandwich: b1(B), b2(R)... need c1 to be B - it's empty. No sandwich. Routes opponent to row 1 or column b. This keeps opponent on column b which is heavily contested.\n\nLet me think about **g2** again. If I play g2, I have g4, g2 on column g. Opponent must play row 2 or column g. If opponent plays column g, say g3 or g5, then I'm on that row/column.\n\nActually, what about **f2**? I play f2, then I have f4, f2 on column f. If opponent plays f3 (column f), then f3 is constrained to row 3 or column f. \n\nHmm, let me think differently. What's my best path to connect a to g?\n\nOption 1: Bridge via row 5 or row 3 somehow.\nOption 2: Use flips to convert some row 4 Red stones.\n\nFor flips on row 4: I need C_E_C pattern. Currently row 4 is: B(a4) R(c4) R(d4) R(e4) B(f4) B(g4). \nIf I could place at b4... it's already Red. I can't.\nIf I place at... hmm.\n\nWhat about 2x2 crosscuts? Block (a4,b4,a3,b3): a4(B), b4(R), a3(empty), b3(R) - not valid.\nBlock (b4,c4,b3,c3): b4(R), c4(R), b3(R), c3(empty) - all same color except empty.\nBlock (c4,d4,c3,d3): all empty on row 3 except... no.\nBlock (e4,f4,e3,f3): e4(R), f4(B), e3(empty), f3(empty) - not valid.\nBlock (f4,g4,f3,g3): f4(B), g4(B), f3(empty), g3(empty) - no enemy.\n\nSo no immediate flips available in the crosshair options.\n\nLet me just pick the move that best advances my position and limits opponent options.\n\n**e2** - routes opponent to row 2 or column e (e4 is Red, so column e options: e1, e3, e5, e6, e7). This seems reasonable.\n\n**f2** - routes opponent to row 2 or column f (f4 is Blue, so column",
       "eval": {
-        "az400_best_move": "b1",
+        "az4000_best_move": "b7",
+        "az400_best_move": "b7",
         "az1_top_prior_move": "b1",
         "chosen_move": "f2",
         "chosen_prior": 0.0583,
-        "chosen_visits_400": 26,
-        "chosen_expected_score": 0.319,
+        "chosen_visits_4000": 257,
+        "chosen_visits_400": 257,
+        "chosen_expected_score": 0.2947,
         "policy_rank": 8,
-        "search_rank": 6,
+        "search_rank": 7,
         "num_legal": 10,
-        "win_prob_before": 0.3164,
-        "win_prob_after": 0.2804,
-        "delta_win_prob": -0.036,
-        "win_prob_loss": 0.036,
-        "red_win_prob_before": 0.6836,
-        "red_win_prob_after": 0.7196,
+        "win_prob_before": 0.3006,
+        "win_prob_after": 0.2578,
+        "delta_win_prob": -0.0428,
+        "win_prob_loss": 0.0428,
+        "red_win_prob_before": 0.6994,
+        "red_win_prob_after": 0.7422,
         "network_value_before": -0.2814,
         "top_candidates": [
           {
-            "move": "b1",
-            "visits": 100,
-            "prior": 0.2458,
-            "expectedScore": 0.3164
-          },
-          {
             "move": "b7",
-            "visits": 62,
+            "visits": 1060,
             "prior": 0.0994,
-            "expectedScore": 0.329
+            "expectedScore": 0.3006
           },
           {
-            "move": "d2",
-            "visits": 55,
-            "prior": 0.1474,
-            "expectedScore": 0.3139
+            "move": "b1",
+            "visits": 977,
+            "prior": 0.2458,
+            "expectedScore": 0.2935
           },
           {
             "move": "a2",
-            "visits": 52,
+            "visits": 402,
             "prior": 0.1418,
-            "expectedScore": 0.3132
+            "expectedScore": 0.289
           },
           {
-            "move": "e2",
-            "visits": 45,
-            "prior": 0.0892,
-            "expectedScore": 0.3228
+            "move": "d2",
+            "visits": 379,
+            "prior": 0.1474,
+            "expectedScore": 0.2874
+          },
+          {
+            "move": "b6",
+            "visits": 359,
+            "prior": 0.0372,
+            "expectedScore": 0.3001
           }
         ]
       },
@@ -846,52 +862,54 @@
       "visible_thought": "**Evaluation:**\n\n1.  **f5**: Placing R at f5 connects to the main group via column f? No, f4 is Blue. However, it sits in row 5. Does it flip anything? The neighbors are empty or off-board. It routes Blue to Row 5 or Col f. If Blue plays e5, they threaten nothing immediately but block potential expansion. More importantly, this move isolates Red from the immediate win path unless we can bridge b-c-d-e to f-g. Currently, the chain stops at e4. We need a connection from e4/f4 area to the right or bottom.\n2.  **e2**: This is in Row 2 (active constraint). Placing R at e2 creates a sandwich with d2? No, d2 is empty. With c2? Empty. It doesn't flip. It routes Blue to Row 2 or Col e.\n3.  **d2**: In Row 2. Neighbors: c2(empty), e2(empty), d1(empty), d3(empty). No flips. Routes Blue to Row 2 or Col d.\n4.  **g2**: In Row 2. Neighbor f2(B) and g1/g3/empty. No sandwich. Routes Blue to Row 2 or Col g.\n\nLet's look for a flip opportunity.\nThe active constraint is Row 2 or Col f.\nLegal moves include **f3**.\nIf I play **f3** (Col f):\n- Neighbors: f2(B), f4(B), e3(.), g3(.).\n- Linear Sandwich? No C stone adjacent to B on both sides vertically/horizontally yet.\n- 2x2 Crosscut? Check blocks involving f3.\n    - Block e2-f2 / e3-f3: E2 is empty.\n    - Block f2-g2 / f3-g3: G2 empty.\n    - Block e3-f3 / e4-f4: E4(R), F4(B), E3(.), F3(R). Pattern: `R B / . R`? No, that's not two diagonal Rs.\n    - Wait, look at **e4** and **f3**. They are diagonal. Do we have another pair?\n    - Look at block d3-e3 / d4-e4. Not relevant to f3.\n    \nActually, let's re-evaluate **f5**.\nIf I play f5, Blue must play Row 5 or Col f.\nBlue is strong on the right (f4, g4). Red needs to break through or connect top-bottom.\nRed has b2-b3-b4-c4-d4-e4. This is a solid horizontal line at row 4, plus vertical up to b2.\nTo win, Red needs to connect to Row 1 or Row 7.\nConnecting to Row 7 requires moving down from the current mass.\nCurrent mass ends at row 4 (mostly) and row 2 (b2).\nPlaying **f6**? Not legal (must be Row 2 or Col f).\nPlaying **f7** (Col f)?\n- Place R at f7.\n- Neighbors: f6(empty), g7(empty), e7(empty).\n- No flips.\n- Routes Blue to Row 7 or Col f.\n- If Blue plays e7, they occupy a key square.\n- But wait, if I play **f3**, does it help?\n  \nLet's look at **c2** (Row 2).\nPlace R at c2.\nNeighbors: b2(R), d2(empty), c1(empty), c3(empty).\nNo flips.\nRoutes Blue to Row 2 or Col c.\nBlue could play c3, blocking my vertical advance from b3/c4 area?\nMy vertical advance is mostly at col b (b2-b3-b4).\nI need ...",
       "reasoning_trace": null,
       "eval": {
-        "az400_best_move": "f1",
+        "az4000_best_move": "f6",
+        "az400_best_move": "f6",
         "az1_top_prior_move": "g2",
         "chosen_move": "f3",
         "chosen_prior": 0.039,
-        "chosen_visits_400": 2,
-        "chosen_expected_score": 0.5515,
+        "chosen_visits_4000": 9,
+        "chosen_visits_400": 9,
+        "chosen_expected_score": 0.5546,
         "policy_rank": 10,
         "search_rank": 10,
         "num_legal": 10,
-        "win_prob_before": 0.7196,
-        "win_prob_after": 0.5131,
-        "delta_win_prob": -0.2065,
-        "win_prob_loss": 0.2065,
-        "red_win_prob_before": 0.7196,
-        "red_win_prob_after": 0.5131,
+        "win_prob_before": 0.7422,
+        "win_prob_after": 0.5401,
+        "delta_win_prob": -0.2021,
+        "win_prob_loss": 0.2021,
+        "red_win_prob_before": 0.7422,
+        "red_win_prob_after": 0.5401,
         "network_value_before": 0.4034,
         "top_candidates": [
           {
+            "move": "f6",
+            "visits": 2735,
+            "prior": 0.0758,
+            "expectedScore": 0.7422
+          },
+          {
             "move": "f1",
-            "visits": 101,
+            "visits": 445,
             "prior": 0.1603,
-            "expectedScore": 0.7196
+            "expectedScore": 0.7209
           },
           {
             "move": "c2",
-            "visits": 74,
+            "visits": 293,
             "prior": 0.1326,
-            "expectedScore": 0.7168
-          },
-          {
-            "move": "f6",
-            "visits": 60,
-            "prior": 0.0758,
-            "expectedScore": 0.7243
+            "expectedScore": 0.7182
           },
           {
             "move": "f7",
-            "visits": 49,
+            "visits": 153,
             "prior": 0.1055,
-            "expectedScore": 0.7113
+            "expectedScore": 0.7111
           },
           {
             "move": "g2",
-            "visits": 42,
+            "visits": 135,
             "prior": 0.1714,
-            "expectedScore": 0.6844
+            "expectedScore": 0.6866
           }
         ]
       },
@@ -939,52 +957,54 @@
       "visible_thought": "**Analysis:**\n\n**f5** \u2013 Connects to f4, building a vertical chain (f4-f5). Routes opponent to row 5 or column f. Row 5 is fully empty, giving Blue room to later expand toward the left side. No sandwich risk for Blue.\n\n**g3** \u2013 Connects to g4 via column g, but routes opponent to row 3 or column g. Row 3 has Red b3 and Red f3 already, making further row-3 progress dangerous and cramped.\n\n**e3** \u2013 Adds a stone to row 3 but routes opponent to row 3 or column e. The row 3 constraint lets Red easily block Blue's lateral progress, and e3 has no immediate connection to Blue's existing stones.\n\nf5 is best: solid connection, opponent forced into open territory (row 5/col f) where Blue maintains initiative, and Blue can later pivot leftward via row 5 toward a5 to bridge the a4 connection.",
       "reasoning_trace": "Let me analyze the position. Blue needs to connect left edge (col a) to right edge (col g). Currently Blue has a4, f4, g4, f2. The blue stones on row 4 (a4, f4, g4) are close to connecting but there's a gap (b4, c4, d4, e4 are all Red). The f2 and f4 are connected vertically through f3 which is Red - wait, f3 is Red so f2 and f4 aren't directly connected.\n\nBlue has: a4, f2, f4, g4. f4 and g4 are adjacent (connected). f2 is isolated from f4 because f3 is Red between them.\n\nCrosshair constraint: Must play in row 3 or column f.\nLegal moves: f1, a3, c3, d3, e3, g3, f5, f6, f7.\n\nKey consideration: Blue needs to connect a4 to the right side. The path along row 4 is blocked by Red (b4, c4, d4, e4). Blue needs to find another route.\n\nLet me think about which moves could help:\n\n1. **f5** - This connects to f4 (same column f), extending Blue downward from f4. But then Blue must play in row 5 or column f next, routing opponent to row 5 or col f. f4 and f5 would be connected. Still doesn't help reach a4.\n\n2. **g3** - This is in column g (not relevant to row 3/col f constraint... wait g3 is in row 3! Yes it is a legal move). g3 connects to g4 vertically. \n\n3. **e3** - In row 3, connects to f3? No, e3 is adjacent to f3 (Red). Would e3 sandwich anything?\n\nLet me check for flips:\n- The board has Red on b2, b3, f3, b4, c4, d4, e4.\n- Blue on f2, a4, f4, g4.\n\nFor f5 placement:\n- Linear sandwich: f5 and f3(R) and f4(B)? No, that's f3 R, f4 B, f5 B - no sandwich.\n- Wait, sandwich pattern is C [E] C. So f4(B) [f3(R)] f2(B) - that's already on the board but wasn't triggered. Actually f4 and f2 sandwich f3! Let me check: f2, f3, f4 are B, R, B. That's a linear sandwich pattern! Did this flip happen on turn 12?\n\nLooking at move history: Turn 10 was f2. At that time f3 was already Red (placed turn 9). And f4 was Blue (placed turn 3). So placing f2 should have triggered: f4(B) [f3(R)] f2(B) - sandwich! f3 should flip to B. But the board shows f3 as R and the note says \"no flips\" on turn 12 (f3).\n\nWait, let me re-read. The last move f3 was Red's move, and \"no flips\" means Red's f3 didn't cause flips. Let me recheck the history more carefully.\n\nMove history: d4(R) f4(B) e4(R) a4(B) c4(R) g4(B) b4(R) b3(R) b2(R) f2(B) f3(R)\n\nWhen f2 was played (move 10, Blue): f4 is Blue, f3 is... what was f3 at that time? Red played f3 on move 11. So at the time of f2, f3 was empty. So no sandwich. Correct.\n\nNow after f3(R) was played, is there a sandwich? f4(B) [f3(R)] - what's on the other side of f3 in that line? f2(B). So f4(B) [f3(R)] f2(B) - YES, this is a linear sandwich! But the note says \"no flips.\" Hmm, maybe I'm misreading the rules - the sandwich requires the placing player's stones. Since Red just placed f3, the sandwich should be R [E] R. But there's no R on both sides of an enemy. So Red placing f3 doesn't create a Red sandwich. Blue's stones f2 and f4 sandwich f3, but the rule says \"After placing a stone of your color C, enemy stones flip to C\" - so the sandwich check is from the perspective of the player who just moved. Since Red just moved, only Red sandwich patterns count. f2(B) [f3(R)] f4(B) is a Blue sandwich but Blue didn't just move, so no flip. That makes sense.\n\nOK so now Blue must move. Let me consider key moves:\n\n**f5**: Connects to f4. Blue would have f2, f4, f5, g4. Route to opponent: row 5 or column f. This seems somewhat central but doesn't directly advance toward connecting a4 to the right side.\n\n**g3**: Connects to g4. Blue has a4, f2, f4, g3, g4. Routes opponent to row 3 or column g. \n\n**e3**: Blue plays e3. Check sandwiches: Row 3 has b3(R), e3(B), f3(R) - no sandwich. Column e has e4(R) above e3(B) - no sandwich. Routes opponent to row 3 or column e.\n\n**d3**: Similar analysis. Routes to row 3 or column d.\n\nThe main strategic issue: Blue's a4 is isolated from f4/g4 by a wall of Red stones on b4,c4,d4,e4. Blue needs to go around - either through row 3, row 5, or by capturing some of those Red stones.\n\n**f5** looks promising: It connects f4 downward. Then if Blue later gets e5 or similar, could route toward a4 via row 5. But routes opponent to row 5 or col f.\n\nActually, let me think about which move gives Blue the best path forward. If Blue plays f5, Blue connects f4-f5. The opponent is routed to row 5 or column f. If Red plays row 5 (say c5 or d5 or e5), Blue can respond in row 5. This could help Blue build a row 5 connection from a5 to g5... but a4 needs to connect to row 5 first.\n\nHmm, what if Blue plays **e3**? This gives Blue a stone on row 3. Then opponent goes to row 3 or column e. If opponent plays column e, Blue can play row 3. This might let Blue build up along row 3 toward a4 (a4 is in column a, row 4, so a3 would connect).\n\nWhat about playing to connect through row 3 to reach column a? If Blue gets a3 (adjacent to a4), and then has stones in row 3, that's a path. But currently there's no way to get both a3 and a path from e3 to a3 in row 3 (b3, c3, d3, e3 path - b3 is Red!).\n\nI think **f5** is the best move - it solidly connects to f4, doesn't get sandwiched (check: after f5, any linear sandwich of Blue? f4(B) f5(B) - no enemy between them. g4(B) is not in line with f5 sandwich). Routes opponent to row 5 or column f, which are relatively open and controllable.\n\nActually wait, let me reconsider. What if I play **f5** and then the opponent is forced to row 5 or col f. If they play f6 or f7, I can play row 5 and potentially connect toward a side. If they play on row 5, I play column f and extend down. This gives me flexibility.\n\nI'll go with f5.",
       "eval": {
+        "az4000_best_move": "e3",
         "az400_best_move": "e3",
         "az1_top_prior_move": "e3",
         "chosen_move": "f5",
         "chosen_prior": 0.1415,
-        "chosen_visits_400": 8,
-        "chosen_expected_score": 0.2816,
+        "chosen_visits_4000": 36,
+        "chosen_visits_400": 36,
+        "chosen_expected_score": 0.2924,
         "policy_rank": 2,
         "search_rank": 2,
         "num_legal": 9,
-        "win_prob_before": 0.4869,
-        "win_prob_after": 0.2603,
-        "delta_win_prob": -0.2266,
-        "win_prob_loss": 0.2266,
-        "red_win_prob_before": 0.5131,
-        "red_win_prob_after": 0.7397,
+        "win_prob_before": 0.4599,
+        "win_prob_after": 0.2598,
+        "delta_win_prob": -0.2001,
+        "win_prob_loss": 0.2001,
+        "red_win_prob_before": 0.5401,
+        "red_win_prob_after": 0.7402,
         "network_value_before": -0.2474,
         "top_candidates": [
           {
             "move": "e3",
-            "visits": 366,
+            "visits": 3862,
             "prior": 0.4551,
-            "expectedScore": 0.4869
+            "expectedScore": 0.4599
           },
           {
             "move": "f5",
-            "visits": 8,
+            "visits": 36,
             "prior": 0.1415,
-            "expectedScore": 0.2816
+            "expectedScore": 0.2924
           },
           {
             "move": "g3",
-            "visits": 7,
+            "visits": 27,
             "prior": 0.1106,
-            "expectedScore": 0.2885
+            "expectedScore": 0.2825
           },
           {
             "move": "a3",
-            "visits": 6,
+            "visits": 20,
             "prior": 0.0575,
-            "expectedScore": 0.3652
+            "expectedScore": 0.3374
           },
           {
             "move": "f1",
-            "visits": 4,
+            "visits": 17,
             "prior": 0.0719,
-            "expectedScore": 0.2853
+            "expectedScore": 0.2808
           }
         ]
       },
@@ -1032,52 +1052,54 @@
       "visible_thought": "The active constraint requires playing in Row 5 or Column f.\n\n1.  **f6**: This is a strong candidate. Placing Red at f6 connects directly to the existing Red stone at f3 via column f (assuming no blockers, which there aren't between f3 and f6). More importantly, it extends the vertical line. If I play f6, the opponent must play in Row 6 or Column f. Since f7 is empty, they might block f7. However, f6 creates a threat of connecting top-to-bottom if the chain b2-b3-b4... isn't blocked laterally. Let's look closer. Actually, f6 doesn't immediately connect to row 1 or 7.\n2.  **e5**: Playing e5 places a stone adjacent to d4 (Row 4/Col e connection? No, d4 is col d). e5 is in Row 5 and Col e. It connects orthogonally to nothing currently (d5/e4 are empty/B?). Wait, e4 is Red. So e5 connects to e4. This builds a vertical bridge from the central cluster towards the bottom. After e5, opponent plays Row 5 or Col e. They can block e6/e7 or play elsewhere in Row 5.\n3.  **f7**: Directly targets the bottom edge connection potential in column f. Connects to f5? No, f5 is Blue. f6 is empty. So f7 is isolated unless f6 is played first. Bad move.\n4.  **b5**: Connects to b4 (Red). Builds the left-side vertical chain b2-b3-b4-b5. Opponent plays Row 5 or Col b. If they play b6/b7, they block my path. But b5 is safe for now.\n\nLet's re-evaluate **e5**. It connects to e4 (Red). The chain is e4-e5. To win, Red needs to reach row 7. From e5, next step is e6 then e7. Or branching out.\nLet's look at **f6**. It is in Col f. Neighbors: f5 (Blue), f7 (Empty), e6 (Empty), g6 (Empty). It does NOT connect to any Red stones currently because f3 is separated by f4/f5 (Blue). So f6 is an isolated stone. Isolated stones are weak.\n\n**e5** connects to e4. **c5** connects to c4. **d5** connects to d4. **g5** connects to g4 (Blue - bad). **a5** connects to a4 (Blue - bad). **b5** connects to b4.\n\nAmong connected moves (b5, c5, d5, e5), which is best?\nPlaying **e5** puts pressure on the center-right. Opponent response in Row 5 or Col e.\nPlaying **d5** is very central.\nPlaying **c5** links to the strong b-c-d-e cluster.\n\nConsider flips.\nIf I play **e5**: Board has e4(R), e5(R). No sandwich possible with single enemy. No 2x2 crosscut likely immediate.\nOpponent must play Row 5 or Col e.\nIf Opponent plays **e6**, they block my vertical progress.\nIf Opponent plays **d5** (occupied? No, d5 is empty). Wait, d5 is a legal move for me. If I don't take it, they might.\n\nLet's look at **f1**. Legal? Yes, Col f. Connects to nothing (f2 is Blue). Isolated. Bad.\n\nBest strategy is to extend the solid red wall in Row 4 downwards.\nMove **d5**: Connects to d4.\nMove **e5**: Connects to e4.\nMove **c5**: Connects to c4.\nMove **b5**: Connects to b4.\n\nIf I play **e5**, the opponent can play **e6** to block. Then I am stuck in Col e or Row 6.\nIf I play **d5**, opponent plays **d6**.\n\nIs there a way to force a flip or better routing?\nLook at **f3** (R) and **f4** (B) and **f5** (B).\nIf I could place a stone at f2 or f6 to sandwich? f2 is B. f6 is empty.\nPlacing R at f6: Sandwiches? No. f5 is B, f7 is empty. No C [E] C.\n\nLet's prioritize connectivity. The group b2-b3-b4-c4-d4-e4-f3 is somewhat connected but fragmented.\nActually, f3 is isolated from the main group by f4(B).\nThe main group is b2,b3,b4,c4,d4,e4.\nExtending this group down is key.\n**e5** seems good as it is near the right side where blue is concentrated (f2,f4,f5,g4). Blue is trying to block the right. Red should perhaps push left or center.\n**c5** or **d5** are safer centrally.\n\nLet's check **c5**. Connects to c4. Opponent plays Row 5 or Col c.\nIf Opponent plays **c6**, blocks.\n\nWhat about **f6**? Although isolated, it forces opponent to Row 6 or Col f.\nIf Opponent plays **f7**, they block bottom.\nIf Opponent plays **e6**, they occupy space.\n\nActually, **e5** is strong because it threatens to connect e4-e5-e6-e7.\nBut let's look at **d5**.\nI will choose **e5** to maintain pressure on the central-right axis, forcing the opponent to respond in that crowded area.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "d5",
         "az400_best_move": "d5",
         "az1_top_prior_move": "f1",
         "chosen_move": "e5",
         "chosen_prior": 0.0313,
-        "chosen_visits_400": 2,
-        "chosen_expected_score": 0.606,
+        "chosen_visits_4000": 10,
+        "chosen_visits_400": 10,
+        "chosen_expected_score": 0.6101,
         "policy_rank": 9,
         "search_rank": 9,
         "num_legal": 9,
-        "win_prob_before": 0.7397,
-        "win_prob_after": 0.5592,
-        "delta_win_prob": -0.1805,
-        "win_prob_loss": 0.1805,
-        "red_win_prob_before": 0.7397,
-        "red_win_prob_after": 0.5592,
+        "win_prob_before": 0.7402,
+        "win_prob_after": 0.5778,
+        "delta_win_prob": -0.1624,
+        "win_prob_loss": 0.1624,
+        "red_win_prob_before": 0.7402,
+        "red_win_prob_after": 0.5778,
         "network_value_before": 0.3877,
         "top_candidates": [
           {
             "move": "d5",
-            "visits": 143,
+            "visits": 1958,
             "prior": 0.193,
-            "expectedScore": 0.7397
+            "expectedScore": 0.7402
           },
           {
             "move": "f1",
-            "visits": 92,
+            "visits": 1166,
             "prior": 0.2402,
-            "expectedScore": 0.7224
-          },
-          {
-            "move": "b5",
-            "visits": 79,
-            "prior": 0.1436,
-            "expectedScore": 0.734
+            "expectedScore": 0.7351
           },
           {
             "move": "c5",
-            "visits": 25,
+            "visits": 382,
             "prior": 0.0766,
-            "expectedScore": 0.7161
+            "expectedScore": 0.7354
+          },
+          {
+            "move": "b5",
+            "visits": 260,
+            "prior": 0.1436,
+            "expectedScore": 0.7199
           },
           {
             "move": "f7",
-            "visits": 22,
+            "visits": 87,
             "prior": 0.1165,
-            "expectedScore": 0.6855
+            "expectedScore": 0.6847
           }
         ]
       },
@@ -1125,52 +1147,54 @@
       "visible_thought": "**Top Candidates:**\n\n**g5**: Directly connects to my f5 stone, extending the f4-f5-g4-g5 chain and anchoring to the right edge (col g). Routes opponent to row 5 or column g \u2014 very constrained. Strong positional gain.\n\n**a5**: Extends my left-edge presence from a4, but doesn't immediately help bridge toward the right-side group. Routes opponent to row 5 or col a \u2014 similar constraint.\n\n**e6**: In column e, adjacent to red e5 above. No flip patterns triggered (e5 is sandwiched between e4 red and e6 blue \u2014 no linear sandwich with another blue). Weak connection to my groups.\n\n**Best pick**: g5 gives me a connected group touching the right edge, and severely limits opponent's routing options (row 5 is mostly empty, col g is narrow). The critical bridge problem (a4 \u2192 right group) remains, but g5 is the best forward step.",
       "reasoning_trace": "Let me analyze the position as Blue (B), trying to connect left edge (col a) to right edge (col g).\n\nCurrent board:\n- Blue stones: f2, a4, f4, g4, f5\n- Red stones: b2, b3, f3, b4, c4, d4, e4, e5\n\nI must play in Row 5 or Column e.\n\nLegal moves: e1, e2, e3, a5, b5, c5, d5, g5, e6, e7\n\nLet me think about my connection strategy. I have a4 connected to nothing vertically/horizontally that reaches g. f2-f4-f5 are connected vertically in column f. g4 connects to f4. So I have: a4... (gap) ...f4-g4-f5-f2\n\nI need to connect a4 to the f-column chain somehow. The gap is b4, c4, d4, e4 - all red. That's a solid red wall.\n\nAlternative: I could try going around. From a4, I need to reach the right side. Let me think about paths:\n- a4 -> a5 -> ... -> right side (but row 5 has e5 red blocking)\n- a4 -> a3 -> ... -> right side through rows 2-3\n- From f5, going down: e6, f6, g6, etc.\n\nLet me evaluate candidates:\n\n**a5**: Connects to a4 (vertical). Must play row 5 or col a next. From a5, opponent must play row 5 or col a. Row 5 is quite open. This extends my left connection but doesn't help much toward the right.\n\n**e6**: Connects to e5? No, e5 is red. e6 is in column e and row 6. From f5, if I play e6... e6 is adjacent to e5 (red) and f6 (empty). Not immediately connected to my chain.\n\n**c5**: Row 5, column c. Adjacent to d5, b5. Not connected to my current stones directly.\n\n**d5**: Row 5, column d. Adjacent to c5, e5 (red), d4 (red). Not connected to me.\n\n**b5**: Row 5, column b. Adjacent to a5, c5, b4 (red). Not connected to me.\n\n**g5**: Row 5, column g. Adjacent to f5 (blue!). This connects directly to my f5 stone! g5 also touches the right edge (col g). So g5 connects my chain to the right edge!\n\nWith g5: I have g4-f4-f2 chain, and f5-g5. Now f4-f5-g5-g4 is connected. But a4 is still isolated. I need to connect a4 to this chain.\n\nWait, let me check: g4 is blue, g5 would be blue. f4-f5 are blue and connected. So g4-g5-f5-f4 is all connected. And g4 touches the right edge. But I still need a4 connected to this group.\n\nThe gap between a4 and f4 in row 4 is blocked by red (b4, c4, d4, e4). So I need an alternative path from a4 to the f4 group.\n\nPath could go: a4 -> a5 -> ... -> f5? That's a long way. Or a4 -> a3 -> ... \n\nActually, for a win I need to connect col a to col g. I have g4 (right edge) connected to f4-f5-g5. I need a4 (left edge) connected to this group.\n\n**g5** looks strong - extends toward right edge connectivity and routes opponent to row 5 or column g.\n\n**e3**: Column e, row 3. Adjacent to e4 (red), f3 (red), d3 (empty), e2 (empty). Not connected to me. Routes opponent to row 3 or column e.\n\nLet me think about **g5** more carefully. After g5, opponent must play row 5 or col g. That's very constrained - they could play a5, b5, c5, d5, e5(occupied), f5(occupied), g1-g7. This gives them limited options in row 5 and column g.\n\nI'll go with **g5** as my primary candidate.",
       "eval": {
+        "az4000_best_move": "e3",
         "az400_best_move": "e3",
         "az1_top_prior_move": "e3",
         "chosen_move": "g5",
         "chosen_prior": 0.137,
-        "chosen_visits_400": 8,
-        "chosen_expected_score": 0.2418,
+        "chosen_visits_4000": 36,
+        "chosen_visits_400": 36,
+        "chosen_expected_score": 0.2564,
         "policy_rank": 3,
         "search_rank": 3,
         "num_legal": 10,
-        "win_prob_before": 0.4408,
-        "win_prob_after": 0.2292,
-        "delta_win_prob": -0.2116,
-        "win_prob_loss": 0.2116,
-        "red_win_prob_before": 0.5592,
-        "red_win_prob_after": 0.7708,
+        "win_prob_before": 0.4222,
+        "win_prob_after": 0.2256,
+        "delta_win_prob": -0.1966,
+        "win_prob_loss": 0.1966,
+        "red_win_prob_before": 0.5778,
+        "red_win_prob_after": 0.7744,
         "network_value_before": -0.364,
         "top_candidates": [
           {
             "move": "e3",
-            "visits": 363,
+            "visits": 3845,
             "prior": 0.4525,
-            "expectedScore": 0.4408
+            "expectedScore": 0.4222
           },
           {
             "move": "d5",
-            "visits": 17,
+            "visits": 64,
             "prior": 0.1971,
-            "expectedScore": 0.3037
+            "expectedScore": 0.2885
           },
           {
             "move": "g5",
-            "visits": 8,
+            "visits": 36,
             "prior": 0.137,
-            "expectedScore": 0.2418
+            "expectedScore": 0.2564
           },
           {
             "move": "a5",
-            "visits": 4,
+            "visits": 18,
             "prior": 0.0763,
-            "expectedScore": 0.236
+            "expectedScore": 0.2419
           },
           {
             "move": "e2",
-            "visits": 3,
+            "visits": 17,
             "prior": 0.0522,
-            "expectedScore": 0.2715
+            "expectedScore": 0.2913
           }
         ]
       },
@@ -1218,52 +1242,54 @@
       "visible_thought": "**Analysis of Top Candidates:**\n\n1.  **e5 is occupied**, so we look at Row 5/Col g options.\n2.  **g3**: Placing Red at g3 connects to f3 (Red). This creates a potential vertical line on col g, but more importantly, it forces Blue to play in Row 3 or Col g. If Blue plays g4 (occupied) or other spots, the routing is manageable. However, g3 doesn't immediately threaten a win or strong block.\n3.  **a5**: Connects nothing directly. Forces Blue to Row 5 or Col a. Weak.\n4.  **d5**: Places Red at d5. It is adjacent to e5 (Red). This extends the central mass. Crucially, if placed at d5, it forces Blue to play in Row 5 or Column d. Column d has empty squares d1-d3, d6-d7. Row 5 has a5-c5, g5(occupied). This gives Blue many safe spots.\n5.  **f5 is Blue**. We need to break Blue's connection or build our own.\n6.  **Best Move: c5**. Placing Red at c5. Adjacent to b5(empty), d5(empty), c4(Red). It strengthens the center. But let's look at **g2**.\n    *   **g2**: Red at g2. Adjacent to g3(empty), g1(empty), f2(Blue). No immediate flip. Forces Blue to Row 2 or Col g. Col g has g1, g3, g6, g7 empty. Row 2 has a2-e2 empty.\n    *   Let's check **b5**. Red at b5. Adjacent to b4(Red), b3(Red). This solidifies the left-center column. It forces Blue to Row 5 or Col b. Col b has b1, b6, b7 empty. Row 5 has a5, c5, d5, g5(Blue).\n    *   Actually, look at **e5** is Red. The chain b2-b3-b4-c4-d4-e4-e5 is strong. We need to reach row 7.\n    *   Consider **d5**. Red at d5. Sandwiches? No.\n    *   Consider **c5**. Red at c5.\n    *   Let's evaluate **g6**. Red at g6. Forces Blue to Row 6 or Col g. Col g is dangerous for us as Blue has g4,g5. If we play g6, Blue might play g7 blocking bottom.\n    *   **Critical Insight**: Look at **f5** (Blue) and **g5** (Blue). They form a horizontal threat. We must stop them from connecting left.\n    *   Play **e6**? Not legal (must be row 5 or col g).\n    *   Play **d5**. Legal. Forces Blue to Row 5 or Col d. If Blue plays d6, they are moving down. If Blue plays a5, they move left.\n    *   Play **c5**. Legal.\n    *   Let's try **b5**. Red at b5. Connected to b4. Now Red has b2,b3,b4,b5. A vertical wall on col b. Forces Blue to Row 5 or Col b. If Blue plays a5, they connect to a4. If Blue plays c5, they isolate.\n    *   Actually, **d5** seems best to maintain central control and block potential blue expansion through row 5 towards the right side which is already blocked by Blue stones anyway. Wait, Blue wants Left-Right. Blue has a4...g5. They are close to connecting! a4-B, ... f4-B, g4-B, g5-B. They have a4, f4, g4, g5. Missing b4,c4,d4,e4 (all Red). So Blue is split.\n    *   Our goal is Top-Bottom. We have e5. We need e6/e7 or similar.\n    *   **e5** is Red. If we play **e6**, not legal.\n    *   We must play Row 5 or Col g.\n    *   If we play **g6**: Red at g6. Next player MUST play Row 6 or Col g. Col g has g1,g2,g3,g7 open. Row 6 has a6-f6 open. This allows Blue to potentially jump around.\n    *   If we play **d5**: Red at d5. Next player MUST play Row 5 or Col d. Col d has d1,d2,d3,d6,d7 open. Row 5 has a5,b5,c5 open (e5 red, f5 blue, g5 blue). This restricts Blue significantly on the right side of Row 5.\n    *   Also, d5 connects to e5.\n    \n    Let's check flips for **d5**:\n    Board: d4(R), e4(R), e5(R).\n    Place R at d5.\n    Check Linear Sandwich:\n    - Horizontal: c5(.), d5(R), e5(R). No enemy between.\n    - Vertical: d4(R), d5(R), d6(.). No enemy between.\n    No flips.\n    \n    Routing: Blue must play in Row 5 (a5,b5,c5) or Col d (d1,d2,d3,d6,d7).\n    If Blue plays d6, they go down. If Blue plays a5, they stay left.\n    This seems solid.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "d5",
         "az400_best_move": "d5",
         "az1_top_prior_move": "d5",
         "chosen_move": "d5",
         "chosen_prior": 0.2711,
-        "chosen_visits_400": 236,
-        "chosen_expected_score": 0.7708,
+        "chosen_visits_4000": 3234,
+        "chosen_visits_400": 3234,
+        "chosen_expected_score": 0.7744,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 9,
-        "win_prob_before": 0.7708,
-        "win_prob_after": 0.7747,
-        "delta_win_prob": 0.0039,
-        "win_prob_loss": 0.0,
-        "red_win_prob_before": 0.7708,
-        "red_win_prob_after": 0.7747,
+        "win_prob_before": 0.7744,
+        "win_prob_after": 0.7686,
+        "delta_win_prob": -0.0058,
+        "win_prob_loss": 0.0058,
+        "red_win_prob_before": 0.7744,
+        "red_win_prob_after": 0.7686,
         "network_value_before": 0.4907,
         "top_candidates": [
           {
             "move": "d5",
-            "visits": 236,
+            "visits": 3234,
             "prior": 0.2711,
-            "expectedScore": 0.7708
+            "expectedScore": 0.7744
           },
           {
             "move": "c5",
-            "visits": 42,
+            "visits": 233,
             "prior": 0.1461,
-            "expectedScore": 0.7364
-          },
-          {
-            "move": "g1",
-            "visits": 26,
-            "prior": 0.0745,
-            "expectedScore": 0.7469
+            "expectedScore": 0.7501
           },
           {
             "move": "b5",
-            "visits": 25,
+            "visits": 181,
             "prior": 0.132,
-            "expectedScore": 0.7093
+            "expectedScore": 0.7447
           },
           {
             "move": "g6",
-            "visits": 24,
+            "visits": 106,
             "prior": 0.079,
-            "expectedScore": 0.7402
+            "expectedScore": 0.7435
+          },
+          {
+            "move": "g7",
+            "visits": 101,
+            "prior": 0.1015,
+            "expectedScore": 0.7306
           }
         ]
       },
@@ -1311,52 +1337,54 @@
       "visible_thought": "**Top candidates:**\n\n**a5** \u2014 Blue on col a, row 5. Connects vertically to a4, solidifying col a presence. Critically, this forces Red to row 5 or col a. Col a has a4(B), a5(B) \u2014 very few open squares. Row 5 has d5(R), e5(R), f5(B), g5(B) \u2014 only b5, c5 left for Red. Severely restricts opponent. No flips.\n\n**b5** \u2014 Forces Red to row 5 or col b. Col b is all Red (b2,b3,b4), so Red is nearly locked to row 5 again (a5, c5). Also restrictive but gives Blue no col a anchor and no connection to existing Blue stones.\n\n**d3** \u2014 Middle of the board but isolated from Blue clusters. Gives Red row 3 or col d \u2014 row 3 is mostly open (a3,c3,e3,g3), too much freedom for Red. Poor.\n\n**Best: a5.** It locks Blue onto col a and dramatically limits Red's next move to at most 2 squares (b5 or c5), effectively controlling the game tempo.",
       "reasoning_trace": "Let me analyze the current position and evaluate the top candidate moves.\n\nCurrent board:\n```\n    a   b   c   d   e   f   g\n 1 | . | . | . | . | . | . | . |\n 2 | . | R | . | . | . | B | . |\n 3 | . | R | . | . | . | R | . |\n 4 | B | R | R | R | R | B | B |\n 5 | . | . | . | R | R | B | B |\n 6 | . | . | . | . | . | . | . |\n 7 | . | . | . | . | . | . | . |\n```\n\nBlue stones: f2, a4, f4, g4, f5, g5\nRed stones: b2, b3, f3, b4, c4, d4, e4, d5, e5\n\nBlue needs to connect col a to col g. Currently a4 is on col a, f4/f5/g4/g5 are on the right side. Need to bridge the gap.\n\nLegal moves (Row 5 or Column d): d1, d2, d3, a5, b5, c5, d6, d7\n\nLet me evaluate candidates:\n\n**a5**: Places on col a, row 5. This gives Blue a stone on col a (a5). Now a4 and a5 are connected vertically. From a4, we can go right through row 4... but row 4 is blocked by Red stones (b4, c4, d4, e4). From a5, we can try to go right along row 5, but d5 and e5 are Red. Hmm, but the connection path would need to go through row 5 or other rows.\n\nActually, a5 connects to a4 vertically. a4 is on col a. So Blue has a column a presence. Now Blue needs to get from col a to col g. The right side has f4, f5, g4, g5. So the gap is between a4/a5 and the f4/f5/g4/g5 cluster.\n\n**b5**: Empty on row 5. Connects to... nothing immediately on row 5 (d5 and e5 are Red to the right, a5 is empty to the left). Not very useful.\n\n**c5**: Similar to b5, isolated.\n\n**d2, d3, d6, d7**: Column d moves. d3 is adjacent to d4 (Red) and could sandwich things. d6 is near nothing useful.\n\nLet me think about **a5** more carefully. It's on col a, row 5. It connects to a4 (col a). So Blue has a4-a5 on col a. The right cluster is f4-f5-g4-g5. The gap is rows 4-5, cols b-e (all Red on row 4, d5-e5 Red on row 5). So a5 doesn't immediately help connect to the right side.\n\nWhat about flips? a5 placement - check for linear sandwich along row 5: a5 is Blue, next right is b5 (empty), no sandwich. Along col a: a4 (Blue) above a5 (Blue), no enemy between them. No flips.\n\n**d3**: Places Blue at d3. Check row 3: e3 is empty, c3 is empty. Check col d: d4 is Red, d2 is empty above. No sandwich at d3 immediately. But d3 is in the middle area. It would connect to... nothing Blue nearby. f3 is Red. Hmm.\n\nActually wait - if I play d3, then Red's constraint is row 3 or col d. Row 3 has b3(R), f3(R). Col d has d4(R), d5(R). This gives Red limited options on row 3 and col d.\n\n**d6**: Row 6 or col d for Red. Row 6 is all empty, col d has d4, d5 occupied. Red gets lots of freedom on row 6 - bad.\n\nLet me reconsider **a5**. After a5, Red must play row 5 or col a. Col a has a4(B), a5(B). Row 5 has d5(R), e5(R), f5(B), g5(B). So Red's options: b5, c5 on row 5; or a1, a2, a3, a6, a7 on col a. This severely restricts Red! That's good.\n\nAnd a5 gives me a strong col a anchor. Even though the path to the right is blocked for now, restricting Red is valuable.\n\nLet me also check **b5**: After b5, Red plays row 5 or col b. Col b has b2(R), b3(R), b4(R) - all Red! So Red would be constrained to row 5: a5, c5, d5 is R, e5 is R... Red options on row 5: a5, c5 (d5, e5 occupied by R; f5, g5 by B). That's quite restrictive too.\n\nActually b5 connects to nothing Blue (a4 is not orthogonally adjacent to b5). It's just a positional move.\n\nI think **a5** is the best choice - it restricts Red severely and gives Blue a col a foothold.\n\n<move>a5</move>",
       "eval": {
-        "az400_best_move": "a5",
+        "az4000_best_move": "d1",
+        "az400_best_move": "d1",
         "az1_top_prior_move": "a5",
         "chosen_move": "a5",
         "chosen_prior": 0.3321,
-        "chosen_visits_400": 129,
-        "chosen_expected_score": 0.2253,
+        "chosen_visits_4000": 896,
+        "chosen_visits_400": 896,
+        "chosen_expected_score": 0.2189,
         "policy_rank": 1,
-        "search_rank": 1,
+        "search_rank": 3,
         "num_legal": 8,
-        "win_prob_before": 0.2253,
-        "win_prob_after": 0.2202,
-        "delta_win_prob": -0.0051,
-        "win_prob_loss": 0.0051,
-        "red_win_prob_before": 0.7747,
-        "red_win_prob_after": 0.7798,
+        "win_prob_before": 0.2314,
+        "win_prob_after": 0.2047,
+        "delta_win_prob": -0.0267,
+        "win_prob_loss": 0.0267,
+        "red_win_prob_before": 0.7686,
+        "red_win_prob_after": 0.7953,
         "network_value_before": -0.5202,
         "top_candidates": [
           {
-            "move": "a5",
-            "visits": 129,
-            "prior": 0.3321,
-            "expectedScore": 0.2253
+            "move": "d1",
+            "visits": 1278,
+            "prior": 0.1216,
+            "expectedScore": 0.2314
           },
           {
             "move": "d7",
-            "visits": 111,
+            "visits": 1226,
             "prior": 0.152,
-            "expectedScore": 0.2431
+            "expectedScore": 0.2299
+          },
+          {
+            "move": "a5",
+            "visits": 896,
+            "prior": 0.3321,
+            "expectedScore": 0.2189
           },
           {
             "move": "d2",
-            "visits": 64,
+            "visits": 416,
             "prior": 0.1364,
-            "expectedScore": 0.2318
-          },
-          {
-            "move": "d1",
-            "visits": 55,
-            "prior": 0.1216,
-            "expectedScore": 0.2298
+            "expectedScore": 0.2208
           },
           {
             "move": "d3",
-            "visits": 15,
+            "visits": 67,
             "prior": 0.0559,
-            "expectedScore": 0.2101
+            "expectedScore": 0.1981
           }
         ]
       },
@@ -1404,52 +1432,54 @@
       "visible_thought": "**Candidate Analysis:**\n\n1.  **a2**: Connects to the left edge (Blue's goal), but Red doesn't care about Blue's connectivity directly, only blocking/forcing. Placing at a2 forces Blue to play in Row 2 or Column a.\n    *   *Flips*: None immediate.\n    *   *Routing*: Blue must respond in row 2 or col a. This keeps pressure on the top-left area but doesn't immediately advance Red's central chain toward row 7.\n\n2.  **b5**: Extends Red's vertical presence near the center. Forces Blue to play in Row 5 or Column b.\n    *   *Flips*: Sandwiches? No. Crosscut? No.\n    *   *Routing*: Blue can easily block further downward expansion by playing c5 or d6/e6 if available, or simply stay in row 5. It feels passive.\n\n3.  **c5**: Plays in Row 5. Forces Blue to play in Row 5 or Column c.\n    *   *Strategic Value*: This move prepares a potential connection between the existing Red stones at d5/e5 and future moves down column c or row 5. More importantly, it restricts Blue's options significantly. If Blue plays in Col c (e.g., c2, c3...), they are away from the main battle. If Blue stays in Row 5, they might be forced into awkward positions.\n    *   *Wait*, let's look closer at **a1**. It connects Top-Left. Not helpful for Red.\n    *   Let's re-evaluate **a2** vs **a3** vs **a6/a7**.\n    *   Actually, look at **d4-f4-b4...** The board is tight.\n    *   Consider **a2**. If I play a2, Blue is constrained to Row 2 or Col a.\n    *   Consider **b5**. Blue constrained to Row 5 or Col b.\n    *   Consider **c5**. Blue constrained to Row 5 or Col c.\n\n    Let's look for flips.\n    Current Red: b2,b3,f3,b4,c4,d4,e4,d5,e5.\n    Current Blue: f2,a4,f4,g4,a5,f5,g5.\n\n    If I play **a2**:\n    - No flips.\n    - Opponent must play in Row 2 or Col a.\n    - Row 2 has empty squares: a2(occupied), b2(R), c2(.), d2(.), e2(.), f2(B), g2(.).\n    - Col a has empty squares: a1(.), a2(R), a3(.), a4(B), a5(B), a6(.), a7(.).\n    - Blue can play c2, d2, e2, g2, a1, a3, a6, a7.\n\n    If I play **b5**:\n    - Opponent must play in Row 5 or Col b.\n    - Row 5 empties: b5(R), c5(.), f5(B), g5(B). a5(B), d5(R), e5(R).\n    - Col b empties: b1(.), b2(R), b3(R), b4(R), b5(R), b6(.), b7(.).\n    - Blue can play c5, b1, b6, b7. (Note: a5, f5, g5 are occupied).\n    - This severely limits Blue! Only 4 options.\n\n    If I play **c5**:\n    - Opponent must play in Row 5 or Col c.\n    - Row 5 empties: b5(.), c5(R), f5(B)... wait, if I play c5, Row 5 empties are b5, and others are full/blocked?\n    - Row 5: a5(B), b5(.), c5(R), d5(R), e5(R), f5(B), g5(B). Empty: b5.\n    - Col c: c1(.), c2(.), c3(.), c4(R), c5(R), c6(.), c7(.).\n    - Blue can play b5, c1, c2, c3, c6, c7.\n\n    **b5** seems best because it leaves Blue with very few legal moves (only b1, b6, b7, c5). Wait, if I play b5, Blue must play in Row 5 or Col b.\n    Row 5 remaining empty: c5. (a5 B, b5 R, d5 R, e5 R, f5 B, g5 B). So Blue MUST play c5 if they choose Row 5.\n    Col b remaining empty: b1, b6, b7. (b2 R, b3 R, b4 R, b5 R).\n    So Blue's options after b5 are: c5, b1, b6, b7.\n    \n    If Blue plays **c5**:\n    Then I am forced to play in Row 5 or Col c.\n    Row 5 is now FULL (a5B, b5R, c5B, d5R, e5R, f5B, g5B).\n    So I MUST play in Col c.\n    Col c empties: c1, c2, c3, c6, c7.\n    This gives me freedom in Col c to build a vertical wall or connect downwards.\n\n    If Blue plays **b1**, **b6**, or **b7**, they are isolated on the edges.\n\n    Playing **b5** creates a strong constraint. It blocks the left side of my central mass and forces Blue into predictable lanes.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "c5",
         "az400_best_move": "c5",
         "az1_top_prior_move": "a2",
         "chosen_move": "b5",
         "chosen_prior": 0.1506,
-        "chosen_visits_400": 40,
-        "chosen_expected_score": 0.7479,
+        "chosen_visits_4000": 326,
+        "chosen_visits_400": 326,
+        "chosen_expected_score": 0.7788,
         "policy_rank": 3,
-        "search_rank": 5,
+        "search_rank": 4,
         "num_legal": 7,
-        "win_prob_before": 0.7798,
-        "win_prob_after": 0.7808,
-        "delta_win_prob": 0.001,
-        "win_prob_loss": 0.0,
-        "red_win_prob_before": 0.7798,
-        "red_win_prob_after": 0.7808,
+        "win_prob_before": 0.7953,
+        "win_prob_after": 0.7794,
+        "delta_win_prob": -0.0159,
+        "win_prob_loss": 0.0159,
+        "red_win_prob_before": 0.7953,
+        "red_win_prob_after": 0.7794,
         "network_value_before": 0.5506,
         "top_candidates": [
           {
             "move": "c5",
-            "visits": 105,
+            "visits": 2137,
             "prior": 0.2256,
-            "expectedScore": 0.7798
-          },
-          {
-            "move": "a7",
-            "visits": 97,
-            "prior": 0.1408,
-            "expectedScore": 0.7875
-          },
-          {
-            "move": "a2",
-            "visits": 69,
-            "prior": 0.2307,
-            "expectedScore": 0.7633
+            "expectedScore": 0.7953
           },
           {
             "move": "a1",
-            "visits": 47,
+            "visits": 690,
             "prior": 0.0794,
-            "expectedScore": 0.7853
+            "expectedScore": 0.7943
+          },
+          {
+            "move": "a7",
+            "visits": 337,
+            "prior": 0.1408,
+            "expectedScore": 0.7806
           },
           {
             "move": "b5",
-            "visits": 40,
+            "visits": 326,
             "prior": 0.1506,
-            "expectedScore": 0.7479
+            "expectedScore": 0.7788
+          },
+          {
+            "move": "a2",
+            "visits": 309,
+            "prior": 0.2307,
+            "expectedScore": 0.7662
           }
         ]
       },
@@ -1499,46 +1529,48 @@
       "visible_thought": "**c5** is the top candidate: it sandwiches b5(R) between a5(B) and c5(B), flipping b5 to Blue. This creates a solid left-edge chain a4-a5-b5-c5. After the flip, Row 5 is completely full, so the opponent must play in Column c (empty: c1, c2, c3, c6, c7) \u2014 a constrained response.\n\n**b6/b7** place stones in column b but trigger no flips and give the opponent wide routing (Row 6/7 is empty), wasting a turn.\n\n**b1** similarly yields no flips and leaves opponent free on Row 1.\n\nc5 maximizes material gain and restricts the opponent.",
       "reasoning_trace": "Let me analyze the position. I'm Blue, playing on turn 18 (ply 17). The opponent last played b5, so I must play in Row 5 or Column b.\n\nLegal moves: b1, c5, b6, b7\n\nLet me evaluate each:\n\n**c5**: Places Blue at c5. Row 5 has B at a5, R at b5, empty at c5, R at d5, R at e5, B at f5, B at g5. \n- Sandwich check: a5(B), b5(R), c5(B) - that's a sandwich! b5 flips to B.\n- Then with b5 flipped to B: b5(B), d5(R), e5(R)... no sandwich there.\n- 2x2 crosscut: Let me check around c5. Squares b4(R), c4(R), b5(now B), c5(B) - that's E E / B B, not a crosscut pattern.\n- Squares d4(R), e4(R), d5(R), e5(R) - not relevant to c5.\n- Squares b4(R), c4(R), b5(B), c5(B) - not crosscut.\n- After flipping b5 to B, check cascades: b5(B), c5(B), d5(R), e5(R), f5(B), g5(B). No sandwich of single enemy between two B along row 5 (d5 and e5 are two enemies in a row, not single).\n- Column c: c5(B), c4(R), c3(empty), c2(empty), c1(empty). No sandwich.\n- After flips, Blue would have: a4, b5, c5, f2, f4, g4, a5, f5, g5. \n- Connection check: a4-a5-b5-c5 connects to... a4 connects to f4? No, not orthogonally. Let me trace: a5-b5-c5 is a chain. a5-a4 is a chain. But c5 needs to reach g5. d5 and e5 are still R. So no connection yet.\n- Routing: After playing c5, opponent must play Row 5 or Column c. Row 5 empty squares: none (all occupied after flip). Column c empty squares: c1, c2, c3, c6, c7. So opponent plays in Column c.\n\n**b6**: Places Blue at b6. Column b: b1(empty), b2(R), b3(R), b4(R), b5(R), b6(B), b7(empty). Row 6 is all empty.\n- Sandwich: b6(B) with b5(R)... need another B on other side. b7 is empty, b5 is R. No sandwich along column b for single enemy.\n- Along row 6: all empty, no sandwich.\n- 2x2 crosscut around b6: a5(B), b5(R), a6(empty), b6(B) - not crosscut. b5(R), c5(empty), b6(B), c6(empty) - not crosscut.\n- Routing: Opponent plays Row 6 or Column b. Column b empty: b1, b7. Row 6: all empty (a6-g6). Lots of options for opponent.\n\n**b7**: Similar to b6 but at row 7. Less useful.\n\n**b1**: In column b, row 1. Row 1 all empty. Column b has R at b2-b5.\n- Sandwich: b1(B), b2(R)... need B at other side, which is empty/nothing above. No sandwich.\n- Routing: Opponent plays Row 1 or Column b. Column b empty: b6, b7. Row 1: all empty.\n\nI think **c5** is the strongest because it flips b5 to Blue, strengthening the left side connection. After the flip, Blue has a4-a5-b5-c5 which connects the left edge to the center. The opponent gets routed to column c (since row 5 is full), which limits their options.",
       "eval": {
+        "az4000_best_move": "c5",
         "az400_best_move": "c5",
         "az1_top_prior_move": "c5",
         "chosen_move": "c5",
         "chosen_prior": 0.5793,
-        "chosen_visits_400": 215,
-        "chosen_expected_score": 0.2192,
+        "chosen_visits_4000": 2068,
+        "chosen_visits_400": 2068,
+        "chosen_expected_score": 0.2206,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 4,
-        "win_prob_before": 0.2192,
-        "win_prob_after": 0.2103,
-        "delta_win_prob": -0.0089,
-        "win_prob_loss": 0.0089,
-        "red_win_prob_before": 0.7808,
-        "red_win_prob_after": 0.7897,
+        "win_prob_before": 0.2206,
+        "win_prob_after": 0.2118,
+        "delta_win_prob": -0.0088,
+        "win_prob_loss": 0.0088,
+        "red_win_prob_before": 0.7794,
+        "red_win_prob_after": 0.7882,
         "network_value_before": -0.5056,
         "top_candidates": [
           {
             "move": "c5",
-            "visits": 215,
+            "visits": 2068,
             "prior": 0.5793,
-            "expectedScore": 0.2192
+            "expectedScore": 0.2206
           },
           {
             "move": "b1",
-            "visits": 112,
+            "visits": 1497,
             "prior": 0.207,
-            "expectedScore": 0.2302
+            "expectedScore": 0.2273
           },
           {
             "move": "b7",
-            "visits": 65,
+            "visits": 400,
             "prior": 0.1427,
-            "expectedScore": 0.2258
+            "expectedScore": 0.2173
           },
           {
             "move": "b6",
-            "visits": 8,
+            "visits": 35,
             "prior": 0.071,
-            "expectedScore": 0.1425
+            "expectedScore": 0.1424
           }
         ]
       },
@@ -1586,52 +1618,54 @@
       "visible_thought": "**Candidate Analysis:**\n\n1.  **c3**: This is the strongest move. It places a Red stone in column c, connecting vertically to b3 (via row 2/3 logic? No, b3 is col b). Wait, c3 connects orthogonally to d4? No, diagonal. It connects to c4 (Red) directly below. So `c3-c4` creates a vertical link. More importantly, it blocks Blue's potential expansion in column c. If played, it forces Blue to play in Row 3 or Column c. Since c4, c5 are occupied, and c1/c2/c6/c7 are empty, Blue has limited routing options that don't immediately help Red. Crucially, if Blue plays in Row 3 (e.g., e3), they are far from their goal. If Blue plays in Col c (e.g., c6), they stay away from the top/bottom connection needed for Red? No, Red needs Top-Bottom.\n    *   Let's re-evaluate connectivity. Red has `b2-b3-b4-c4-d4-e4`. The chain `b4-c4-d4-e4` is solid horizontally on Row 4. `b2-b3` connects to `b4`. So Red has a strong central mass.\n    *   Red needs to connect Row 1 to Row 7. Currently, no Red stones are in R1 or R7.\n    *   Playing **c3** links to c4. It doesn't reach R1 or R7 yet.\n    *   Playing **c2** links to c3 (empty) and c4? No, c2 is above c3. c2 is adjacent to b2 (Red). So `b2-c2` is a horizontal link. Then `c2` can potentially go up to c1.\n    *   Playing **c1** reaches the TOP edge. If we play c1, we must ensure it connects to the bottom eventually. c1 connects to c2.\n    *   Let's look at **c7**. Reaches BOTTOM edge. Connects to c6.\n\n    **Key Insight**: Red wins by connecting Top to Bottom. We have stones at b2, b3, b4... and d4, e4, d5, e5.\n    If we play **c2**, it connects to b2 (Red). Now we have `b2-c2`. From c2, we can go to c1 (Top) or c3.\n    If we play **c3**, it connects to c4 (Red). Now we have `c3-c4`. From c3, we can go to c2 or c1.\n    \n    Consider **c1**: Immediate contact with Top Edge. But does it connect to the rest? c1 -> c2 -> ... -> c4. Yes, if c2 is empty, c1 is isolated unless we fill c2 first. So c1 is bad now because c2 is empty. Same for c7.\n\n    Therefore, we must build the bridge.\n    **c2**: Connects to b2. Routes opponent to Row 2 or Col c. Opponent likely plays in Col c (e.g., c3 or c1) or Row 2. If Opponent plays c3, they block our path to c4? No, c4 is Red. If Opponent plays c3, it flips? No, c3 is empty. If Opponent plays c3, it sandwiches nothing.\n    \n    Actually, look at **c3**. It connects to c4 (Red). It also sits between c2 and c4. If we play c3, we threaten to take c2 next turn (connecting to b2) or c1 (if c2 filled).\n    \n    Let's check **c2** again. Plays at c2. Adjacent to b2 (R). Next player must play Row 2 or Col c.\n    If B plays c3: Board has R at c2, B at c3, R at c4. Linear sandwich? `R [B] R` along Col c. YES! c2(R), c3(B), c4(R). The B stone at c3 flips to R.\n    Result: Red gains c3. Chain becomes b2-c2-c3-c4. This is a massive gain. It extends Red's control towards the center/top.\n    \n    If B plays elsewhere in Row 2 (e.g., a2, d2...), they don't flip anything immediately. But playing c2 puts pressure on the c-file.\n    \n    Compare to **c3**: Plays at c3. Adjacent to c4 (R). Next player plays Row 3 or Col c.\n    If B plays c2: `B [c2]` is not sandwiched by R above (c1 empty) and R below (c3 is R). Wait, c3 is R. c4 is R. So `B(c2) - R(c3) - R(c4)`. No sandwich of single enemy.\n    If B plays c5: c5 is B. c4 is R. c3 is R. `R(c4)-B(c5)` no sandwich.\n    \n    **c2** seems superior because of the potential auto-flip cascade if Blue tries to block the file at c3. Even if Blue doesn't play c3, c2 establishes a foothold near the top edge (via c1 later) and connects strongly to the existing red cluster via b2.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "c6",
         "az400_best_move": "c6",
         "az1_top_prior_move": "c6",
         "chosen_move": "c2",
         "chosen_prior": 0.0818,
-        "chosen_visits_400": 4,
-        "chosen_expected_score": 0.558,
+        "chosen_visits_4000": 13,
+        "chosen_visits_400": 13,
+        "chosen_expected_score": 0.5135,
         "policy_rank": 4,
-        "search_rank": 4,
+        "search_rank": 5,
         "num_legal": 5,
-        "win_prob_before": 0.7897,
-        "win_prob_after": 0.4397,
-        "delta_win_prob": -0.35,
-        "win_prob_loss": 0.35,
-        "red_win_prob_before": 0.7897,
-        "red_win_prob_after": 0.4397,
+        "win_prob_before": 0.7882,
+        "win_prob_after": 0.4691,
+        "delta_win_prob": -0.3191,
+        "win_prob_loss": 0.3191,
+        "red_win_prob_before": 0.7882,
+        "red_win_prob_after": 0.4691,
         "network_value_before": 0.222,
         "top_candidates": [
           {
             "move": "c6",
-            "visits": 380,
+            "visits": 3935,
             "prior": 0.591,
-            "expectedScore": 0.7897
+            "expectedScore": 0.7882
           },
           {
             "move": "c7",
-            "visits": 8,
+            "visits": 21,
             "prior": 0.1168,
-            "expectedScore": 0.6256
+            "expectedScore": 0.5492
           },
           {
             "move": "c3",
-            "visits": 5,
+            "visits": 17,
             "prior": 0.1514,
-            "expectedScore": 0.4238
-          },
-          {
-            "move": "c2",
-            "visits": 4,
-            "prior": 0.0818,
-            "expectedScore": 0.558
+            "expectedScore": 0.4117
           },
           {
             "move": "c1",
-            "visits": 3,
+            "visits": 14,
             "prior": 0.059,
-            "expectedScore": 0.5982
+            "expectedScore": 0.6008
+          },
+          {
+            "move": "c2",
+            "visits": 13,
+            "prior": 0.0818,
+            "expectedScore": 0.5135
           }
         ]
       },
@@ -1681,52 +1715,54 @@
       "visible_thought": "**Evaluation of top candidates:**\n\n**c3** \u2014 Places Blue centrally. No immediate flips (c2(R) and c4(R) flank c3 but that's R-B-R, not a Blue sandwich). Routes Red to row 3 (empties: a3, d3, e3, g3) or col c (empties: c1, c6, c7). This is the tightest routing \u2014 only 7 options, all spread out, limiting Red's ability to consolidate the center wall at d4/e4/d5/e5.\n\n**e2** \u2014 No flips. Routes Red to row 2 (d2, g2, a2 open) or col e (e1, e3, e6, e7). More open for Red; e3 gives Red a stepping stone toward the middle.\n\n**g2** \u2014 No flips. Routes Red to row 2 or col g (g1, g3, g6, g7). Somewhat open; g3 could help Red approach Blue's g4-g5 connection.\n\nBest is **c3**: it tightens the routing constraint most, keeps Red away from the critical d/e column bridge, and positions Blue to potentially work the c-file or row 3 for a future crossing attempt.",
       "reasoning_trace": "Let me analyze the board position and candidate moves.\n\nCurrent board:\n- Row 2: . R R . . B .\n- Row 3: . R . . . R .\n- Row 4: B R R R R B B\n- Row 5: B B B R R B B\n\nBlue needs to connect left (col a) to right (col g). Blue already has: a4, a5, b5, c5, f4, f5, g4, g5, f2.\n\nBlue's potential winning path: a4-a5-b5-c5 then need to get to f5-g5 or f4-g4. Actually, Blue has c5, f5, g5 in row 5, and f4, g4 in row 4. But there's a gap between c5 and f5 (d5, e5 are Red).\n\nSo Blue needs to bridge d5-e5 gap somehow, or find another path.\n\nLegal moves: c1, a2, d2, e2, g2, c3, c6, c7\n\nLet me evaluate:\n\n1. **e2**: Places Blue in row 2 (same row as f2). Check flips: \n   - Linear: d2 is empty, f2 is Blue... wait. e2 with f2 Blue: pattern would need D-E-F or similar. d2 is empty, f2 is Blue. So E2(F) F2 - no sandwich.\n   - Actually checking: e2 is B, neighbors: d2(empty), f2(B), e1(empty), e3(empty). No sandwich.\n   - Crosshair: routes opponent to row 2 or column e.\n   - Column e has: e4(R), e5(R), e2(B after move). So opponent must play in row 2 or col e.\n\n2. **g2**: Places Blue at g2. Neighbors: f2(B), g1(empty), g3(empty).\n   - Linear: f2(B) g2(B) - no enemy between them.\n   - Crosshair: routes to row 2 or col g. Col g has: g4(B), g5(B), g2(B). Row 2 has: b2(R), c2(R), f2(B), g2(B).\n   - Opponent must play row 2 or col g. This gives opponent access to key squares.\n\n3. **c3**: Places Blue at c3. Neighbors: b3(R), d3(empty), c2(R), c4(R).\n   - Linear check: c3(B) sandwiched? b3(R) c3(B) d3(empty) - no. c2(R) c3(B) c4(R) - wait, that's R B R, not a sandwich for Blue.\n   - Crosscut 2x2: Check blocks containing c3. \n     - Block b2-c2 / b3-c3: b2(R), c2(R), b3(R), c3(B). Two R diagonal? b2 and c3? No, b2 is R, c3 is B. That's not two diagonals of same color.\n     - Block c2-d2 / c3-d3: c2(R), d2(empty), c3(B), d3(empty). No.\n     - Block b3-c3 / b4-c4: b3(R), c3(B), b4(R), c4(R). b3(R) and c3(B) - not same.\n     - Block c3-d3 / c4-d4: c3(B), d3(empty), c4(R), d4(R). No.\n   - So c3 seems to have no flips.\n   - Crosshair: routes to row 3 or col c. Col c has: c2(R), c3(B), c4(R). Row 3 has: b3(R), f3(R), c3(B).\n\n4. **a2**: Places Blue at a2. Neighbors: b2(R), a1(empty), a3(empty).\n   - No sandwich possible (a1 is empty).\n   - Crosshair: routes to row 2 or col a. Col a has: a4(B), a5(B), a2(B). Row 2 has: b2(R), c2(R), f2(B), a2(B).\n\n5. **d2**: Neighbors: c2(R), e2(empty), d3(empty), d1(empty).\n   - No sandwich.\n   - Crosshair: row 2 or col d.\n\nLet me think about strategy. Blue's goal is connecting a to g. Blue has a4-a5-b5-c5 and f4-f5-g4-g5. The gap is d5-e5 (both Red) and d4-e4 (both Red). Blue needs to get through somewhere in the middle.\n\nIf Blue plays **e2**, that puts Blue in col e. From e2, if Blue later gets to e3, e4 is blocked by Red... Actually e4 and e5 are Red. So e2 doesn't directly help the connection.\n\nIf Blue plays **c3**, that's in col c, row 3. It routes opponent to row 3 or col c. Row 3 has b3(R) and f3(R). Col c has c2(R) and c4(R). This limits Red's options somewhat.\n\nActually, let me reconsider. The key issue is that Blue needs to bridge the gap. The most promising path might be through row 6 or row 7, or by flipping some red stones.\n\n**c3**: Routes to row 3 or col c. Opponent plays in row 3 (empty squares: a3, d3, e3, g3) or col c (empty: c1, c6, c7). This seems like it gives opponent many options.\n\n**e2**: Routes to row 2 or col e. Row 2 empties: a2, d2, e2(after), g2. Col e empties: e1, e3, e6, e7.\n\nI think the best move might be **c3** to limit Red's routing options and potentially set up future plays. Or **a2** to connect the left side more.\n\nActually, let me reconsider **a2**: After a2, Blue has a2, a4, a5 on col a. Routes to row 2 or col a. Col a has a1, a2(B), a3(empty), a4(B), a5(B), a6, a7. Row 2 has b2(R), c2(R), f2(B), a2(B). So opponent can play a1, a3, a6, a7 (col a) or b2(R-occupied), c2(R-occupied), d2, e2, g2 (row 2 empties). That's a1, a3, a6, a7, d2, e2, g2 for opponent. That's 7 options - quite open.\n\nLet me think about **g2**: After g2, routes to row 2 or col g. Col g: g1, g2(B), g3(empty), g4(B), g5(B), g6, g7. Row 2: b2(R), c2(R), d2, e2, f2(B), g2(B). Opponent options: g1, g3, g6, g7 (col g), d2, e2 (row 2). That's 6 options.\n\nI think **c3** is the strongest move. It places a stone centrally, routes opponent to row 3 (limited empties: a3, d3, e3, g3) or col c (c1, c6, c7). This keeps the board tight and limits Red's expansion.",
       "eval": {
+        "az4000_best_move": "c3",
         "az400_best_move": "c3",
         "az1_top_prior_move": "c3",
         "chosen_move": "c3",
         "chosen_prior": 0.3156,
-        "chosen_visits_400": 342,
-        "chosen_expected_score": 0.5603,
+        "chosen_visits_4000": 3774,
+        "chosen_visits_400": 3774,
+        "chosen_expected_score": 0.5309,
         "policy_rank": 1,
         "search_rank": 1,
         "num_legal": 8,
-        "win_prob_before": 0.5603,
-        "win_prob_after": 0.5347,
-        "delta_win_prob": -0.0256,
-        "win_prob_loss": 0.0256,
-        "red_win_prob_before": 0.4397,
-        "red_win_prob_after": 0.4653,
+        "win_prob_before": 0.5309,
+        "win_prob_after": 0.5191,
+        "delta_win_prob": -0.0118,
+        "win_prob_loss": 0.0118,
+        "red_win_prob_before": 0.4691,
+        "red_win_prob_after": 0.4809,
         "network_value_before": -0.1376,
         "top_candidates": [
           {
             "move": "c3",
-            "visits": 342,
+            "visits": 3774,
             "prior": 0.3156,
-            "expectedScore": 0.5603
+            "expectedScore": 0.5309
           },
           {
             "move": "e2",
-            "visits": 15,
+            "visits": 74,
             "prior": 0.1147,
-            "expectedScore": 0.4658
+            "expectedScore": 0.4681
           },
           {
             "move": "d2",
-            "visits": 13,
+            "visits": 46,
             "prior": 0.1181,
-            "expectedScore": 0.4511
+            "expectedScore": 0.4203
           },
           {
             "move": "a2",
-            "visits": 8,
+            "visits": 31,
             "prior": 0.1209,
-            "expectedScore": 0.3671
+            "expectedScore": 0.3654
           },
           {
-            "move": "c6",
-            "visits": 7,
-            "prior": 0.0597,
-            "expectedScore": 0.4269
+            "move": "c1",
+            "visits": 29,
+            "prior": 0.131,
+            "expectedScore": 0.3334
           }
         ]
       },
@@ -1774,52 +1810,54 @@
       "visible_thought": "**Candidate Analysis:**\n\n1.  **c1**: Placing Red at c1 connects to the top edge. It is in Column c, forcing Blue to play in Row 1 or Column c. This is a strong positional move that establishes a foothold on the top edge while limiting Blue's options to the crowded column c or the empty row 1. No immediate flips occur as c2 is already Red and c3 is Blue (no sandwich).\n2.  **e3**: Placing Red at e3 connects d4/e4/d5/e5 cluster to f3. It forces Blue to Row 3 or Column e. Column e has stones at e4, e5 (Red) and potentially open spots. However, it doesn't directly threaten the bottom connection as effectively as building vertical lines in column c or d.\n3.  **d3**: Similar to e3, but forces Blue to Row 3 or Column d. Column d has d4, d5 (Red). This strengthens the central Red mass.\n\n**Evaluation:**\nThe goal is connecting Top to Bottom. The current Red structure is fragmented: b2-b3-b4 is a left-side chain; d4-e4-d5-e5-f3 is a central/right cluster. There is no continuous path from Row 1 to Row 7.\n*   **c1** creates a potential link if we can connect c1-c2(c2 is R)-... wait, c2 is R. So c1-c2 is connected. If we can get from c2 down to c7, we win. But c3 is B. We need to flip c3 or bypass it.\n*   Actually, looking at the board, Red has b2, c2, b3. Blue has c3.\n*   If I play **c1**, I connect to c2. Next turn Blue must play in Row 1 or Col c. If Blue plays c6/c7, they block my downward progress.\n*   Consider **a3**? Forces Row 3 or Col a. Col a has a4, a5 (Blue). Bad.\n*   Consider **g3**? Forces Row 3 or Col g. Col g has g4, g5 (Blue). Bad.\n*   **c1** seems best to anchor the top. It forces Blue into Row 1 (mostly empty) or Column c (blocked by c3/c4/c5 blues). If Blue plays Row 1, say a1, then I can try to break through column c later or build elsewhere.\n*   Let's check **d3**. Connects to d4. Forces Blue to Row 3 or Col d. Col d has d4(R), d5(R). Open d1,d2,d6,d7. This keeps pressure on the center.\n*   However, **c1** is unique because it touches the edge. In Hex-like games, touching the edge is vital. It forces Blue to respond in Row 1 or Col c. Since Col c is heavily contested (c2 R, c3 B, c4 B, c5 B), Blue playing in Col c is dangerous for them or ineffective for blocking me if I aim for a different file. If Blue plays Row 1, they leave Col c open for me? No, I can't play Col c next unless forced.\n*   Wait, the rule is *next player MUST play in same row/col*. If I play c1, Blue plays in Row 1 or Col c. If Blue plays Col c (e.g., c6), they are deep in their own territory? No, c6 is empty.\n*   Actually, **c1** allows me to potentially start a vertical run if I can clear c3.\n*   Let's look at **b2/b3/b4**. That's a solid left wall.\n*   **d4/e4/d5/e5** is a solid center.\n*   Gap between b-file and d-file? c2 is R. c3 is B.\n*   If I play **c1**, I join c2. Now I have c1-c2.\n*   If Blue responds in Row 1 (e.g. a1), I am free to play anywhere? No, Blue's move determines *my* constraint.\n*   Let's pick **c1** to secure the top edge and force Blue into the constrained column c or wide row 1.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "c1",
         "az400_best_move": "c1",
         "az1_top_prior_move": "d3",
         "chosen_move": "c1",
         "chosen_prior": 0.1236,
-        "chosen_visits_400": 192,
-        "chosen_expected_score": 0.4653,
+        "chosen_visits_4000": 3427,
+        "chosen_visits_400": 3427,
+        "chosen_expected_score": 0.4809,
         "policy_rank": 3,
         "search_rank": 1,
         "num_legal": 7,
-        "win_prob_before": 0.4653,
-        "win_prob_after": 0.426,
-        "delta_win_prob": -0.0393,
-        "win_prob_loss": 0.0393,
-        "red_win_prob_before": 0.4653,
-        "red_win_prob_after": 0.426,
+        "win_prob_before": 0.4809,
+        "win_prob_after": 0.4785,
+        "delta_win_prob": -0.0024,
+        "win_prob_loss": 0.0024,
+        "red_win_prob_before": 0.4809,
+        "red_win_prob_after": 0.4785,
         "network_value_before": -0.0511,
         "top_candidates": [
           {
             "move": "c1",
-            "visits": 192,
+            "visits": 3427,
             "prior": 0.1236,
-            "expectedScore": 0.4653
+            "expectedScore": 0.4809
           },
           {
             "move": "d3",
-            "visits": 89,
+            "visits": 299,
             "prior": 0.4862,
-            "expectedScore": 0.3968
-          },
-          {
-            "move": "c7",
-            "visits": 57,
-            "prior": 0.0656,
-            "expectedScore": 0.4571
+            "expectedScore": 0.4096
           },
           {
             "move": "e3",
-            "visits": 52,
+            "visits": 147,
             "prior": 0.1978,
-            "expectedScore": 0.417
+            "expectedScore": 0.4221
           },
           {
-            "move": "c6",
-            "visits": 4,
-            "prior": 0.035,
-            "expectedScore": 0.3558
+            "move": "c7",
+            "visits": 100,
+            "prior": 0.0656,
+            "expectedScore": 0.4455
+          },
+          {
+            "move": "g3",
+            "visits": 10,
+            "prior": 0.0468,
+            "expectedScore": 0.281
           }
         ]
       },
@@ -1867,52 +1905,54 @@
       "visible_thought": "**Analysis of candidates:**\n\n**c6** \u2014 Extends left group (c3-c4-c5-c6). No flips (row 6 empty, col c clear above/below). Sets up bridge path along row 6 toward f5. Opponent must play row 6 or col c \u2014 if they play d6/e6/f6, I can extend along row 6 in other spots; if col c, I'm free next turn.\n\n**c7** \u2014 Similar extension but one row further from the connection zone. Slightly less direct toward bridging to the right group.\n\n**f1** \u2014 Places a stone near right group but disconnected (f2 is isolated, f3 is Red blocking). Doesn't advance the critical connection.\n\nThe key problem: left group (a4,a5,b5,c3-c5) and right group (f4,f5,g4,g5) are separated by Red's d4,e4,d5,e5 wall. Row 6 offers a bypass path. Playing **c6** starts that bridge, forces opponent into row 6/col c, and keeps momentum toward connecting the groups.",
       "reasoning_trace": "Let me analyze the position. Blue connects left (col a) to right (col g).\n\nCurrent Blue stones: f2, c3, a4, c4, f4, g4, a5, b5, c5, f5, g5\n\nI need to connect col a to col g. Let me see what connections exist:\n- a4, a5 connect on the left edge\n- b5 connects to a5\n- c5 connects to b5\n- c4 connects to c5\n- c3 connects to c4\n- f4 connects to c4? No, d4 is Red, e4 is Red. c4 and f4 aren't connected orthogonally.\n- f5 connects to c5? No, d5 is Red, e5 is Red. Not connected.\n- f4 connects to f5 (yes!), f4 connects to g4 (yes!), g4 connects to g5 (yes!)\n- f2 connects to f3? f3 is Red. No.\n- c3 connects to f3? No.\n\nSo currently Blue has two groups:\n1. Left group: a4-a5-b5-c5-c4-c3 (connected)\n2. Right group: f4-f5-g4-g5 (connected)\n3. Isolated: f2\n\nThe gap between left and right groups: c4 needs to connect to d4 (Red) or f4 needs to connect to e4 (Red) or through row 5: c5 needs d5 (Red) or e5 (Red) or through other paths.\n\nWait, what about through rows 6 or 7? c6-c7 are legal moves. Or a1, b1, d1, e1, f1, g1.\n\nLet me think about what connects the groups:\n- If I play d4... no, that's occupied by Red.\n- I need a path from the left group to the right group. The left group is at c3,c4,c5,a4,a5,b5. The right group is at f4,f5,g4,g5.\n- Gap squares between c and f: d and e columns. At rows 3,4,5 those are Red (d4,e4,d5,e5). Row 3: d3, e3 are empty.\n- So if I play d3 or e3... but those aren't legal moves.\n\nLegal moves: a1, b1, d1, e1, f1, g1, c6, c7\n\nRow 1 moves: a1 connects to a4-a5? No, a1 is on col a, a4 and a5 are on col a. So a1-a2-a3-a4-a5 would be a chain if a2 and a3 are also Blue. Currently a2 and a3 are empty. So playing a1 doesn't immediately connect.\n\nWait, let me reconsider. The connection needs to be from col a to col g. Left group touches col a (a4, a5). Right group touches col g (g4, g5). I need to bridge them.\n\nc6 and c7: These are in column c. c3-c4-c5 are Blue. If I play c6, then c3-c4-c5-c6. Then if I can play d6, e6, f6... but those aren't legal from c6 (row 6 or col c). Actually after c6, opponent plays in row 6 or col c. \n\nLet me think about flips. If I play c6:\n- Row 6: all empty, so no sandwich in row 6.\n- Column c: c5 is Blue, c6 is Blue, c7 is empty. No enemy stones between them.\n- c3 is Blue, c4 is Blue, c5 is Blue, c6 would be Blue.\n- Check 2x2 crosscuts involving c6: need to check squares around c6. d6 is empty, so no crosscut.\n- Linear sandwich: c6 is Blue. To the left in row 6: b6 is empty, a6 is empty - no enemy. To the right: d6 empty, e6 empty, f6 empty, g6 empty. No enemy. Below: c7 empty. Above: c5 Blue - no enemy between.\n\nSo c6 is a clean placement extending the left group down.\n\nc7 extends even further. No flips either.\n\nWhat about f1? After f1, I check for flips. Row 1: all empty, no enemy. Column f: f2 is Blue. Between f1 and f2, nothing. No flips.\n\nWhat about g1? Column g: g4, g5 are Blue. g1 is isolated. Row 1: all empty. No flips. g1 is on the right edge but disconnected from the right group (g2, g3 are empty).\n\nLet me think strategically. The right group (f4,f5,g4,g5) needs to connect to the left group. The only way through the middle is blocked by Red at d4,e4,d5,e5. \n\nAlternative paths:\n- Through row 3: c3(B) - d3(empty) - e3(empty) - f3(R) - f2(B). Hmm, f3 is Red blocking.\n- Through row 6: c6 - d6 - e6 - f6 - f5(B). This could work!\n- Through row 2: c2(R) - blocked.\n\nSo row 6 path seems promising: play c6, then eventually d6, e6, f6 to connect to f5.\n\nAfter c6, opponent must play row 6 or col c. If they play d6, e6, or f6 they could block my path! But Red wants to connect top to bottom, so they might not block row 6.\n\nWhat about c7? After c7, opponent plays row 7 or col c. Row 7 is empty, col c has some occupied squares.\n\nI think c6 is the best move. It extends the left group, is clean (no flips), and sets up a potential bridge through row 6. The opponent is forced to play row 6 or col c, which could actually help if they play in row 6 (then I can continue along row 6).",
       "eval": {
+        "az4000_best_move": "e1",
         "az400_best_move": "e1",
         "az1_top_prior_move": "f1",
         "chosen_move": "c6",
         "chosen_prior": 0.1533,
-        "chosen_visits_400": 18,
-        "chosen_expected_score": 0.4537,
+        "chosen_visits_4000": 84,
+        "chosen_visits_400": 84,
+        "chosen_expected_score": 0.4423,
         "policy_rank": 3,
-        "search_rank": 6,
+        "search_rank": 7,
         "num_legal": 8,
-        "win_prob_before": 0.574,
-        "win_prob_after": 0.4009,
-        "delta_win_prob": -0.1731,
-        "win_prob_loss": 0.1731,
-        "red_win_prob_before": 0.426,
-        "red_win_prob_after": 0.5991,
+        "win_prob_before": 0.5215,
+        "win_prob_after": 0.3906,
+        "delta_win_prob": -0.1309,
+        "win_prob_loss": 0.1309,
+        "red_win_prob_before": 0.4785,
+        "red_win_prob_after": 0.6094,
         "network_value_before": 0.0545,
         "top_candidates": [
           {
             "move": "e1",
-            "visits": 244,
+            "visits": 1656,
             "prior": 0.117,
-            "expectedScore": 0.574
+            "expectedScore": 0.5215
           },
           {
             "move": "f1",
-            "visits": 35,
+            "visits": 869,
             "prior": 0.1693,
-            "expectedScore": 0.5135
+            "expectedScore": 0.5158
           },
           {
             "move": "c7",
-            "visits": 34,
+            "visits": 797,
             "prior": 0.1231,
-            "expectedScore": 0.5293
-          },
-          {
-            "move": "a1",
-            "visits": 26,
-            "prior": 0.1648,
-            "expectedScore": 0.4908
+            "expectedScore": 0.5178
           },
           {
             "move": "d1",
-            "visits": 22,
+            "visits": 235,
             "prior": 0.0823,
-            "expectedScore": 0.5293
+            "expectedScore": 0.5091
+          },
+          {
+            "move": "a1",
+            "visits": 180,
+            "prior": 0.1648,
+            "expectedScore": 0.4835
           }
         ]
       },
@@ -1960,52 +2000,54 @@
       "visible_thought": "Candidate 1: c7. Placing at c7 connects directly to the red chain via column c (c6 is blue, so no direct vertical link yet? Wait, c5 is Blue, c4 Blue, c3 Blue. Red has c2, c1. So c7 is isolated from top until a bridge forms). However, placing at c7 creates a sandwich threat or connection if we later take c6. More importantly, it forces Blue to play in Row 7 or Column c. If Blue plays elsewhere in Col c (e.g., c6 is taken, c5...c1 occupied), they must play Row 7. This keeps pressure on the bottom edge.\n\nCandidate 2: e6. Connects vertically to e5 (Red). Creates a strong central spine. Flips? No immediate linear sandwich (d6 empty, f6 empty). 2x2 check with d5/e5/d6/e6? d5 R, e5 R, d6 ., e6 R -> no enemy diagonal. It routes Blue to Row 6 or Column e. Column e has e4(R), e5(R). Empty squares in Col e: e1, e2, e3, e6(taken), e7. Blue can play e7 or e1-e3. This gives Blue flexibility to build left-right connections near the top/middle.\n\nCandidate 3: b6. Connects horizontally to nothing immediately (a6 empty, c6 Blue). But it threatens to flip c6 if a Red stone lands at a6 or d6? No, c6 is flanked by b6 and d6. If I play b6, and later d6, c6 flips. Currently, b6 routes Blue to Row 6 or Column b. Column b has b2,b3,b4 (R) and b5(B). Empty: b1, b6(taken), b7. Blue constrained to b1/b7 or Row 6. This seems safer than e6 which opens up the center too much for Blue's horizontal growth.\n\nEvaluation: Blue is building a wall in columns c/d/e/f/g on rows 4/5. Red needs to break through row 6 or 7. Playing **c7** is aggressive; it occupies the file where Blue has a stone at c6. If Blue responds in Row 7, we can try to connect c7-c6? No, c6 is Blue. We need to capture c6. To capture c6, we need Red stones at b6 and d6 (sandwich) or use 2x2.\nActually, look at **b6**. If I play b6, Blue must play in Row 6 or Col b. If Blue plays d6, I have b6-R, d6-B, c6-B. Not helpful.\nLet's look at **f6**. Connects to f3? No, f4/f5 are Blue. f6 is isolated.\n**e6** connects to e5. This extends the Red line down. Blue must respond in Row 6 or Col e. If Blue plays e7, they block our path down but don't connect left-right easily. If Blue plays d6, they threaten our e6?\nThe most critical bottleneck is Column C/D/E/F around Row 6. Blue controls c6. Red controls d5,e5.\nIf Red plays **d6**: Sandwiches c6? No, c6 is left, e6 is right (empty).\nIf Red plays **b6**: Threatens c6 if d6 is played later.\nLet's choose **c7**. It forces Blue into Row 7 or remaining Col c slots (none open except maybe interactions). Actually, Col c has c1..c6 filled. So Blue MUST play in Row 7 if I play c7. This restricts Blue significantly to the bottom edge, preventing them from strengthening their mid-board horizontal chain.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "b6",
         "az400_best_move": "b6",
         "az1_top_prior_move": "d6",
         "chosen_move": "c7",
         "chosen_prior": 0.2239,
-        "chosen_visits_400": 30,
-        "chosen_expected_score": 0.5114,
+        "chosen_visits_4000": 104,
+        "chosen_visits_400": 104,
+        "chosen_expected_score": 0.5163,
         "policy_rank": 2,
         "search_rank": 3,
         "num_legal": 7,
-        "win_prob_before": 0.5991,
-        "win_prob_after": 0.5057,
-        "delta_win_prob": -0.0934,
-        "win_prob_loss": 0.0934,
-        "red_win_prob_before": 0.5991,
-        "red_win_prob_after": 0.5057,
+        "win_prob_before": 0.6094,
+        "win_prob_after": 0.5073,
+        "delta_win_prob": -0.1021,
+        "win_prob_loss": 0.1021,
+        "red_win_prob_before": 0.6094,
+        "red_win_prob_after": 0.5073,
         "network_value_before": 0.0416,
         "top_candidates": [
           {
             "move": "b6",
-            "visits": 182,
+            "visits": 3566,
             "prior": 0.1905,
-            "expectedScore": 0.5991
+            "expectedScore": 0.6094
           },
           {
             "move": "d6",
-            "visits": 165,
+            "visits": 256,
             "prior": 0.3082,
-            "expectedScore": 0.5745
+            "expectedScore": 0.5575
           },
           {
             "move": "c7",
-            "visits": 30,
+            "visits": 104,
             "prior": 0.2239,
-            "expectedScore": 0.5114
-          },
-          {
-            "move": "g6",
-            "visits": 8,
-            "prior": 0.0471,
-            "expectedScore": 0.534
+            "expectedScore": 0.5163
           },
           {
             "move": "e6",
-            "visits": 8,
+            "visits": 29,
             "prior": 0.1411,
-            "expectedScore": 0.3841
+            "expectedScore": 0.3952
+          },
+          {
+            "move": "a6",
+            "visits": 21,
+            "prior": 0.0478,
+            "expectedScore": 0.5015
           }
         ]
       },
@@ -2053,52 +2095,54 @@
       "visible_thought": "**Analysis of top candidates:**\n\nMy Blue group splits into two disconnected clusters: {a4,a5,b5,c5,c4,c3,c6} and {f4,f5,g4,g5,f2}. The Red block d4,e4,d5,e5 separates them. A path through row 6 (c6\u2192d6\u2192e6\u2192f6) would win, but I'm forced to row 7 this turn.\n\n- **e7**: Routes opponent to row 7 or col e. Col e has e1,e2,e3,e6 open \u2014 e6 is the critical square for my row-6 connection. Playing e7 doesn't block e6 for Red.\n- **d7**: Routes opponent to row 7 or col d. Col d has d1,d2,d3,d6 open. Again, d6 (key to my bridge) remains accessible to Red.\n- **g7**: Routes opponent to row 7 or col g. Col g has g1,g2,g3,g6 \u2014 none are urgent for Red's connection. This is the most restrictive for the opponent; they can't easily disrupt my center.\n\nNone of these moves create flips (no sandwich patterns around row-7 squares). The goal is to choose a routing that limits Red's ability to grab d6/e6/f6 next turn. g7 forces Red into row 7 or column g \u2014 neither contains the critical d6/e6/f6 squares, giving me the best chance to secure the row-6 bridge next turn.",
       "reasoning_trace": "Let me analyze the position. I'm Blue (B), trying to connect left (col a) to right (col g).\n\nCurrent board:\n```\n    a   b   c   d   e   f   g\n1 | . | . | R | . | . | . | . |\n2 | . | R | R | . | . | B | . |\n3 | . | R | B | . | . | R | . |\n4 | B | R | B | R | R | B | B |\n5 | B | B | B | R | R | B | B |\n6 | . | . | B | . | . | . | . |\n7 | . | . | R | . | . | . | . |\n```\n\nBlue stones: f2, c3, a4, c4, f4, g4, a5, b5, c5, f5, g5, c6\nRed stones: c1, b2, c2, b3, f3, b4, d4, e4, d5, e5, c7\n\nMy crosshair constraint: Row 7 or Column c. Legal moves: a7, b7, d7, e7, f7, g7.\n\nLet me check my connectivity. I need to connect col a to col g.\n\nLooking at Blue's chain:\n- a4-a5 are connected (col a)\n- a5-b5-c5 are connected (row 5)\n- c5-c4-c3-c6 are connected (col c)\n- c4-f4-g4 are NOT directly connected (c4, d4 is Red, e4 is Red, f4... wait)\n- c4 is at c4, d4 is Red, so c4 doesn't connect to f4 directly\n- f4-f5-g4-g5-f2 are connected (f/g columns)\n- f4 connects to f5 (down), f5 connects to g5 (right), g4 connects to g5 (down), f4 connects to g4 (right), f2 connects to... f3 is Red so f2 can't go down. f2-f4? No, f3 is between them. Wait, f2 is at f2, f3 is Red, f4 is Blue. They're not connected because f3 blocks.\n\nActually let me recheck. Blue stones at: f2, c3, a4, c4, f4, g4, a5, b5, c5, f5, g5, c6\n\nConnections (orthogonal):\n- a4-a5 (vertical, same col a, rows 4-5) \u2713\n- a5-b5 (horizontal, row 5) \u2713\n- b5-c5 (horizontal, row 5) \u2713\n- c5-c4 (vertical, col c, rows 4-5) \u2713\n- c4-c3 (vertical, col c, rows 3-4) \u2713\n- c5-c6 (vertical, col c, rows 5-6) \u2713\n- f4-f5 (vertical, col f, rows 4-5) \u2713\n- f5-g5 (horizontal, row 5) \u2713\n- f4-g4 (horizontal, row 4) \u2713\n- g4-g5 (vertical, col g, rows 4-5) \u2713\n\nSo I have two groups:\nGroup 1: a4-a5-b5-c5-c4-c3-c6 (connected to col a \u2713)\nGroup 2: f2, f4-g4-f5-g5 (connected to col g \u2713)\n\nThese two groups are NOT connected! Between them we have d4(R), e4(R), d5(R), e5(R) blocking.\n\nTo win, I need to connect Group 1 to Group 2. The gap is between c4/c5 and f4/f5 - blocked by d4, e4, d5, e5 (all Red).\n\nLooking at row 6: c6 is Blue. If I can extend along row 6... d6 is empty, e6 is empty, f6 is empty. If I place at d6, it connects c6 to potentially further. Then e6, f6...\n\nWait, but I'm constrained to row 7 or column c. Legal moves: a7, b7, d7, e7, f7, g7.\n\nNone of these are in column c or row 6. They're all in row 7.\n\nIf I play d7: Is there a path? d7 is in row 7. It doesn't directly connect to any Blue stone in row 7 (none exist). It would need to connect vertically - c7 is Red, e7 is empty.\n\nLet me think about flips. If I play d7:\n- Linear sandwich: Is there a Blue stone sandwiching a Red stone? d7... c7 is Red, but b7 is empty. No sandwich along row 7. Along column d: d4 is Red, d5 is Red, d6 is empty, d7 is Blue. Is there a Blue above? No. So no linear sandwich.\n- 2x2 crosscut: c6-B, c7-R, d6-., d7-B \u2192 not a crosscut pattern.\n  c7-R, c6-B... wait let me think about 2x2 blocks involving d7:\n  Block (c6,c7,d6,d7): B,R,.,B - not a 2x2 crosscut (need C,E/E,C or E,C/C,E diagonals)\n  Block (c7,d7,c8,d8): out of bounds\n  Block (d6,d7,e6,e7): all empty except d7 is B - no\n\nSo d7 probably doesn't flip anything.\n\nIf I play e7:\n- Along row 7: no adjacent Blue stones to sandwich\n- Along col e: e4-R, e5-R, e6-empty, e7-B. No sandwich.\n- 2x2 blocks: (d6,d7,e6,e7) or (e6,e7,f6,f7) - all empty adjacent, no flips.\n\nIf I play f7:\n- Along row 7: no adjacent Blue\n- Along col f: f4-B, f5-B, f6-empty, f7-B. Wait, f6 is empty so no sandwich of a single enemy.\n- Actually, is there a linear sandwich? f7 with another Blue and an enemy between? f6 is empty, so no.\n- 2x2 blocks: (e6,e7,f6,f7) - all empty/f7 is B, no enemy. (f6,f7,g6,g7) - all empty.\n\nHmm, none of these seem to create flips or directly help my connection.\n\nWhat about g7? \n- g4-B, g5-B, g6-empty, g7-B. Same issue, g6 is empty blocking a sandwich.\n\nWhat about a7?\n- a4-B, a5-B, a6-empty, a7-B. Same.\n\nb7?\n- b4-R, b5-B, b6-empty, b7-B. No sandwich.\n\nSo it seems like none of these moves create flips, and none directly help connect my two groups.\n\nThe key issue: My groups are separated by the d4,e4,d5,e5 red block. To connect them, I need to go through row 6 (c6 is blue, and if I can get to f6 or beyond through row 6) or through row 7 somehow.\n\nBut my constraint forces me to row 7 or column c. None of the row 7 squares directly help.\n\nWait - what about routing? If I play at row 7, the opponent must play in that row or column c. Let me think about which move best constrains the opponent.\n\nIf I play d7: opponent must play in row 7 or column d. Column d has: d1(empty), d2(empty), d3(empty), d4(R), d5(R), d6(empty), d7(B). So opponent could play d1, d2, d3, or d6, or any row 7 square.\n\nIf I play e7: opponent must play in row 7 or column e. Column e: e1(empty), e2(empty), e3(empty), e4(R), e5(R), e6(empty), e7(B). Opponent can play e1, e2, e3, e6, or row 7 squares.\n\nIf I play f7: opponent must play in row 7 or column f. Column f: f1(empty), f2(B), f3(R), f4(B), f5(B), f6(empty), f7(B). Opponent can play f1, f6, or row 7 squares.\n\nIf I play g7: opponent must play in row 7 or column g. Column g: g1(empty), g2(empty), g3(empty), g4(B), g5(B), g6(empty), g7(B). Opponent can play g1, g2, g3, g6, or row 7 squares.\n\nIf I play a7: opponent must play in row 7 or column a. Column a: a1(empty), a2(empty), a3(empty), a4(B), a5(B), a6(empty",
       "eval": {
-        "az400_best_move": "e7",
+        "az4000_best_move": "f7",
+        "az400_best_move": "f7",
         "az1_top_prior_move": "a7",
         "chosen_move": "g7",
         "chosen_prior": 0.1548,
-        "chosen_visits_400": 28,
-        "chosen_expected_score": 0.432,
+        "chosen_visits_4000": 129,
+        "chosen_visits_400": 129,
+        "chosen_expected_score": 0.4413,
         "policy_rank": 4,
         "search_rank": 4,
         "num_legal": 6,
-        "win_prob_before": 0.4943,
-        "win_prob_after": 0.421,
-        "delta_win_prob": -0.0733,
-        "win_prob_loss": 0.0733,
-        "red_win_prob_before": 0.5057,
-        "red_win_prob_after": 0.579,
+        "win_prob_before": 0.4927,
+        "win_prob_after": 0.4507,
+        "delta_win_prob": -0.042,
+        "win_prob_loss": 0.042,
+        "red_win_prob_before": 0.5073,
+        "red_win_prob_after": 0.5493,
         "network_value_before": -0.0452,
         "top_candidates": [
           {
-            "move": "e7",
-            "visits": 231,
-            "prior": 0.2194,
-            "expectedScore": 0.4943
+            "move": "f7",
+            "visits": 2690,
+            "prior": 0.1747,
+            "expectedScore": 0.4927
           },
           {
-            "move": "f7",
-            "visits": 75,
-            "prior": 0.1747,
-            "expectedScore": 0.4744
+            "move": "e7",
+            "visits": 758,
+            "prior": 0.2194,
+            "expectedScore": 0.4823
           },
           {
             "move": "a7",
-            "visits": 56,
+            "visits": 396,
             "prior": 0.2344,
-            "expectedScore": 0.4487
+            "expectedScore": 0.4688
           },
           {
             "move": "g7",
-            "visits": 28,
+            "visits": 129,
             "prior": 0.1548,
-            "expectedScore": 0.432
+            "expectedScore": 0.4413
           },
           {
             "move": "d7",
-            "visits": 7,
+            "visits": 19,
             "prior": 0.1291,
-            "expectedScore": 0.2531
+            "expectedScore": 0.2004
           }
         ]
       },
@@ -2146,52 +2190,54 @@
       "visible_thought": "Top candidates:\n\n1. **c7**: Illegal (not in Row 7 or Col g).\n2. **g7**: Occupied by Blue.\n3. **f7**: Connects to c7 via e7/d7? No, f7 is isolated from c7 currently. Placing R at f7 creates a potential link if e7 becomes R. Flip check: Sandwiches? No immediate sandwich with existing R stones along row/col. Crosscut? No. Routes opponent to Row 7 or Col f. Opponent can play e7 or d7 to block.\n4. **e7**: Connects directly to c7 via d7? No, needs d7. But e7 is adjacent to d5 (R) vertically? No, d5 is row 5. e7 is row 7. Not connected. However, e7 places R near the center-bottom. If I play e7, opponent must play Row 7 or Col e.\n5. **d7**: Places R between c7 and empty squares. Flips: Check linear sandwich. Column d has d4(R), d5(R). d7 is far. Row 7 has c7(R). d7 is adjacent to c7. This extends the chain c7-d7. Now Red has c7-d7. To win, need connection up. d7 connects to d5 via d6? d6 is empty. So d7 helps build the vertical spine. Flip check: Any enemy stone sandwiched? Column d: d4(R), d5(R)... no enemy between. Row 7: c7(R), d7(new R)... no enemy. Crosscut? d6/e6/e7/d7? d6 empty. No flips. Routes opponent to Row 7 or Col d. If opp plays d6, they block my path to top. If opp plays e7, they flank.\n\nBest move: **d7**. It solidifies the bottom connection c7-d7 and threatens to extend upward through d6. Opponent forced to Row 7 or Col d. If they play d6, they block column d but leave row 7 open for me to expand horizontally or find another route. If they play elsewhere on row 7, I might take d6 next turn (if legal constraint allows) or continue building. Actually, after d7, opp must play Row 7 or Col d. If opp plays d6, they occupy the critical square. If opp plays e7, I can play d6 next (Row 7 constraint met? No, my move was d7, so opp played e7. My next move must be Row 7 or Col e. I could play d6? No, d6 is not in Row 7 or Col e. Wait. Constraint is based on *my* last move. My last move is d7. Opponent plays X. My next move must be in Row of X or Col of X.\n\nLet's look at **g6**. In Col g. Adjacent to g7(B). No flip. Routes opp to Row 6 or Col g.\nLet's look at **a7**. Far left.\n**d7** is strongest for connectivity. It links c7 to the center.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "g6",
         "az400_best_move": "g6",
         "az1_top_prior_move": "b7",
         "chosen_move": "d7",
         "chosen_prior": 0.1866,
-        "chosen_visits_400": 54,
-        "chosen_expected_score": 0.5437,
+        "chosen_visits_4000": 361,
+        "chosen_visits_400": 361,
+        "chosen_expected_score": 0.5327,
         "policy_rank": 2,
-        "search_rank": 2,
+        "search_rank": 3,
         "num_legal": 9,
-        "win_prob_before": 0.579,
-        "win_prob_after": 0.5035,
-        "delta_win_prob": -0.0755,
-        "win_prob_loss": 0.0755,
-        "red_win_prob_before": 0.579,
-        "red_win_prob_after": 0.5035,
+        "win_prob_before": 0.5493,
+        "win_prob_after": 0.4809,
+        "delta_win_prob": -0.0684,
+        "win_prob_loss": 0.0684,
+        "red_win_prob_before": 0.5493,
+        "red_win_prob_after": 0.4809,
         "network_value_before": 0.149,
         "top_candidates": [
           {
             "move": "g6",
-            "visits": 200,
+            "visits": 2443,
             "prior": 0.0601,
-            "expectedScore": 0.579
-          },
-          {
-            "move": "d7",
-            "visits": 54,
-            "prior": 0.1866,
-            "expectedScore": 0.5437
+            "expectedScore": 0.5493
           },
           {
             "move": "b7",
-            "visits": 45,
+            "visits": 833,
             "prior": 0.2,
-            "expectedScore": 0.5207
+            "expectedScore": 0.5395
           },
           {
-            "move": "g2",
-            "visits": 31,
-            "prior": 0.0539,
-            "expectedScore": 0.5544
+            "move": "d7",
+            "visits": 361,
+            "prior": 0.1866,
+            "expectedScore": 0.5327
           },
           {
             "move": "g1",
-            "visits": 23,
+            "visits": 90,
             "prior": 0.0824,
-            "expectedScore": 0.5354
+            "expectedScore": 0.5093
+          },
+          {
+            "move": "e7",
+            "visits": 78,
+            "prior": 0.1753,
+            "expectedScore": 0.4516
           }
         ]
       },
@@ -2239,52 +2285,54 @@
       "visible_thought": "Let me analyze the position. I'm Blue (B), trying to connect left edge (col a) to right edge (col g) with 4-orthogonal connected chain.\n\nCurrent board:\n```\n    a   b   c   d   e   f   g\n 1  | . | . | R | . | . | . | . |\n 2  | . | R | R | . | . | B | . |\n 3  | . | R | B | . | . | R | . |\n 4  | B | R | B | R | R | B | B |\n 5  | B | B | B | R | R | B | B |\n 6  | . | . | B | . | . | . | . |\n 7  | . | . | R | R | . | . | B |\n```\n\nMy blue stones: f2, c3, a4, c4, f4, g4, a5, b5, c5, f5, g5, c6, g7\n\nLet me trace my connection from left to right:\n- From a4/a5 (left edge) through b5/c5/c6/c3/c4/f4/f5/g5/g4/f2/g7\n- Wait, let me check connectivity more carefully.\n\nBlue stones and their adjacencies:\n- a4: neighbors are b4(R), a5(B) \u2192 connected to a5\n- a5: neighbors are a4(B), b5(B) \u2192 connected to a4, b5\n- b5: neighbors are a5(B), c5(B), b4(R), b6(empty) \u2192 connected to a5, c5\n- c5: neighbors are b5(B), d5(R), c4(B), c6(B) \u2192 connected to b5, c4, c6\n- c4: neighbors are c3(B), c5(B), b4(R), d4(R) \u2192 connected to c3, c5\n- c3: neighbors are c4(B), b3(R), c2(R), d3(empty) \u2192 connected to c4\n- c6: neighbors are c5(B), b6(empty), d6(empty), c7(R) \u2192 connected to c5\n- f2: neighbors are e2(empty), g2(empty), f1(empty), f3(R) \u2192 isolated!\n- f4: neighbors are e4(R), f3(R), f5(B), g4(B) \u2192 connected to f5, g4\n- f5: neighbors are e5(R), f4(B), g5(B) \u2192 connected to f4, g5\n- g4: neighbors are f4(B), g5(B) \u2192 connected to f4, g5\n- g5: neighbors are f5(B), g4(B), g6(empty) \u2192 connected to f4, f5, g4\n- g7: neighbors are f7(empty), g6(empty) \u2192 isolated!\n\nSo my main chain is: a4-a5-b5-c5-c4-c3 and c5-c6 (branching). From f4-f5-g5-g4 I have a group connected to the right edge but NOT connected to my left-edge group!\n\nI need to bridge the gap. The gap is between c3/c4/c6 area and f4/f5/g4/g5 area.\n\nLooking at row 5: c5(B), d5(R), e5(R), f5(B) - blocked by two reds.\nLooking at row 4: c4(B), d4(R), e4(R), f4(B) - blocked by two reds.\nLooking at row 6: c6(B), then empty d6, e6, f6, g6(empty), then g7(B)\n\nSo I need to go around. Options:\n- Through row 6: d6, e6, f6 to connect c6 to f5 or g6 to g7... wait g6 to g5? Let me check.\n  - If I play d6: connects to c6, then e6, f6 to connect to f5. That's a path!\n  - If I play f6: connects to f5 and e6. Then e6 connects to d6 which connects to c6.\n  \n- Through row 3: c3(B), d3(empty), e3(empty), f3(R) - blocked.\n- Through row 7: c7(R), d7(R) - blocked.\n\n- Through g6: g5(B) is connected to g7(B) if g6 is played. And c6 connects through d6, e6, f6...\n\nSo the k...",
       "reasoning_trace": "The user wants me to just pick a move and output it. Let me quickly think about the best move.\n\nLooking at the board and my goal (connect left to right), I need to bridge my left group (a4,a5,b5,c5,c4,c3,c6) to my right group (f4,f5,g4,g5,g7,f2).\n\nThe key path is through row 6: c6-d6-e6-f6 to connect to f5.\n\nPlaying d6 is the most natural bridging move. It connects to c6 immediately and opens the path toward e6/f6. The opponent will be constrained to row 6 or column d after my move.\n\nd6 seems like the best candidate to start bridging the gap.",
       "eval": {
+        "az4000_best_move": "d6",
         "az400_best_move": "d6",
         "az1_top_prior_move": "e7",
         "chosen_move": "d6",
         "chosen_prior": 0.1351,
-        "chosen_visits_400": 178,
-        "chosen_expected_score": 0.4965,
+        "chosen_visits_4000": 3540,
+        "chosen_visits_400": 3540,
+        "chosen_expected_score": 0.5191,
         "policy_rank": 4,
         "search_rank": 1,
         "num_legal": 8,
-        "win_prob_before": 0.4965,
-        "win_prob_after": 0.485,
-        "delta_win_prob": -0.0115,
-        "win_prob_loss": 0.0115,
-        "red_win_prob_before": 0.5035,
-        "red_win_prob_after": 0.515,
+        "win_prob_before": 0.5191,
+        "win_prob_after": 0.5137,
+        "delta_win_prob": -0.0054,
+        "win_prob_loss": 0.0054,
+        "red_win_prob_before": 0.4809,
+        "red_win_prob_after": 0.4863,
         "network_value_before": -0.0931,
         "top_candidates": [
           {
             "move": "d6",
-            "visits": 178,
+            "visits": 3540,
             "prior": 0.1351,
-            "expectedScore": 0.4965
+            "expectedScore": 0.5191
           },
           {
             "move": "f7",
-            "visits": 85,
+            "visits": 141,
             "prior": 0.1736,
-            "expectedScore": 0.4739
-          },
-          {
-            "move": "e7",
-            "visits": 45,
-            "prior": 0.2396,
-            "expectedScore": 0.426
+            "expectedScore": 0.4648
           },
           {
             "move": "a7",
-            "visits": 30,
+            "visits": 105,
             "prior": 0.1706,
-            "expectedScore": 0.4239
+            "expectedScore": 0.4485
           },
           {
-            "move": "d1",
-            "visits": 23,
-            "prior": 0.0697,
-            "expectedScore": 0.4617
+            "move": "e7",
+            "visits": 104,
+            "prior": 0.2396,
+            "expectedScore": 0.4186
+          },
+          {
+            "move": "d3",
+            "visits": 43,
+            "prior": 0.0872,
+            "expectedScore": 0.4291
           }
         ]
       },
@@ -2332,52 +2380,54 @@
       "visible_thought": "Candidate 1: **d3**. This connects to the d4-d5 chain, strengthening the central column. It creates a potential sandwich threat against c3 (if Blue plays there) or b3/d3 lines. Crucially, it routes Blue to Row 3 or Column d. If Blue plays d2, they connect their own stones but leave the center open.\n\nCandidate 2: **a6**. This is a defensive move blocking Blue's potential left-side expansion if they route through row 6. However, it doesn't advance Red's top-bottom connection directly and might give Blue too much freedom in Column a/Row 6.\n\nCandidate 3: **f6**. Blocks Blue's f-file presence slightly but is far from Red's main cluster. Routes Blue to Row 6 or Col f.\n\nEvaluation: **d3** is best. It extends Red's vertical spine (c1-b2... no, d4-d5-d3). Wait, d3 connects to d4. The chain d3-d4-d5 exists. Red needs to reach row 7. c7-d7 exist. If I play d3, I threaten nothing immediately but maintain structure. Let's look at flips. Placing R at d3: Neighbors are d2(.), d4(R), c3(B), e3(.). No immediate linear sandwich for single enemy stone unless another R is adjacent. d4 is R. Is there an R at d2? No. So no flip.\nHowever, consider **e6**. If I play e6, it connects to nothing.\nConsider **d1**. Connects to d4 via column? No, must be orthogonal chain for win. But for routing, d1 forces opponent to Row 1 or Col d.\nLet's re-evaluate **d3**. It solidifies the d-column control. Blue cannot easily block the d-column because d4, d5 are already Red. If Blue plays d2, they occupy that square. If Blue plays elsewhere in Row 3 or Col d, they might not block the path to d6/d7 effectively.\nActually, looking at the board, Red has c7, d7. To connect top to bottom, Red needs to link the upper group (b/c/d/e area) with the lower group (c7/d7). Currently, d5 is connected to d4. d7 is isolated from d5 by d6 (Blue).\nIf I play **d3**, I don't bridge the gap.\nWhat if I play **e6**? No.\nThe critical gap is between row 5 and row 7. d6 is Blue. e6 is empty. c6 is Blue.\nCan I flip d6? To flip d6 (Blue), I need R on both sides orthogonally. d5 is R. d7 is R. If I place a stone at d6? No, it's occupied.\nWait, \"Linear Sandwich\": `C [E] C`. d5(R) - d6(B) - d7(R). This is ALREADY a sandwich pattern! Why didn't it flip when d7 was played? Turn history: ... c7 g7 d7 d6. When d7 was placed (Turn 25?), let's check.\nHistory: ... c6 c7 g7 d7 d6.\nMove 24: c6 (B). Move 25: c7 (R)? No, list says c7 then g7 then d7.\nLet's trace:\n20: c2 (R)\n21: c3 (B)\n22: c1 (R)\n23: c6 (B)\n24: c7 (R) -> Check flips. c7 neighbors: c6(B), b7(.), d7(.). No sandwich.\n25: g7 (B)\n26: d7 (R) -> Neighbors: d6(.), c7(R), e7(.), d8(out). No sandwich.\n27: d6 (B) -> Opponent just played d6.\nNow Board: d5(R), d6(B), d7(R).\nIt is my turn. If I place a stone to create a sandwich, or if the existing d5-d6-d7 configuration allows a flip *now*? No, flips happen *after placing*.\nI cannot place on d6.\nI need to break Blue's hold or bypass.\nLook at **e6**. If I play e6 (R). Neighbors: e5(R), e7(.), d6(B), f6(.).\nSandwich check: e5(R)-e6(R)-e7(.) no. d6(B) is horizontal neighbor. Is there R at f6? No. Vertical? e5(R) above, e7(.) below. No flip.\nBut e6 connects to e5. e5 connects to e4. e4 connects to d4. d4 connects to d5.\nSo e6 links to the big upper cluster.\nDoes e6 help connect to bottom? e6 is next to e7(empty) and d6(B) and f6(empty).\nIf I play **e6**, Blue must play Row 6 or Col e.\nCol e has e1..e7. e4,e5 are R. e6 is R. e7 is empty.\nIf Blue plays e7, they block my vertical path? No, e7 is empty.\nActually, if I play **e6**, I am one step away from connecting to e7->e8(no).\nThe goal is Top(1) to Bottom(7).\nRed has c1, b2... upper mass.\nRed has c7, d7 lower mass.\nGap is rows 4-6.\nd4,d5 are R. d6 is B. d7 is R.\nc4,c5 are B. c6 is B. c7 is R.\ne4,e5 are R. e6 is empty. e7 is empty.\nf3,f4,f5 are mixed/B.\nIf I play **e6**, I extend the right side of the central pillar.\nIf I play **d3**, I extend upwards/leftwards? No, d3 is above d4.\nPlaying **d3** seems passive.\nPlaying **e6** threatens to connect to e7 later.\nWhat about **f6**?\nIf I play **f6**, it's near f5(B), f4(B), f3(R).\nLet's look at **d1**. Forces Blue to Row 1 or Col d.\nIf Blue plays d2, they sit between d1(R) and d3(?).\nBest move is likely **e6** or **d3**.\nBetween them, **e6** pushes towards the bottom edge via column e/f/g if Blue fails to block, or creates threats.\nHowever, **d3** keeps the option of playing d2 later?\nLet's choose **e6**. It occupies a key empty spot adjacent to the strong e4-e5 chain.",
       "reasoning_trace": null,
       "eval": {
+        "az4000_best_move": "g6",
         "az400_best_move": "g6",
         "az1_top_prior_move": "d3",
         "chosen_move": "e6",
         "chosen_prior": 0.0578,
-        "chosen_visits_400": 4,
-        "chosen_expected_score": 0.3125,
+        "chosen_visits_4000": 9,
+        "chosen_visits_400": 9,
+        "chosen_expected_score": 0.2101,
         "policy_rank": 5,
         "search_rank": 7,
         "num_legal": 8,
-        "win_prob_before": 0.515,
+        "win_prob_before": 0.4863,
         "win_prob_after": 0.0,
-        "delta_win_prob": -0.515,
-        "win_prob_loss": 0.515,
-        "red_win_prob_before": 0.515,
+        "delta_win_prob": -0.4863,
+        "win_prob_loss": 0.4863,
+        "red_win_prob_before": 0.4863,
         "red_win_prob_after": 0.0,
         "network_value_before": 0.1108,
         "top_candidates": [
           {
             "move": "g6",
-            "visits": 212,
+            "visits": 3104,
             "prior": 0.0548,
-            "expectedScore": 0.515
+            "expectedScore": 0.4863
           },
           {
             "move": "d1",
-            "visits": 86,
+            "visits": 467,
             "prior": 0.1281,
-            "expectedScore": 0.4966
-          },
-          {
-            "move": "b6",
-            "visits": 38,
-            "prior": 0.182,
-            "expectedScore": 0.4492
-          },
-          {
-            "move": "d3",
-            "visits": 24,
-            "prior": 0.334,
-            "expectedScore": 0.3256
+            "expectedScore": 0.4746
           },
           {
             "move": "a6",
-            "visits": 19,
+            "visits": 184,
             "prior": 0.0571,
-            "expectedScore": 0.4769
+            "expectedScore": 0.4731
+          },
+          {
+            "move": "b6",
+            "visits": 93,
+            "prior": 0.182,
+            "expectedScore": 0.399
+          },
+          {
+            "move": "d3",
+            "visits": 77,
+            "prior": 0.334,
+            "expectedScore": 0.2952
           }
         ]
       },
@@ -2427,11 +2477,13 @@
       "visible_thought": "**Analysis:**\n\n**f6** \u2014 This looks like a winner. Place Blue at f6. Check sandwich: f6(B)\u2013e6(R)\u2013d6(B) forms a linear sandwich, flipping e6 to Blue. Now trace connection: a4\u2013a5\u2013b5\u2013c5\u2013c6\u2013d6\u2013e6\u2013f6\u2013f5\u2013g5\u2013g4 \u2014 that's a full left-to-right Blue chain! **Blue wins immediately.**\n\n**g6** \u2014 Connects g5 and g7, extending right group. No flips. Opponent routed to row 6 or col g (plenty of options). No immediate win.\n\n**e7** \u2014 Sandwich check: d6(B)\u2013e6(R)\u2013e7(B) flips e6 to Blue. But then connection still needs a link from the right side (f5/f6 area is disconnected from the new e6). Opponent can play f6 or e6-area next turn to block.",
       "reasoning_trace": "Let me analyze the position. Blue needs to connect LEFT (col a) to RIGHT (col g).\n\nCurrent Blue stones: f2, c3, a4, c4, f4, g4, a5, b5, c5, f5, g5, c6, d6, g7\n\nBlue's connection status:\n- a4-a5 (col a) \u2713\n- a5-b5-c5 (row 5) \u2713\n- c5-c4-c3 (col c) \u2713\n- c5-d6 (wait, d6 is adjacent to c6? No, d6 is adjacent to c6 and e6 and d5 and d7)\n- c6 is Blue, d6 is Blue. c5-c6 (col c) \u2713, d6-c6 \u2713\n- g4-g5 (col g) \u2713, g7-g5? No, g7 is adjacent to g6 and f7. g5 is adjacent to g4, g6, f5.\n\nSo Blue chain: a4-a5-b5-c5-c4-c3 (left side connected)\nAnd: a5-b5-c5-f5-g5-g4 (middle to right)\nAnd: c5-c6-d6 (extending down)\nAnd: g7-g6? g6 is empty.\n\nLet me check: Can Blue connect a4 to g4 via a path?\na4-a5-b5-c5-f5-g4? c5 to f5? No, c5 is at (5,c) and f5 is at (5,f). That's 3 squares apart, not adjacent.\n\nWait, let me recheck adjacency. c5 = row 5, col c. f5 = row 5, col f. Not adjacent.\n\nBlue chain: a4, a5, b5, c5, c4, c3, f4, g4, f5, g5, c6, d6, f2, g7\n\nc5-f5? Not adjacent. But c5-b5 and f5-g5 and f5-f4. Are f4 and c5 connected? f4 is at row 4, col f. c5 is at row 5, col c. Not adjacent.\n\nSo Blue has two groups:\nGroup 1 (left): a4-a5-b5-c5-c4-c3 and c6-d6\nGroup 2 (right): f2, f4-g4-f5-g5, g7\n\nAre these connected? Let me check... c6-d6... d6 is at row 6 col d. f5 is at row 5 col f. Not adjacent.\n\nSo Blue needs to connect left group to right group.\n\nNow, legal moves: e1, e2, e3, a6, b6, f6, g6, e7\n\nLet me evaluate:\n\n**g6**: Place at g6. Adjacent to g5 (Blue) and g7 (Blue) and f6. This extends right group. Flips? Check patterns - g6 is Blue, neighbors g5(B), g7(B), f6(empty), f6 not yet placed. No enemy stones sandwiched. g6 connects to g5 and g7, making the right group: f2, f4-g4-f5-g5-g6-g7. Routes opponent to row 6 or col g. Row 6: a6, b6, c6(B), d6(B), e6(R), f6, g6(B). Col g: g1-g7. g1 empty, g2 empty, g3 empty, g4(B), g5(B), g6(B), g7(B). So opponent can play g1, g2, g3 or f6, a6, b6.\n\n**f6**: Place at f6. Adjacent to f5(B), g6(empty), e6(R), f7(empty). f6 is Blue. Check for flips: sandwich? f5(B)-f6(B) sandwiching? No enemy between them. f6-e6(R)-? d6(B). So B at f6, R at e6, B at d6: f6-e6-d6 is a sandwich! That would flip e6 to Blue!\n\nAfter flip: e6 becomes Blue. Now check cascade from e6 becoming Blue. e6 neighbors: d6(B), f6(B), e5(R), e7(empty). d6-e6-f6: all Blue now. Check e5-e6: e5(R), e6(B), e7(empty) - no sandwich. Check if e6 becoming Blue triggers more: 2x2 crosscuts? Block d5-e5/d6-e6: d5(R), e5(R), d6(B), e6(B) - that's R R / B B, not a crosscut pattern. Block e5-f5/e6-f6: e5(R), f5(B), e6(B), f6(B) - that's 3B 1R, not crosscut.\n\nSo f6 flips e6 to Blue! That's great. After flip, e6 is Blue, connecting d6 to f6, and potentially bridging left and right groups.\n\nAfter f6+flip: Left group: a4-a5-b5-c5-c4-c3-c6-d6-e6-f6... and right group f2-f4-g4-f5-g5-g6-g7. Are they connected? e6 is adjacent to f6, which is adjacent to f5. f5 is in right group. d6 is adjacent to c6 which is in left group. So yes! Left and right connect through d6-e6-f6!\n\nWait, but does Blue win immediately? Let me trace: a4-a5-b5-c5-c6-d6-e6-f6-f5-g5-g4? Or f6-f5-g5-g4. f5 is adjacent to f6 and g5 and g4? f5=(5,f), g5=(5,g) adjacent. g4=(4,g) adjacent to g5. So path: a4-a5-b5-c5-c6-d6-e6-f6-f5-g5-g4. That's a complete left-to-right connection! Blue wins!\n\n**f6 is the winning move!**\n\nLet me verify e7 is not better. e7 connects to d7(R), f7, e6(R). Sandwich? d7(R)-e7(B)-? f7 empty. No. e7-B, d6-B sandwich e6? No, d6-e6-e7: d6(B), e6(R), e7(B) - that's a sandwich! e6 flips to Blue. Then d6-e6 connected, and e6-f6? f6 is empty. Hmm, that doesn't complete the connection as cleanly.\n\nf6 is clearly the best move - it's a winning move.",
       "eval": {
+        "az4000_best_move": "f6",
         "az400_best_move": "f6",
         "az1_top_prior_move": "e7",
         "chosen_move": "f6",
         "chosen_prior": 0.2008,
-        "chosen_visits_400": 365,
+        "chosen_visits_4000": 3872,
+        "chosen_visits_400": 3872,
         "chosen_expected_score": 1.0,
         "policy_rank": 2,
         "search_rank": 1,
@@ -2446,33 +2498,33 @@
         "top_candidates": [
           {
             "move": "f6",
-            "visits": 365,
+            "visits": 3872,
             "prior": 0.2008,
             "expectedScore": 1.0
           },
           {
             "move": "e7",
-            "visits": 25,
+            "visits": 91,
             "prior": 0.3745,
-            "expectedScore": 0.8019
+            "expectedScore": 0.818
           },
           {
             "move": "e3",
-            "visits": 5,
+            "visits": 19,
             "prior": 0.1553,
-            "expectedScore": 0.6094
+            "expectedScore": 0.6491
           },
           {
             "move": "e2",
-            "visits": 1,
+            "visits": 4,
             "prior": 0.0533,
-            "expectedScore": 0.4604
+            "expectedScore": 0.5189
           },
           {
             "move": "e1",
-            "visits": 1,
+            "visits": 4,
             "prior": 0.0516,
-            "expectedScore": 0.4376
+            "expectedScore": 0.5025
           }
         ]
       },

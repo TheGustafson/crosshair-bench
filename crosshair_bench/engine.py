@@ -191,11 +191,11 @@ def evaluate_move_oracle(
     moves_before: list[str],
     chosen_move: str,
     game_seed: int,
-    oracle_sims: int = 400,
+    oracle_sims: int = 4000,
 ) -> dict[str, Any]:
     """
     Evaluate `chosen_move` played at `moves_before` using the `az-puct` shadow oracle
-    (default 400 simulations).
+    (default 4,000 simulations).
 
     Uses a deterministic seed per ply (`game_seed + ply * 31`) so `snap_after` on ply `t`
     is an exact cache hit for `snap_before` on ply `t + 1`, guaranteeing both 2x speedup
