@@ -114,9 +114,9 @@ def fit_anchored_bradley_terry(
             augmented.append((p, virtual_ref, 0.5 * prior_games))
             augmented.append((virtual_ref, p, 0.5 * prior_games))
 
-    lr = 0.15
     for _ in range(iters):
         grad: dict[str, float] = {p: 0.0 for p in players}
+        hess: dict[str, float] = {p: 1e-6 for p in players}
         for p_a, p_b, score_a in augmented:
             # Weight can be < 1 for prior games; for real games score_a is in {0.0, 1.0}
             w = prior_games if (0.0 < score_a < 1.0 and score_a != 0.5) else 1.0
@@ -124,15 +124,23 @@ def fit_anchored_bradley_terry(
             diff = max(-20.0, min(20.0, theta[p_a] - theta[p_b]))
             pred_a = 1.0 / (1.0 + math.exp(-diff))
             err = actual_a - w * pred_a
+            info = w * pred_a * (1.0 - pred_a)
             grad[p_a] += err
             grad[p_b] -= err
+            hess[p_a] += info
+            hess[p_b] += info
 
+        max_step = 0.0
         for p in players:
-            theta[p] += lr * grad[p]
+            step = 0.5 * grad[p] / max(0.5, hess[p])
+            theta[p] += step
+            max_step = max(max_step, abs(step))
 
         ref_val = theta.get(anchor_key, sum(theta.values()) / len(players))
         for p in players:
             theta[p] -= ref_val
+        if max_step < 1e-9:
+            break
 
     scale = 400.0 / math.log(10.0)
     anchor_offset = theta.get(anchor_key, 0.0)

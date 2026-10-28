@@ -115,7 +115,7 @@ def model_short_label(model_id: str, reasoning_effort: str | None = None) -> str
     """Create a concise human-readable label for a model and optional reasoning effort."""
     base = model_id.split("/")[-1].lower()
     base = re.sub(r"[^a-z0-9._-]+", "-", base).strip("-")
-    if reasoning_effort and reasoning_effort != "none":
+    if reasoning_effort:
         return f"{base}@{reasoning_effort}"
     return base
 
@@ -173,19 +173,19 @@ def _build_reasoning_config(
 
     if reasoning_effort is None:
         if is_always_thinking:
-            return {"effort": "low"}, 6144
-        return {"effort": "none"}, 6144
+            return {"effort": "low"}, 8192
+        return {"effort": "none"}, 8192
 
     if reasoning_effort == "none":
         if is_always_thinking:
-            return {"effort": "low"}, 6144
-        return {"effort": "none"}, 6144
+            return {"effort": "low"}, 8192
+        return {"effort": "none"}, 8192
 
     if m_low.startswith("deepseek/"):
         budget = DEEPSEEK_REASONING_BUDGETS.get(reasoning_effort, 4096)
-        return {"max_tokens": budget}, budget + 2048
+        return {"max_tokens": budget}, budget + 4096
 
-    min_tok = 6144 if reasoning_effort in ("medium", "high") else 4096
+    min_tok = 16384 if reasoning_effort in ("medium", "high") else 8192
     return {"effort": reasoning_effort}, min_tok
 
 

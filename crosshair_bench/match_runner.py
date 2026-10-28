@@ -18,7 +18,9 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import os
 import re
+import threading
 import time
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -49,6 +51,10 @@ from .prompts import (
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_MATCHES_DIR = REPO_ROOT / "results" / "matches"
+DEFAULT_CHECKPOINTS_DIR = REPO_ROOT / "results" / "checkpoints"
+DEFAULT_TURNS_LOG_PATH = REPO_ROOT / "results" / "turns_log.jsonl"
+
+_TURNS_LOG_LOCK = threading.Lock()
 
 
 @dataclass
@@ -100,11 +106,7 @@ class PlayerSpec:
         model_id, parsed_effort = parse_model_spec(s)
         eff_effort = reasoning_effort if reasoning_effort is not None else parsed_effort
         short_lbl = label or model_short_label(model_id, eff_effort)
-        actor_id = (
-            f"{model_id}@{eff_effort}"
-            if (eff_effort and eff_effort != "none")
-            else model_id
-        )
+        actor_id = f"{model_id}@{eff_effort}" if eff_effort else model_id
         return cls(
             actor_type="llm",
             actor_id=actor_id,
@@ -182,7 +184,16 @@ def _atomic_write_json(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp_path = path.with_suffix(path.suffix + ".tmp")
     tmp_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-    tmp_path.replace(path)
+    os.replace(tmp_path, path)
+
+
+def _append_turn_ledger(turns_log_path: Path, entry: dict[str, Any]) -> None:
+    turns_log_path.parent.mkdir(parents=True, exist_ok=True)
+    line = json.dumps(entry, separators=(",", ":")) + "\n"
+    with _TURNS_LOG_LOCK:
+        with turns_log_path.open("a", encoding="utf-8") as f:
+            f.write(line)
+            f.flush()
 
 
 async def run_match(
@@ -193,27 +204,37 @@ async def run_match(
     seed: int = 42,
     opening: str = "",
     oracle_sims: int = 400,
+    skip_shadow_oracle: bool = False,
     max_illegal_retries: int = 3,
     overwrite: bool = False,
+    quiet: bool = False,
     matches_dir: Path = DEFAULT_MATCHES_DIR,
+    checkpoints_dir: Path = DEFAULT_CHECKPOINTS_DIR,
+    turns_log_path: Path = DEFAULT_TURNS_LOG_PATH,
     api_key: str | None = None,
 ) -> dict[str, Any]:
     """
     Run a complete Crosshair match between `red_player` and `blue_player`.
-    Records full board state, `az-puct-400` shadow-oracle evaluations, and telemetry
-    on every ply, saving atomically to `matches_dir / <match_id>.json`.
+    Records full board state, `az-puct-400` shadow-oracle evaluations (unless
+    `skip_shadow_oracle=True`), and telemetry on every ply.
+    Writes per-ply incremental checkpoints to `checkpoints_dir / <match_id>.partial.json`,
+    appends LLM turns to `turns_log_path`, and writes the final completed match
+    atomically to `matches_dir / <match_id>.json`.
     """
     matches_dir.mkdir(parents=True, exist_ok=True)
+    checkpoints_dir.mkdir(parents=True, exist_ok=True)
     mid = match_id or make_default_match_id(red_player, blue_player, seed)
     match_path = matches_dir / f"{mid}.json"
+    checkpoint_path = checkpoints_dir / f"{mid}.partial.json"
 
     if match_path.exists() and not overwrite:
         try:
             existing = json.loads(match_path.read_text(encoding="utf-8"))
             if existing.get("result") and existing.get("result") != "ongoing":
-                print(
-                    f"[skip] {mid} already completed ({existing['result']}, winner={existing.get('winner')})"
-                )
+                if not quiet:
+                    print(
+                        f"[skip] {mid} already completed ({existing['result']}, winner={existing.get('winner')})"
+                    )
                 return existing
         except Exception:
             pass
@@ -253,64 +274,86 @@ async def run_match(
         opponent_label = blue_player.engine_key or blue_player.label
 
     opening_moves = opening.split() if opening else []
-    moves: list[str] = list(opening_moves)
 
-    per_side_telemetry: dict[str, dict[str, Any]] = {
-        "R": {
-            "total_latency_ms": 0.0,
-            "total_prompt_tokens": 0,
-            "total_completion_tokens": 0,
-            "total_reasoning_tokens": 0,
-            "total_cost_usd": 0.0,
+    resumed_doc: dict[str, Any] | None = None
+    if not overwrite:
+        for cand_path in (checkpoint_path, match_path):
+            if cand_path.exists():
+                try:
+                    loaded = json.loads(cand_path.read_text(encoding="utf-8"))
+                    if loaded.get("result") == "ongoing" and isinstance(
+                        loaded.get("moves"), list
+                    ):
+                        resumed_doc = loaded
+                        break
+                except Exception:
+                    pass
+
+    if resumed_doc is not None:
+        match_doc = resumed_doc
+        moves = match_doc["moves"]
+        per_side_telemetry = match_doc["per_side_telemetry"]
+        if not quiet:
+            print(
+                f"[resume] {mid} from ply {len(moves)} ({len(match_doc.get('turns', []))} turns saved)"
+            )
+    else:
+        moves = list(opening_moves)
+        per_side_telemetry = {
+            "R": {
+                "total_latency_ms": 0.0,
+                "total_prompt_tokens": 0,
+                "total_completion_tokens": 0,
+                "total_reasoning_tokens": 0,
+                "total_cost_usd": 0.0,
+                "illegal_attempts": 0,
+            },
+            "B": {
+                "total_latency_ms": 0.0,
+                "total_prompt_tokens": 0,
+                "total_completion_tokens": 0,
+                "total_reasoning_tokens": 0,
+                "total_cost_usd": 0.0,
+                "illegal_attempts": 0,
+            },
+        }
+        match_doc = {
+            "schema_version": "1.0",
+            "match_id": mid,
+            "game_id": mid,
+            "match_type": match_type,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "seed": seed,
+            "oracle_sims": 0 if skip_shadow_oracle else oracle_sims,
+            "opening": opening_moves,
+            "red_player": asdict(red_player),
+            "blue_player": asdict(blue_player),
+            # Backward-compatible fields for single-LLM analyzers & blog exporters
+            "model_label": primary_model_label,
+            "model_id": primary_model_id,
+            "llm_side": primary_llm_side,
+            "prompt_mode": primary_prompt_mode,
+            "opponent": opponent_label,
+            "moves": moves,
             "illegal_attempts": 0,
-        },
-        "B": {
-            "total_latency_ms": 0.0,
-            "total_prompt_tokens": 0,
-            "total_completion_tokens": 0,
-            "total_reasoning_tokens": 0,
-            "total_cost_usd": 0.0,
-            "illegal_attempts": 0,
-        },
-    }
-
-    match_doc: dict[str, Any] = {
-        "schema_version": "1.0",
-        "match_id": mid,
-        "game_id": mid,
-        "match_type": match_type,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "seed": seed,
-        "oracle_sims": oracle_sims,
-        "opening": opening_moves,
-        "red_player": asdict(red_player),
-        "blue_player": asdict(blue_player),
-        # Backward-compatible fields for single-LLM analyzers & blog exporters
-        "model_label": primary_model_label,
-        "model_id": primary_model_id,
-        "llm_side": primary_llm_side,
-        "prompt_mode": primary_prompt_mode,
-        "opponent": opponent_label,
-        "moves": moves,
-        "illegal_attempts": 0,
-        "turns": [],
-        "per_side_telemetry": per_side_telemetry,
-        "telemetry": {
-            "total_latency_ms": 0.0,
-            "total_prompt_tokens": 0,
-            "total_completion_tokens": 0,
-            "total_reasoning_tokens": 0,
-            "total_cost_usd": 0.0,
-        },
-        "result": "ongoing",
-        "winner": None,
-        "winning_line": [],
-    }
-
-    print(
-        f"[start] {mid} | Red={red_player.label} ({red_player.prompt_mode or 'engine'}) "
-        f"vs Blue={blue_player.label} ({blue_player.prompt_mode or 'engine'})"
-    )
+            "turns": [],
+            "per_side_telemetry": per_side_telemetry,
+            "telemetry": {
+                "total_latency_ms": 0.0,
+                "total_prompt_tokens": 0,
+                "total_completion_tokens": 0,
+                "total_reasoning_tokens": 0,
+                "total_cost_usd": 0.0,
+            },
+            "result": "ongoing",
+            "winner": None,
+            "winning_line": [],
+        }
+        if not quiet:
+            print(
+                f"[start] {mid} | Red={red_player.label} ({red_player.prompt_mode or 'engine'}) "
+                f"vs Blue={blue_player.label} ({blue_player.prompt_mode or 'engine'})"
+            )
 
     state_before = await asyncio.to_thread(query_engine, moves)
 
@@ -449,28 +492,47 @@ async def run_match(
             other_side = "B" if side == "R" else "R"
             match_doc["result"] = "forfeit"
             match_doc["winner"] = other_side
+            match_doc["completed_at"] = datetime.now(timezone.utc).isoformat()
             match_doc["per_side_metrics"] = {
                 "R": _compute_side_metrics(match_doc["turns"], "R"),
                 "B": _compute_side_metrics(match_doc["turns"], "B"),
             }
             _atomic_write_json(match_path, match_doc)
-            print(
-                f"[forfeit] {mid}: {current_player.label} ({side}) exceeded "
-                f"{max_illegal_retries} illegal retries at ply {ply}"
-            )
+            checkpoint_path.unlink(missing_ok=True)
+            if not quiet:
+                print(
+                    f"[forfeit] {mid}: {current_player.label} ({side}) exceeded "
+                    f"{max_illegal_retries} illegal retries at ply {ply}"
+                )
             return match_doc
 
         # Shadow oracle evaluation (az-puct-400) before & after the move
-        eval_metrics = await asyncio.to_thread(
-            evaluate_move_oracle,
-            list(moves),
-            chosen_move,
-            seed,
-            oracle_sims,
-        )
+        if skip_shadow_oracle or oracle_sims <= 0:
+            eval_metrics = None
+        else:
+            eval_metrics = await asyncio.to_thread(
+                evaluate_move_oracle,
+                list(moves),
+                chosen_move,
+                seed,
+                oracle_sims,
+            )
 
         moves.append(chosen_move)
         state_after = await asyncio.to_thread(query_engine, list(moves))
+
+        turn_telemetry = {
+            "latency_ms": round(turn_latency_ms, 1),
+            "prompt_tokens": turn_prompt_tokens,
+            "completion_tokens": turn_completion_tokens,
+            "reasoning_tokens": turn_reasoning_tokens,
+            "cost_usd": round(turn_cost_usd, 6),
+            "provider_model": provider_model,
+            "finish_reason": finish_reason,
+            "raw_response_excerpt": raw_excerpt,
+            "illegal_retries": turn_illegal_retries,
+            "attempts": attempts_used,
+        }
 
         turn_record: dict[str, Any] = {
             "ply": ply,
@@ -497,18 +559,7 @@ async def run_match(
             "visible_thought": visible_thought if current_player.actor_type == "llm" else None,
             "reasoning_trace": reasoning_trace,
             "eval": eval_metrics,
-            "telemetry": {
-                "latency_ms": round(turn_latency_ms, 1),
-                "prompt_tokens": turn_prompt_tokens,
-                "completion_tokens": turn_completion_tokens,
-                "reasoning_tokens": turn_reasoning_tokens,
-                "cost_usd": round(turn_cost_usd, 6),
-                "provider_model": provider_model,
-                "finish_reason": finish_reason,
-                "raw_response_excerpt": raw_excerpt,
-                "illegal_retries": turn_illegal_retries,
-                "attempts": attempts_used,
-            },
+            "telemetry": turn_telemetry,
         }
         if engine_decision is not None:
             turn_record["expected_score"] = round(
@@ -526,16 +577,62 @@ async def run_match(
             "B": _compute_side_metrics(match_doc["turns"], "B"),
         }
 
-        print(
-            f"  [ply {ply:>2} {side}] {current_player.label:<24} -> {chosen_move} "
-            f"(az400={eval_metrics['az400_best_move']}, rank=#{eval_metrics['search_rank']}, "
-            f"win={eval_metrics['win_prob_before']:.2f}->{eval_metrics['win_prob_after']:.2f}, "
-            f"Δ={eval_metrics['delta_win_prob']:+.3f}, "
-            f"{turn_latency_ms:>5.0f}ms, reas_tok={turn_reasoning_tokens}, ${turn_cost_usd:.4f})"
-        )
+        # Append to append-only turn ledger whenever an LLM turn completes
+        if current_player.actor_type == "llm":
+            _append_turn_ledger(
+                turns_log_path,
+                {
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "match_id": mid,
+                    "ply": ply,
+                    "actor_id": current_player.actor_id,
+                    "actor_label": current_player.label,
+                    "side": side,
+                    "move": chosen_move,
+                    "eval": (
+                        {
+                            "az400_best_move": eval_metrics["az400_best_move"],
+                            "search_rank": eval_metrics["search_rank"],
+                            "win_prob_before": eval_metrics["win_prob_before"],
+                            "win_prob_after": eval_metrics["win_prob_after"],
+                            "delta_win_prob": eval_metrics["delta_win_prob"],
+                        }
+                        if eval_metrics
+                        else None
+                    ),
+                    "telemetry": {
+                        "latency_ms": turn_telemetry["latency_ms"],
+                        "prompt_tokens": turn_telemetry["prompt_tokens"],
+                        "completion_tokens": turn_telemetry["completion_tokens"],
+                        "reasoning_tokens": turn_telemetry["reasoning_tokens"],
+                        "cost_usd": turn_telemetry["cost_usd"],
+                        "illegal_retries": turn_telemetry["illegal_retries"],
+                    },
+                },
+            )
+
+        if not quiet:
+            if eval_metrics is not None:
+                print(
+                    f"  [ply {ply:>2} {side}] {current_player.label:<24} -> {chosen_move} "
+                    f"(az400={eval_metrics['az400_best_move']}, rank=#{eval_metrics['search_rank']}, "
+                    f"win={eval_metrics['win_prob_before']:.2f}->{eval_metrics['win_prob_after']:.2f}, "
+                    f"Δ={eval_metrics['delta_win_prob']:+.3f}, "
+                    f"{turn_latency_ms:>5.0f}ms, reas_tok={turn_reasoning_tokens}, ${turn_cost_usd:.4f})"
+                )
+            else:
+                exp_s = (
+                    f"{engine_decision['expectedScore']:.2f}"
+                    if engine_decision is not None
+                    else "-"
+                )
+                print(
+                    f"  [ply {ply:>2} {side}] {current_player.label:<24} -> {chosen_move} "
+                    f"(exp={exp_s}, {turn_latency_ms:>5.0f}ms)"
+                )
 
         state_before = state_after
-        _atomic_write_json(match_path, match_doc)
+        _atomic_write_json(checkpoint_path, match_doc)
 
     match_doc["result"] = state_before["result"]
     match_doc["winner"] = state_before["winner"]
@@ -546,16 +643,18 @@ async def run_match(
         "B": _compute_side_metrics(match_doc["turns"], "B"),
     }
     _atomic_write_json(match_path, match_doc)
+    checkpoint_path.unlink(missing_ok=True)
 
     winner_side = match_doc["winner"]
     winner_player = red_player if winner_side == "R" else blue_player
     tel = match_doc["telemetry"]
-    print(
-        f"[done]  {mid} | Winner: {winner_side} ({winner_player.label}) in {len(moves)} plies | "
-        f"illegal={match_doc['illegal_attempts']} | "
-        f"tokens={tel['total_prompt_tokens']}+{tel['total_completion_tokens']} "
-        f"(reas={tel['total_reasoning_tokens']}) | cost=${tel['total_cost_usd']:.4f}"
-    )
+    if not quiet:
+        print(
+            f"[done]  {mid} | Winner: {winner_side} ({winner_player.label}) in {len(moves)} plies | "
+            f"illegal={match_doc['illegal_attempts']} | "
+            f"tokens={tel['total_prompt_tokens']}+{tel['total_completion_tokens']} "
+            f"(reas={tel['total_reasoning_tokens']}) | cost=${tel['total_cost_usd']:.4f}"
+        )
     return match_doc
 
 
@@ -566,12 +665,12 @@ def main() -> None:
     parser.add_argument(
         "--red",
         required=True,
-        help="Red player spec (e.g. 'google/gemini-3.8-flash', 'openai/gpt-6-luna-pro@medium', or 'engine:az-puct-1')",
+        help="Red player spec (e.g. 'google/gemini-3.8-flash@low', 'openai/gpt-6.1-sol@high', or 'engine:az-puct-1')",
     )
     parser.add_argument(
         "--blue",
         required=True,
-        help="Blue player spec (e.g. 'engine:az-puct-400', 'anthropic/claude-haiku-5.5', etc.)",
+        help="Blue player spec (e.g. 'engine:az-puct-400', 'anthropic/claude-haiku-5.5@low', etc.)",
     )
     parser.add_argument(
         "--red-mode",
@@ -605,9 +704,24 @@ def main() -> None:
         "--temperature", type=float, default=0.0, help="Sampling temperature"
     )
     parser.add_argument(
+        "--skip-shadow-oracle",
+        action="store_true",
+        help="Skip per-turn az-puct-400 shadow oracle evaluation (fast mode for engine calibration)",
+    )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Suppress per-turn stdout logging",
+    )
+    parser.add_argument(
         "--matches-dir",
         default=str(DEFAULT_MATCHES_DIR),
-        help="Directory to store match JSON outputs",
+        help="Directory to store completed match JSON outputs",
+    )
+    parser.add_argument(
+        "--checkpoints-dir",
+        default=str(DEFAULT_CHECKPOINTS_DIR),
+        help="Directory to store per-ply in-progress checkpoints",
     )
     parser.add_argument(
         "--overwrite", action="store_true", help="Overwrite existing completed match"
@@ -636,8 +750,11 @@ def main() -> None:
             match_id=args.id,
             seed=args.seed,
             opening=args.opening,
+            skip_shadow_oracle=args.skip_shadow_oracle,
             overwrite=args.overwrite,
+            quiet=args.quiet,
             matches_dir=Path(args.matches_dir),
+            checkpoints_dir=Path(args.checkpoints_dir),
         )
     )
 

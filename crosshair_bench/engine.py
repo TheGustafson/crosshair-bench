@@ -2,7 +2,7 @@
 Wrapper around the compiled `ai-crosshair` Rust engine binary.
 
 Provides position state queries, batch state evaluation, engine search moves
-(`az-puct-1`, `random-uct-50`, `az-puct-50`, `az-puct-400`, `az-puct-2000`),
+(`az-puct-1`, `random-uct-50`, `az-puct-50`, `az-puct-400`, `az-puct-2000`, `az-puct-4000`),
 and cached `az-puct-400` shadow-oracle move evaluations.
 """
 
@@ -20,15 +20,19 @@ ENGINE_SPECS: dict[str, tuple[str, int]] = {
     "az-puct-50": ("az-puct", 50),
     "az-puct-400": ("az-puct", 400),
     "az-puct-2000": ("az-puct", 2000),
+    "az-puct-4000": ("az-puct", 4000),
     "random-uct-50": ("random-uct", 50),
     "random-uct-400": ("random-uct", 400),
 }
+
+ENGINE_CONFIGS = ENGINE_SPECS
 
 ENGINE_SHORT_LABELS: dict[str, str] = {
     "az-puct-1": "az1",
     "az-puct-50": "az50",
     "az-puct-400": "az400",
     "az-puct-2000": "az2000",
+    "az-puct-4000": "az4000",
     "random-uct-50": "uct50",
     "random-uct-400": "uct400",
 }

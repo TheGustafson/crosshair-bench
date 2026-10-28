@@ -8,6 +8,7 @@ Syncs completed matches and leaderboard data between `crosshair-bench` and
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import subprocess
 import sys
@@ -21,6 +22,7 @@ LEADERBOARD_PATH = REPO_ROOT / "results" / "leaderboard.json"
 
 BLOG_ROOT = Path("/home/nick/projects/private-blog")
 BLOG_GAMES_DIR = BLOG_ROOT / "notes" / "llm-arena" / "games"
+BLOG_LEADERBOARD_PATH = BLOG_ROOT / "notes" / "llm-arena" / "leaderboard.json"
 BLOG_EXPORT_SCRIPT = BLOG_ROOT / "notes" / "llm-arena" / "export_blog_data.py"
 
 
@@ -41,10 +43,16 @@ def sync_matches(
                 shutil.copy2(src, dst)
                 imported += 1
 
-    # 2. Copy all completed crosshair-bench matches to private-blog/notes/llm-arena/games
+    # 2. Copy all completed LLM matches from crosshair-bench to private-blog/notes/llm-arena/games
     exported = 0
     if export_to_blog:
         for src in sorted(BENCH_MATCHES_DIR.glob("*.json")):
+            try:
+                doc = json.loads(src.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            if doc.get("match_type") == "engine_vs_engine":
+                continue
             dst = BLOG_GAMES_DIR / src.name
             if not dst.exists() or src.stat().st_mtime > dst.stat().st_mtime:
                 shutil.copy2(src, dst)
@@ -52,17 +60,18 @@ def sync_matches(
 
     print(
         f"[sync] Imported {imported} legacy games into crosshair-bench; "
-        f"exported {exported} updated matches to {BLOG_GAMES_DIR}"
+        f"exported {exported} updated LLM matches to {BLOG_GAMES_DIR}"
     )
 
-    # 3. Recompute leaderboard across all matches
+    # 3. Recompute leaderboard across all matches (including Batch 0 engine calibration)
     summary = compute_leaderboard([BENCH_MATCHES_DIR])
     LEADERBOARD_PATH.parent.mkdir(parents=True, exist_ok=True)
-    import json
-
     LEADERBOARD_PATH.write_text(
         json.dumps(summary, indent=2) + "\n", encoding="utf-8"
     )
+    if export_to_blog:
+        BLOG_LEADERBOARD_PATH.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(LEADERBOARD_PATH, BLOG_LEADERBOARD_PATH)
     print_leaderboard(summary)
 
     # 4. Run private-blog's export_blog_data.py
