@@ -253,7 +253,7 @@ def call_openrouter_chat(
     payload = dict(base_payload)
     last_err: Exception | None = None
 
-    for attempt in range(4):
+    for attempt in range(6):
         body = json.dumps(payload).encode("utf-8")
         t0 = time.perf_counter()
         try:
@@ -338,14 +338,15 @@ def call_openrouter_chat(
                 raise RuntimeError(
                     f"Non-retryable HTTP {exc.code} from OpenRouter for {model_id}: {err_body}"
                 ) from exc
-            if attempt < 3:
-                time.sleep(1.5 * (2**attempt))
+            if attempt < 5:
+                backoff = (3.0 if exc.code == 429 else 1.5) * (2**attempt)
+                time.sleep(min(backoff, 30.0))
 
         except (urllib.error.URLError, TimeoutError, RuntimeError) as exc:
             last_err = exc
-            if attempt < 3:
-                time.sleep(1.5 * (2**attempt))
+            if attempt < 5:
+                time.sleep(min(1.5 * (2**attempt), 20.0))
 
     raise RuntimeError(
-        f"OpenRouter request failed after 4 attempts for {model_id}: {last_err}"
+        f"OpenRouter request failed after 6 attempts for {model_id}: {last_err}"
     )
