@@ -30,7 +30,7 @@ On every turn of every LLM game, a 400-simulation AlphaZero shadow oracle evalua
 
 ## Results (495-Game Tournament)
 
-We evaluated 20 LLM configurations (`5 labs × 2 model tiers × 2 reasoning budgets`, all in unassisted `raw` mode) alongside the 4 engine baselines across 495 complete games:
+20 LLM configurations (`5 labs × 2 model tiers × 2 reasoning budgets`, all in unassisted `raw` mode) were evaluated alongside the 4 engine baselines across 495 complete games:
 
 - **Batch 0 (`96 games`):** Engine calibration round-robin (`random-uct-50`, `az-puct-1`, `az-puct-400`, `az-puct-4000`).
 - **Batch 1 (`240 games`):** All 20 LLM configurations vs. `random-uct-50`, `az-puct-400`, and `az-puct-4000` (4 games per pair).
