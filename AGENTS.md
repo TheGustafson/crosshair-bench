@@ -13,20 +13,18 @@
    - Re-running `run_match` or `run_batch` automatically skips completed matches in `results/matches/` and resumes any interrupted match in `results/checkpoints/` from `len(match_doc["moves"])`.
    - Never pass `--overwrite` on paid LLM batches unless intentionally re-running a specific match.
 3. **Use the canonical roster and deterministic manifests.**
-   - `crosshair_bench/roster.py` is the single source of truth for the 7-company, 28-LLM-entrant + 4-engine roster and balanced 2-ply opening book.
+   - `crosshair_bench/roster.py` is the single source of truth for the 5-company, 20-LLM-entrant + 4-engine roster and balanced 2-ply opening book.
    - `crosshair_bench/build_manifests.py` generates all deterministic batch manifests under `manifests/`. Do not hand-edit generated manifest JSON files.
 
-## Tournament Roster (7 Companies, 28 LLM Entrants, 4 Engine Actors)
+## Tournament Roster (5 Companies, 20 LLM Entrants, 4 Engine Actors)
 
-Each of the 7 frontier labs has 2 models (Flagship + Fast/Flash) evaluated at 2 thinking levels (`@low`/`@none` and `@high`):
+Each of the 5 frontier labs has 2 models (Flagship + Fast/Flash) evaluated at 2 thinking levels (`@low`/`@none` and `@high`):
 
 - **OpenAI:** `openai/gpt-6.1-sol@low`, `openai/gpt-6.1-sol@high`, `openai/gpt-6-luna@low`, `openai/gpt-6-luna@high`
 - **Anthropic:** `anthropic/claude-opus-5.5@low`, `anthropic/claude-opus-5.5@high`, `anthropic/claude-haiku-5.5@low`, `anthropic/claude-haiku-5.5@high`
 - **Google:** `google/gemini-4-argon@low`, `google/gemini-4-argon@high`, `google/gemini-3.8-flash@low`, `google/gemini-3.8-flash@high`
 - **DeepSeek:** `deepseek/deepseek-v4-pro-0813@none`, `deepseek/deepseek-v4-pro-0813@high`, `deepseek/deepseek-v4.1-flash-1017@none`, `deepseek/deepseek-v4.1-flash-1017@high`
 - **Qwen:** `qwen/qwen3.8-max-0902@none`, `qwen/qwen3.8-max-0902@high`, `qwen/qwen3.8-flash@none`, `qwen/qwen3.8-flash@high`
-- **Meta:** `meta/muse-wonder@low`, `meta/muse-wonder@high`, `meta/muse-spark-open@low`, `meta/muse-spark-open@high`
-- **xAI:** `x-ai/grok-4.7@low`, `x-ai/grok-4.7@high`, `x-ai/grok-4.3@low`, `x-ai/grok-4.3@high`
 
 **Engine Actors (`ai-crosshair`):**
 - Calibration Anchor (`1200.0` Elo): `engine:az-puct-1` (raw 114K policy prior, zero search)
@@ -42,12 +40,12 @@ python3 -m crosshair_bench.build_manifests
 
 # Run a batch manifest with concurrent workers and automatic checkpoint resume
 python3 -m crosshair_bench.run_batch manifests/batch_00_engine_anchors.json --concurrency 8
-python3 -m crosshair_bench.run_batch manifests/batch_01a_vs_uct50.json --concurrency 8
-python3 -m crosshair_bench.run_batch manifests/batch_01b_vs_az400.json --concurrency 8
-python3 -m crosshair_bench.run_batch manifests/batch_01c_vs_az4000.json --concurrency 8
-python3 -m crosshair_bench.run_batch manifests/batch_02_thinking_delta.json --concurrency 8
-python3 -m crosshair_bench.run_batch manifests/batch_03_flagship_rr.json --concurrency 8
-python3 -m crosshair_bench.run_batch manifests/batch_04_flash_rr.json --concurrency 8
+python3 -m crosshair_bench.run_batch manifests/batch_01a_vs_uct50.json --concurrency 24
+python3 -m crosshair_bench.run_batch manifests/batch_01b_vs_az400.json --concurrency 24
+python3 -m crosshair_bench.run_batch manifests/batch_01c_vs_az4000.json --concurrency 24
+python3 -m crosshair_bench.run_batch manifests/batch_02_thinking_delta.json --concurrency 24
+python3 -m crosshair_bench.run_batch manifests/batch_03_flagship_rr.json --concurrency 24
+python3 -m crosshair_bench.run_batch manifests/batch_04_flash_rr.json --concurrency 24
 
 # Recompute anchored BayesElo / Bradley-Terry ratings and move-quality leaderboard
 python3 -m crosshair_bench.elo

@@ -14,15 +14,13 @@ A full-game competitive arena supporting **LLM vs Engine**, **LLM vs LLM**, and 
 - **`assisted`**: Appends exact 1-ply engine-computed tactical previews for each legal move (stones flipped, immediate win flag, and next active row/column or wildcard grant). Isolates multi-step lookahead from 1-ply board-reading errors.
 - **`strategic`**: Prepends a 4-rule domain heuristic primer (orthogonal connectivity, avoiding 1-ply pinches, defending 2x2 crosscuts, and starving opponent routing) alongside 1-ply previews.
 
-#### 7-Company Tournament Roster (28 LLM Entrants + 4 Engine Actors)
+#### 5-Company Tournament Roster (20 LLM Entrants + 4 Engine Actors)
 Defined in `crosshair_bench/roster.py`:
 - **OpenAI:** `openai/gpt-6.1-sol@low`, `openai/gpt-6.1-sol@high`, `openai/gpt-6-luna@low`, `openai/gpt-6-luna@high`
 - **Anthropic:** `anthropic/claude-opus-5.5@low`, `anthropic/claude-opus-5.5@high`, `anthropic/claude-haiku-5.5@low`, `anthropic/claude-haiku-5.5@high`
 - **Google:** `google/gemini-4-argon@low`, `google/gemini-4-argon@high`, `google/gemini-3.8-flash@low`, `google/gemini-3.8-flash@high`
 - **DeepSeek:** `deepseek/deepseek-v4-pro-0813@none`, `deepseek/deepseek-v4-pro-0813@high`, `deepseek/deepseek-v4.1-flash-1017@none`, `deepseek/deepseek-v4.1-flash-1017@high`
 - **Qwen:** `qwen/qwen3.8-max-0902@none`, `qwen/qwen3.8-max-0902@high`, `qwen/qwen3.8-flash@none`, `qwen/qwen3.8-flash@high`
-- **Meta:** `meta/muse-wonder@low`, `meta/muse-wonder@high`, `meta/muse-spark-open@low`, `meta/muse-spark-open@high`
-- **xAI:** `x-ai/grok-4.7@low`, `x-ai/grok-4.7@high`, `x-ai/grok-4.3@low`, `x-ai/grok-4.3@high`
 
 Every match is anchored to deterministic `ai-crosshair` baselines (calibrated via the 96-game Batch 0 round-robin):
 - `engine:az-puct-1`: Raw 114K-parameter policy prior ($P(s,a)$ with zero MCTS lookahead; **anchored at 1200.0 Elo**)
@@ -66,19 +64,19 @@ python3 -m crosshair_bench.build_manifests
 # Batch 0: Engine Anchor Calibration (96 local CPU games, $0.00)
 python3 -m crosshair_bench.run_batch manifests/batch_00_engine_anchors.json --concurrency 8
 
-# Batch 1: 28 LLM Entrants vs 3 Tournament Engines (112 games per sub-batch, 336 total)
-python3 -m crosshair_bench.run_batch manifests/batch_01a_vs_uct50.json --concurrency 8
-python3 -m crosshair_bench.run_batch manifests/batch_01b_vs_az400.json --concurrency 8
-python3 -m crosshair_bench.run_batch manifests/batch_01c_vs_az4000.json --concurrency 8
+# Batch 1: 20 LLM Entrants vs 3 Tournament Engines (80 games per sub-batch, 240 total)
+python3 -m crosshair_bench.run_batch manifests/batch_01a_vs_uct50.json --concurrency 24
+python3 -m crosshair_bench.run_batch manifests/batch_01b_vs_az400.json --concurrency 24
+python3 -m crosshair_bench.run_batch manifests/batch_01c_vs_az4000.json --concurrency 24
 
-# Batch 2: Intra-Model Thinking Delta & Intra-Company Crossover (84 games)
-python3 -m crosshair_bench.run_batch manifests/batch_02_thinking_delta.json --concurrency 8
+# Batch 2: Intra-Model Thinking Delta & Intra-Company Crossover (60 games)
+python3 -m crosshair_bench.run_batch manifests/batch_02_thinking_delta.json --concurrency 24
 
-# Batch 3: 7-Company Flagship Round-Robin at @high (84 games)
-python3 -m crosshair_bench.run_batch manifests/batch_03_flagship_rr.json --concurrency 8
+# Batch 3: 5-Company Flagship Round-Robin at @high (40 games)
+python3 -m crosshair_bench.run_batch manifests/batch_03_flagship_rr.json --concurrency 24
 
-# Batch 4: 7-Company Flash Round-Robin at @high (84 games)
-python3 -m crosshair_bench.run_batch manifests/batch_04_flash_rr.json --concurrency 8
+# Batch 4: 5-Company Flash Round-Robin at @high (40 games)
+python3 -m crosshair_bench.run_batch manifests/batch_04_flash_rr.json --concurrency 24
 ```
 
 ### Run a Single Match (LLM vs Engine or LLM vs LLM)

@@ -32,10 +32,10 @@ OPENROUTER_KEY_URL = "https://openrouter.ai/api/v1/key"
 VALID_REASONING_EFFORTS = ("minimal", "low", "medium", "high", "none")
 
 DEEPSEEK_REASONING_BUDGETS = {
-    "minimal": 1024,
-    "low": 2048,
-    "medium": 4096,
-    "high": 8192,
+    "minimal": 384,
+    "low": 640,
+    "medium": 1280,
+    "high": 2048,
 }
 
 
@@ -171,21 +171,24 @@ def _build_reasoning_config(
         )
     ) or "thinking" in m_low or "r1" in m_low
 
-    if reasoning_effort is None:
+    if reasoning_effort is None or reasoning_effort == "none":
+        if m_low == "qwen/qwen3.8-max-0902":
+            return {"max_tokens": 256}, 2048
+        if m_low.startswith("qwen/"):
+            return {"enabled": False}, 2048
         if is_always_thinking:
-            return {"effort": "low"}, 8192
-        return {"effort": "none"}, 8192
+            return {"effort": "low"}, 3072
+        return {"effort": "none"}, 2048
 
-    if reasoning_effort == "none":
-        if is_always_thinking:
-            return {"effort": "low"}, 8192
-        return {"effort": "none"}, 8192
+    if m_low.startswith(("deepseek/", "qwen/", "meta/muse-")):
+        budget = DEEPSEEK_REASONING_BUDGETS.get(reasoning_effort, 1280)
+        return {"max_tokens": budget}, budget + 1536
 
-    if m_low.startswith("deepseek/"):
-        budget = DEEPSEEK_REASONING_BUDGETS.get(reasoning_effort, 4096)
-        return {"max_tokens": budget}, budget + 4096
+    if m_low.startswith("x-ai/grok-"):
+        min_tok = 4096 if reasoning_effort in ("medium", "high") else 2560
+        return {"effort": reasoning_effort}, min_tok
 
-    min_tok = 16384 if reasoning_effort in ("medium", "high") else 8192
+    min_tok = 4608 if reasoning_effort in ("medium", "high") else 3072
     return {"effort": reasoning_effort}, min_tok
 
 
@@ -204,11 +207,27 @@ def call_openrouter_chat(
     if a model/provider rejects `reasoning` or `temperature`.
     """
     reas_cfg, min_tokens = _build_reasoning_config(model_id, reasoning_effort)
-    eff_max_tokens = max(max_tokens, min_tokens)
+    eff_max_tokens = min_tokens if max_tokens in (4096, 3584) else max(max_tokens, min_tokens)
+
+    req_messages = list(messages)
+    if model_id.lower().startswith("x-ai/grok-"):
+        grok_reas_limit = (
+            "800 tokens" if reasoning_effort in ("medium", "high") else "300 tokens"
+        )
+        req_messages = [
+            {
+                "role": "system",
+                "content": (
+                    f"Keep your internal thinking trace concise (strictly under {grok_reas_limit} "
+                    "of reasoning). Do not loop or re-verify the same coordinates repeatedly."
+                ),
+            },
+            *req_messages,
+        ]
 
     base_payload: dict[str, Any] = {
         "model": model_id,
-        "messages": messages,
+        "messages": req_messages,
         "max_tokens": eff_max_tokens,
         "usage": {"include": True},
     }

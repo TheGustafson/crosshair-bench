@@ -401,19 +401,28 @@ async def run_match(
             messages: list[dict[str, str]] = [{"role": "user", "content": prompt_text}]
             eff_max_tokens = current_player.max_tokens
             if current_player.reasoning_effort and current_player.reasoning_effort != "none":
-                eff_max_tokens = max(eff_max_tokens, 6144)
+                eff_max_tokens = max(eff_max_tokens, 3584)
 
             prior_thoughts: list[str] = []
             for attempt_idx in range(max_illegal_retries + 1):
                 attempts_used += 1
+                attempt_effort = (
+                    current_player.reasoning_effort
+                    if attempt_idx == 0
+                    else (
+                        "none"
+                        if current_player.reasoning_effort == "none"
+                        else "low"
+                    )
+                )
                 resp = await asyncio.to_thread(
                     call_openrouter_chat,
                     api_key=resolved_key,
                     model_id=current_player.model_id,
                     messages=messages,
-                    max_tokens=eff_max_tokens,
+                    max_tokens=eff_max_tokens if attempt_idx == 0 else 2560,
                     temperature=current_player.temperature,
-                    reasoning_effort=current_player.reasoning_effort,
+                    reasoning_effort=attempt_effort,
                 )
 
                 turn_latency_ms += float(resp.get("latency_ms", 0.0))

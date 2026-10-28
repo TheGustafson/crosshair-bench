@@ -20,6 +20,7 @@ import asyncio
 import json
 import os
 import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -61,12 +62,34 @@ async def execute_batch(
     batch_id = manifest.get("batch_id") or manifest_path.stem
     title = manifest.get("title") or batch_id
     all_items: list[dict[str, Any]] = manifest["matches"]
-    items = all_items[:limit] if limit is not None else all_items
+    raw_items = all_items[:limit] if limit is not None else list(all_items)
+
+    # Schedule slowest models (grok-4.7, gpt-6.1-sol, grok-4.3) at the very front,
+    # and interleave in round-robin across pairings with @high prioritized first.
+    def _schedule_key(idx_and_item: tuple[int, dict[str, Any]]) -> tuple[int, int, int, int]:
+        orig_idx, it = idx_and_item
+        specs_str = f"{it.get('red', '')} {it.get('blue', '')}"
+        is_slowest = any(
+            s in specs_str
+            for s in ("x-ai/grok-4.7", "openai/gpt-6.1-sol@high", "x-ai/grok-4.3@high")
+        )
+        game_round = (int(it.get("opening_index", 1)) - 1) * 2 + int(
+            it.get("swap_index", 1)
+        )
+        has_high = "@high" in specs_str
+        return (0 if is_slowest else 1, game_round, 0 if has_high else 1, orig_idx)
+
+    items = [
+        it for _, it in sorted(enumerate(raw_items), key=_schedule_key)
+    ]
     total = len(items)
 
     status_path = status_dir / f"{batch_id}_status.json"
     started_at = datetime.now(timezone.utc).isoformat()
     t_batch_start = time.perf_counter()
+
+    loop = asyncio.get_running_loop()
+    loop.set_default_executor(ThreadPoolExecutor(max_workers=max(32, concurrency * 2)))
 
     completed_count = 0
     failed_count = 0

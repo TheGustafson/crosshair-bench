@@ -1,11 +1,11 @@
 """
-Canonical 7-Company (28 LLM Entrants + 4 Engine Actors) Tournament Roster for Crosshair-Bench.
+Canonical 5-Company (20 LLM Entrants + 4 Engine Actors) Tournament Roster for Crosshair-Bench.
 
 Structure:
-- 7 Frontier AI Labs: OpenAI, Anthropic, Google, DeepSeek, Qwen, Meta, xAI
+- 5 Frontier AI Labs: OpenAI, Anthropic, Google, DeepSeek, Qwen
 - 2 Model Tiers per Lab: Flagship ("best") and Fast/Cost-Efficient ("flash")
 - 2 Thinking Regimes per Model: Base (`@low` or `@none`) and Extended Thinking (`@high`)
-- Total LLM Entrants: 7 * 2 * 2 = 28
+- Total LLM Entrants: 5 * 2 * 2 = 20
 - Engine Actors:
   * Calibration Anchor (1200.0 Elo): `engine:az-puct-1`
   * Tournament Engine 1: `engine:random-uct-50`
@@ -92,26 +92,6 @@ COMPANY_DEFINITIONS: tuple[CompanyModels, ...] = (
         flash_model_id="qwen/qwen3.8-flash",
         flash_short_base="qwen38flash",
         flash_base_effort="none",
-    ),
-    CompanyModels(
-        company="Meta",
-        company_slug="meta",
-        flagship_model_id="meta/muse-wonder",
-        flagship_short_base="musewonder",
-        flagship_base_effort="low",
-        flash_model_id="meta/muse-spark-open",
-        flash_short_base="musespark",
-        flash_base_effort="low",
-    ),
-    CompanyModels(
-        company="xAI",
-        company_slug="xai",
-        flagship_model_id="x-ai/grok-4.7",
-        flagship_short_base="grok47",
-        flagship_base_effort="low",
-        flash_model_id="x-ai/grok-4.3",
-        flash_short_base="grok43",
-        flash_base_effort="low",
     ),
 )
 
