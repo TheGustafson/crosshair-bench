@@ -340,6 +340,141 @@ def build_all_manifests() -> None:
         b04_matches,
     )
 
+    # -------------------------------------------------------------------------
+    # Batch 5: 5-Company Flagship Round-Robin at @low/@none (10 pairs x 4 = 40 games)
+    # -------------------------------------------------------------------------
+    b05_matches: list[dict[str, Any]] = []
+    flagship_base_entrants = [
+        e for e in LLM_ENTRANTS if e.tier == "flagship" and e.thinking_tier == "base"
+    ]
+    for pair_idx, (ent_a, ent_b) in enumerate(
+        itertools.combinations(flagship_base_entrants, 2), start=1
+    ):
+        b05_matches.extend(
+            _build_paired_games(
+                batch_prefix="b05",
+                pair_slug=f"{ent_a.company_slug}_vs_{ent_b.company_slug}_low",
+                player_a=ent_a.spec,
+                player_b=ent_b.spec,
+                openings=TOURNAMENT_OPENINGS_2,
+                base_seed=100000 + pair_idx * 500,
+                skip_shadow_oracle=False,
+                category="flagship_base_rr",
+            )
+        )
+    _write_manifest(
+        "batch_05_flagship_low_rr.json",
+        "batch_05_flagship_low_rr",
+        "Batch 5: 5-Company Flagship Round-Robin (@low/@none)",
+        "All 10 head-to-head pairs among the 5 company flagship models at @low/@none x 4 balanced games = 40 games.",
+        b05_matches,
+    )
+
+    # -------------------------------------------------------------------------
+    # Batch 6: 5-Company Flash Round-Robin at @low/@none (10 pairs x 4 = 40 games)
+    # -------------------------------------------------------------------------
+    b06_matches: list[dict[str, Any]] = []
+    flash_base_entrants = [
+        e for e in LLM_ENTRANTS if e.tier == "flash" and e.thinking_tier == "base"
+    ]
+    for pair_idx, (ent_a, ent_b) in enumerate(
+        itertools.combinations(flash_base_entrants, 2), start=1
+    ):
+        b06_matches.extend(
+            _build_paired_games(
+                batch_prefix="b06",
+                pair_slug=f"{ent_a.company_slug}_vs_{ent_b.company_slug}_low",
+                player_a=ent_a.spec,
+                player_b=ent_b.spec,
+                openings=TOURNAMENT_OPENINGS_2,
+                base_seed=120000 + pair_idx * 500,
+                skip_shadow_oracle=False,
+                category="flash_base_rr",
+            )
+        )
+    _write_manifest(
+        "batch_06_flash_low_rr.json",
+        "batch_06_flash_low_rr",
+        "Batch 6: 5-Company Flash Round-Robin (@low/@none)",
+        "All 10 head-to-head pairs among the 5 company flash models at @low/@none x 4 balanced games = 40 games.",
+        b06_matches,
+    )
+
+    # -------------------------------------------------------------------------
+    # Batch 7: Intra-Company Size Delta & Full 4-Way Intra-Lab Completion (60 games)
+    #   Part A: 5 Intra-Company pairs (Flagship@high vs Flash@high) x 4 = 20 games
+    #   Part B: 5 Intra-Company pairs (Flagship@base vs Flash@base) x 4 = 20 games
+    #   Part C: 5 Intra-Company pairs (Flagship@high vs Flash@base) x 4 = 20 games
+    # -------------------------------------------------------------------------
+    b07_matches: list[dict[str, Any]] = []
+    b07_counter = 0
+    for comp in COMPANY_DEFINITIONS:
+        flag_high = f"{comp.flagship_model_id}@high"
+        flash_high = f"{comp.flash_model_id}@high"
+        b07_counter += 1
+        b07_matches.extend(
+            _build_paired_games(
+                batch_prefix="b07",
+                pair_slug=f"{comp.flagship_short_base}_high_vs_{comp.flash_short_base}_high",
+                player_a=flag_high,
+                player_b=flash_high,
+                openings=TOURNAMENT_OPENINGS_2,
+                base_seed=140000 + b07_counter * 500,
+                skip_shadow_oracle=False,
+                category="intra_company_high_size",
+            )
+        )
+
+    for comp in COMPANY_DEFINITIONS:
+        flag_base = f"{comp.flagship_model_id}@{comp.flagship_base_effort}"
+        flash_base = f"{comp.flash_model_id}@{comp.flash_base_effort}"
+        b07_counter += 1
+        b07_matches.extend(
+            _build_paired_games(
+                batch_prefix="b07",
+                pair_slug=f"{comp.flagship_short_base}_{comp.flagship_base_effort}_vs_{comp.flash_short_base}_{comp.flash_base_effort}",
+                player_a=flag_base,
+                player_b=flash_base,
+                openings=TOURNAMENT_OPENINGS_2,
+                base_seed=140000 + b07_counter * 500,
+                skip_shadow_oracle=False,
+                category="intra_company_base_size",
+            )
+        )
+
+    for comp in COMPANY_DEFINITIONS:
+        flag_high = f"{comp.flagship_model_id}@high"
+        flash_base = f"{comp.flash_model_id}@{comp.flash_base_effort}"
+        b07_counter += 1
+        b07_matches.extend(
+            _build_paired_games(
+                batch_prefix="b07",
+                pair_slug=f"{comp.flagship_short_base}_high_vs_{comp.flash_short_base}_{comp.flash_base_effort}",
+                player_a=flag_high,
+                player_b=flash_base,
+                openings=TOURNAMENT_OPENINGS_2,
+                base_seed=140000 + b07_counter * 500,
+                skip_shadow_oracle=False,
+                category="intra_company_high_vs_flash_base",
+            )
+        )
+
+    _write_manifest(
+        "batch_07_intra_company_size.json",
+        "batch_07_intra_company_size",
+        "Batch 7: Intra-Company Model Size Delta & 4-Way Lab Completion",
+        "5 (Flagship@high vs Flash@high) + 5 (Flagship@base vs Flash@base) + 5 (Flagship@high vs Flash@base) pairs x 4 balanced games = 60 games.",
+        b07_matches,
+    )
+
+    _write_manifest(
+        "batch_05_06_07_completion.json",
+        "batch_05_06_07_completion",
+        "Batches 5-7: Full Symmetric Tournament Completion (140 games)",
+        "Combined 140-game manifest (Batch 5 Flagship@low RR + Batch 6 Flash@low RR + Batch 7 Intra-Company Size & Lab Completion) bringing all 20 LLM entrants to 44 games each.",
+        b05_matches + b06_matches + b07_matches,
+    )
+
 
 if __name__ == "__main__":
     build_all_manifests()
